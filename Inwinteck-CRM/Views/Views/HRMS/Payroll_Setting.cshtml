@@ -1,0 +1,243 @@
+﻿@model  HRMS.Models.Payroll_Setting
+@{
+    ViewBag.Title = "Payroll Setting";
+    Layout = ViewBag.Layout;
+}
+
+
+<!-- Page Header -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="page-head-box">
+            <h3>Setting</h3>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index","Dashboard")">Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Payroll Setting</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- /Page Header -->
+<div class="card">
+    <div class="card-body">
+
+        @if (Model != null)
+        {
+            using (Html.BeginForm("editPayroll_Setting", "HRMS", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary("", new { @class = "text-danger" })
+                <input type="hidden" value="@Model.Id" name="Id">
+                <input type="hidden" value="@Model.CreatedBy" name="CreatedBy">
+                <input type="hidden" value="@Model.CreatedOn" name="CreatedOn">
+                <input type="hidden" value="@Model.Company_Logo" name="Company_Logo">
+                <div class="row">
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <img src="@Model.Company_Logo" />
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label>Company Logo </label>
+                            <input class="form-control" name="pht" type="file">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Company Name </label>
+                            <input class="form-control" name="Company_Name" type="text" value="@Model.Company_Name" required>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Company Address </label>
+                            <input class="form-control" name="Company_Address" type="text" value="@Model.Company_Address">
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Company Contact </label>
+                            <input class="form-control" name="Company_Contact" type="text" value="@Model.Company_Contact">
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Basic Earning </label>
+                            <input class="form-control" name="Basic_Earning" type="number" value="@Model.Basic_Earning" required>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>HRA </label>
+                            <input class="form-control" name="HRA" type="number" value="@Model.HRA" required>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Conveyance Allowance</label>
+                            <input class="form-control" name="Conveyance_Allowance" type="number" value="@Model.Conveyance_Allowance" required>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Provident Fund </label>
+                            <input class="form-control" name="Provident_Fund" type="number" value="@Model.Provident_Fund" required>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>ESIC </label>
+                            <input class="form-control" name="ESIC" type="number" value="@Model.ESIC" required>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Professional Tax </label>
+                            <input class="form-control" name="Professional_Tax" type="number" value="@Model.Professional_Tax" required>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 text-center">
+                        <div class="submit-section">
+                            <button class="btn btn-primary submit-btn">Save</button>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            using (Html.BeginForm("addPayroll_Setting", "HRMS", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary("", new { @class = "text-danger" })
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Company Logo </label>
+                            <input class="form-control" name="pht" type="file">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Company Name </label>
+                            <input class="form-control" name="Company_Name" type="text" value="" required>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Company Address </label>
+                            <input class="form-control" name="Company_Address" type="text" value="">
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Company Contact </label>
+                            <input class="form-control" name="Company_Contact" type="text" value="">
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Basic Earning </label>
+                            <input class="form-control" name="Basic_Earning" type="number" value="" required>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>HRA </label>
+                            <input class="form-control" name="HRA" type="number" value="" required>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Conveyance Allowance</label>
+                            <input class="form-control" name="Conveyance_Allowance" type="number" value="" required>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Provident Fund </label>
+                            <input class="form-control" name="Provident_Fund" type="number" value="" required>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>ESIC </label>
+                            <input class="form-control" name="ESIC" type="number" value="" required>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Professional Tax </label>
+                            <input class="form-control" name="Professional_Tax" type="number" value="" required>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 text-center">
+                        <div class="submit-section">
+                            <button class="btn btn-primary submit-btn">Save</button>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+
+
+    </div>
+</div>
+
+
+<div class="modal custom-modal fade" id="msgBox">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-header">
+                    <h3 style="font-size: 20px;">@TempData["message"] </h3>
+                </div>
+                <div class="modal-btn">
+                    <div class="submit-section col-sm-4 offset-sm-4">
+                        <a href="#" data-dismiss="modal" aria-label="Close" class="btn btn-primary cancel-btn">OK</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+@section scripts
+{
+    @if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+
+            window.onload = function () {
+                $('#msgBox').modal('show');
+            };
+        </script>
+    }
+
+}
+
+
+

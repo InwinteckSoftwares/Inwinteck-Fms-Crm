@@ -1,0 +1,58 @@
+[HttpPost]
+        [BizomAuthentication]
+        public HttpResponseMessage AddCustomer(collection_point_log CM)
+        {
+            generalresponse gr = new generalresponse();
+            string userName = Thread.CurrentPrincipal.Identity.Name;
+            if (userName != "")
+            {
+                if (!ModelState.IsValid)
+                {
+                    var modelErrors = new List<string>();
+                    foreach (var modelState in ModelState.Values)
+                    {
+                        foreach (var modelError in modelState.Errors)
+                        {
+                            modelErrors.Add(modelError.ErrorMessage);
+                        }
+                    }
+                    string combinedString = string.Join(",", modelErrors.ToArray());
+
+                    gr.statuscode = 1;
+                    gr.statusmessage = combinedString;
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, gr);
+                }
+                try
+                {
+                    //if (CM.retailer_code == null || CM.retailer_name == null || CM.dist_sap_code == null || CM.dist_name == null || CM.store_address == null || CM.pincode == 0 || CM.city == null || CM.state == null || CM.branch_code == null || CM.branch == null || CM.channel == null)
+                    //{
+                    //    gr.statuscode = 1;
+                    //    gr.statusmessage = "Required Parameter not Passed";
+                    //    return Request.CreateResponse(HttpStatusCode.BadRequest, gr);
+                    //}
+                    //else
+                    //{
+                        CM.created_on = DateTime.Now;
+                        db.collection_point_log.Add(CM);
+                        db.SaveChanges();
+                        gr.statuscode = 0;
+                        gr.statusmessage = "success";
+                        return Request.CreateResponse(HttpStatusCode.OK, gr);
+                    //}
+
+                }
+                catch (Exception ex)
+                {
+                    gr.statuscode = 1;
+                    gr.statusmessage = "Something went wrong. Please try again";
+                    return Request.CreateResponse(HttpStatusCode.InternalServerError, gr);
+                }
+            }
+            else
+            {
+                gr.statuscode = 1;
+                gr.statusmessage = "Unauthorised Access.";
+                return Request.CreateResponse(HttpStatusCode.Unauthorized,gr);
+            }
+            //return Ok(gr);
+        }

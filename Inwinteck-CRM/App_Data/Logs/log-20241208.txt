@@ -1,0 +1,74 @@
+2024-12-08 14:00:41.279 +05:30 [INF] Application Started
+2024-12-08 14:04:43.116 +05:30 [ERR] An Unhandled Exception occured
+System.Web.HttpException (0x80004005): The controller for path '/assets/js/moment.min.js.map' was not found or does not implement IController.
+   at System.Web.Mvc.DefaultControllerFactory.GetControllerInstance(RequestContext requestContext, Type controllerType)
+   at System.Web.Mvc.MvcHandler.ProcessRequestInit(HttpContextBase httpContext, IController& controller, IControllerFactory& factory)
+   at System.Web.Mvc.MvcHandler.BeginProcessRequest(HttpContextBase httpContext, AsyncCallback callback, Object state)
+   at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   at System.Web.HttpApplication.<>c__DisplayClass285_0.<ExecuteStepImpl>b__0()
+   at System.Web.HttpApplication.ExecuteStepImpl(IExecutionStep step)
+   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2024-12-08 14:04:43.286 +05:30 [ERR] An Unhandled Exception occured
+System.Web.HttpException (0x80004005): The controller for path '/assets/js/moment.min.js.map' was not found or does not implement IController.
+   at System.Web.Mvc.DefaultControllerFactory.GetControllerInstance(RequestContext requestContext, Type controllerType)
+   at System.Web.Mvc.MvcHandler.ProcessRequestInit(HttpContextBase httpContext, IController& controller, IControllerFactory& factory)
+   at System.Web.Mvc.MvcHandler.BeginProcessRequest(HttpContextBase httpContext, AsyncCallback callback, Object state)
+   at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   at System.Web.HttpApplication.<>c__DisplayClass285_0.<ExecuteStepImpl>b__0()
+   at System.Web.HttpApplication.ExecuteStepImpl(IExecutionStep step)
+   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2024-12-08 14:08:36.932 +05:30 [INF] Subscribe endpoint hit.
+2024-12-08 14:08:38.258 +05:30 [INF] Received payload: {"endpoint":"https://fcm.googleapis.com/fcm/send/eA0NDadEMCk:APA91bFUn75VPQIxNc94fFgkaAKBmdhnIaDP4NaTvvPY1aH16C6XPKDaOlbnyEwoQlWkU1EZWxz8VhLfdTrz0HwpKM3M-UGQQbzBaNF-mH89l3nEdotxpyfzWlyxz5Bd-6MrIlHxhpve","expirationTime":null,"keys":{"p256dh":"BG3FedOzs_2-KoMw1i7JpeqgJO6AAWQtK7SY9YoPgIGxkgPZG_JnzY6FxOP582n-tMVfN2uFcHorqmrOPYBAj7k","auth":"knurbabcdWSxXRJ3zZw41g"}}
+2024-12-08 14:08:43.969 +05:30 [INF] Deserialized subscription: {"Id":0,"Endpoint":"https://fcm.googleapis.com/fcm/send/eA0NDadEMCk:APA91bFUn75VPQIxNc94fFgkaAKBmdhnIaDP4NaTvvPY1aH16C6XPKDaOlbnyEwoQlWkU1EZWxz8VhLfdTrz0HwpKM3M-UGQQbzBaNF-mH89l3nEdotxpyfzWlyxz5Bd-6MrIlHxhpve","P256DH":"BG3FedOzs_2-KoMw1i7JpeqgJO6AAWQtK7SY9YoPgIGxkgPZG_JnzY6FxOP582n-tMVfN2uFcHorqmrOPYBAj7k","Auth":"knurbabcdWSxXRJ3zZw41g","UserId":"admin@developer.com","$type":"PushSubscription"}
+2024-12-08 14:08:47.544 +05:30 [INF] Saving subscription to database for user: admin@developer.com
+2024-12-08 14:08:48.545 +05:30 [INF] Subscription successfully saved for endpoint: https://fcm.googleapis.com/fcm/send/eA0NDadEMCk:APA91bFUn75VPQIxNc94fFgkaAKBmdhnIaDP4NaTvvPY1aH16C6XPKDaOlbnyEwoQlWkU1EZWxz8VhLfdTrz0HwpKM3M-UGQQbzBaNF-mH89l3nEdotxpyfzWlyxz5Bd-6MrIlHxhpve
+2024-12-08 17:04:16.696 +05:30 [INF] Application Started
+2024-12-08 17:06:13.553 +05:30 [ERR] An Unhandled Exception occured
+System.Web.HttpException (0x80004005): The controller for path '/assets/js/moment.min.js.map' was not found or does not implement IController.
+   at System.Web.Mvc.DefaultControllerFactory.GetControllerInstance(RequestContext requestContext, Type controllerType)
+   at System.Web.Mvc.MvcHandler.ProcessRequestInit(HttpContextBase httpContext, IController& controller, IControllerFactory& factory)
+   at System.Web.Mvc.MvcHandler.BeginProcessRequest(HttpContextBase httpContext, AsyncCallback callback, Object state)
+   at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   at System.Web.HttpApplication.<>c__DisplayClass285_0.<ExecuteStepImpl>b__0()
+   at System.Web.HttpApplication.ExecuteStepImpl(IExecutionStep step)
+   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2024-12-08 17:06:13.676 +05:30 [ERR] An Unhandled Exception occured
+System.Web.HttpException (0x80004005): The controller for path '/assets/js/moment.min.js.map' was not found or does not implement IController.
+   at System.Web.Mvc.DefaultControllerFactory.GetControllerInstance(RequestContext requestContext, Type controllerType)
+   at System.Web.Mvc.MvcHandler.ProcessRequestInit(HttpContextBase httpContext, IController& controller, IControllerFactory& factory)
+   at System.Web.Mvc.MvcHandler.BeginProcessRequest(HttpContextBase httpContext, AsyncCallback callback, Object state)
+   at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   at System.Web.HttpApplication.<>c__DisplayClass285_0.<ExecuteStepImpl>b__0()
+   at System.Web.HttpApplication.ExecuteStepImpl(IExecutionStep step)
+   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2024-12-08 17:06:31.870 +05:30 [ERR] An Unhandled Exception occured
+System.Web.HttpException (0x80004005): The controller for path '/BossMessaging' was not found or does not implement IController.
+   at System.Web.Mvc.DefaultControllerFactory.GetControllerInstance(RequestContext requestContext, Type controllerType)
+   at System.Web.Mvc.MvcHandler.ProcessRequestInit(HttpContextBase httpContext, IController& controller, IControllerFactory& factory)
+   at System.Web.Mvc.MvcHandler.BeginProcessRequest(HttpContextBase httpContext, AsyncCallback callback, Object state)
+   at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   at System.Web.HttpApplication.<>c__DisplayClass285_0.<ExecuteStepImpl>b__0()
+   at System.Web.HttpApplication.ExecuteStepImpl(IExecutionStep step)
+   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2024-12-08 17:07:05.478 +05:30 [INF] IndexHelpDesk action started.
+2024-12-08 17:17:37.140 +05:30 [ERR] An Unhandled Exception occured
+System.Web.HttpException (0x80004005): The controller for path '/assets/js/moment.min.js.map' was not found or does not implement IController.
+   at System.Web.Mvc.DefaultControllerFactory.GetControllerInstance(RequestContext requestContext, Type controllerType)
+   at System.Web.Mvc.MvcHandler.ProcessRequestInit(HttpContextBase httpContext, IController& controller, IControllerFactory& factory)
+   at System.Web.Mvc.MvcHandler.BeginProcessRequest(HttpContextBase httpContext, AsyncCallback callback, Object state)
+   at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   at System.Web.HttpApplication.<>c__DisplayClass285_0.<ExecuteStepImpl>b__0()
+   at System.Web.HttpApplication.ExecuteStepImpl(IExecutionStep step)
+   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2024-12-08 17:17:44.584 +05:30 [ERR] An Unhandled Exception occured
+System.Web.HttpException (0x80004005): The controller for path '/assets/js/moment.min.js.map' was not found or does not implement IController.
+   at System.Web.Mvc.DefaultControllerFactory.GetControllerInstance(RequestContext requestContext, Type controllerType)
+   at System.Web.Mvc.MvcHandler.ProcessRequestInit(HttpContextBase httpContext, IController& controller, IControllerFactory& factory)
+   at System.Web.Mvc.MvcHandler.BeginProcessRequest(HttpContextBase httpContext, AsyncCallback callback, Object state)
+   at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   at System.Web.HttpApplication.<>c__DisplayClass285_0.<ExecuteStepImpl>b__0()
+   at System.Web.HttpApplication.ExecuteStepImpl(IExecutionStep step)
+   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2024-12-08 17:23:17.033 +05:30 [INF] Application Started
+2024-12-08 17:24:39.464 +05:30 [INF] DownloadExcel called with date: "2024-11-04T00:00:00.0000000"
+2024-12-08 17:24:43.964 +05:30 [INF] Excel file generated successfully for date: "2024-11-04T00:00:00.0000000", Records: 6

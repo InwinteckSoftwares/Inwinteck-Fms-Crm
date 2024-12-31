@@ -1,0 +1,2196 @@
+﻿@model Inwinteck_CRM.viewModel.TicketQualityViewModel
+@{
+    ViewBag.Title = "view Ticket || Transaction";
+    Layout = "~/Views/Shared/_LayoutTicket.cshtml";
+}
+
+<style type="text/css">
+    /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+    #map_wrapper {
+        height: 400px;
+    }
+
+    #map_canvas {
+        width: 100%;
+        height: 100%;
+    }
+
+    .cert {
+        display: none;
+    }
+
+    .pg {
+        display: none;
+    }
+
+    .sc {
+        display: none;
+    }
+
+    .cl {
+        display: none;
+    }
+
+    .chin {
+        display: none;
+    }
+
+    #office_add {
+        display: none;
+    }
+
+    #Contact_add {
+        display: none;
+    }
+
+    #loadermodel {
+        display: none;
+    }
+
+    .text-center {
+        text-align: center;
+        vertical-align: middle;
+        line-height: normal; /* Ensure proper line height for vertical alignment */
+    }
+
+    @*==============QUality Form popup============ *@
+    .form-row {
+        margin-bottom: 1rem;
+    }
+
+    textarea {
+        resize: none;
+    }
+
+    .form-group label {
+        font-weight: bold;
+    }
+
+    .form-group textarea,
+    .form-group select,
+    .form-group input {
+        border-radius: .25rem;
+        border: 1px solid #ced4da;
+    }
+
+        .form-group textarea:focus,
+        .form-group select:focus,
+        .form-group input:focus {
+            border-color: #80bdff;
+            outline: 0;
+            box-shadow: 0 0 0 .2rem rgba(0, 123, 255, .25);
+        }
+
+    #calculateTotal, #updateButton {
+        margin: 0 .5rem;
+    }
+
+</style>
+
+
+<nav class="pcoded-navbar menupos-fixed menu-light brand-blue">
+    <div class="navbar-wrapper">
+        <div class="navbar-content scroll-div">
+            <ul class="nav pcoded-inner-navbar" style="margin-top: 45%;font-size: 16px;">
+                <li class="nav-item active">
+                    <a href="#" class="nav-link  text-center has-ripple"><span class="pcoded-mtext">INFO BAR</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="#Customer" class="nav-link btm-border-left"><span class="pcoded-micon"><i class="fas fa-user-circle"></i></span><span class="pcoded-mtext">Customer</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="#Ticket" class="nav-link btm-border-left"><span class="pcoded-micon"><i class="fas fa-info-circle"></i></span><span class="pcoded-mtext">Case Details</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="#Site" class="nav-link btm-border-left"><span class="pcoded-micon"><i class="fas fa-map-marker-alt"></i></span><span class="pcoded-mtext">Site</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="#FE" class="nav-link btm-border-left"><span class="pcoded-micon"><i class="fas fa-user"></i></span><span class="pcoded-mtext">FE Detail</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="#Activity" class="nav-link btm-border-left"><span class="pcoded-micon"><i class="fas fa-ticket-alt"></i></span><span class="pcoded-mtext">Activity</span></a>
+                </li>
+            </ul>
+            <h5 class="left-nav">Ticket NO: @Model.Ticket.Ticket_No</h5>
+
+
+            <input type="hidden" id="ticketId" value="@Model.Ticket.Id" />   @*Ticket id in ho*@
+            @*<h5 class="left-nav">FE Currency: @ViewBag.Currency</h5>*@
+            @*<h5 class="left-nav">Currency: USD</h5>
+                <h5 class="left-nav" id="ticketStatus" value="">
+                    Ticket Status:
+
+                </h5>*@
+        </div>
+    </div>
+</nav>
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper container" style="margin-top: -15px;">
+        <div class="pcoded-content-ticket">
+            <div class="pcoded-inner-content">
+                <div class="main-body">
+
+
+                    <input type="hidden" value="@Model.Ticket.CreatedBy" name="CreatedBy">
+                    <input type="hidden" value="@Model.Ticket.CreatedOn" name="CreatedOn">
+                    <input type="hidden" value="@Model.Ticket.Ticket_No" name="Ticket_No">
+                    <input type="hidden" value="@Model.Ticket.EU_Office" name="EU_Office" id="Office">
+                    <input type="hidden" class="form-control" value="@Model.Ticket.EU_ID" name="EU_ID" id="EU_ID">
+                    <input type="hidden" class="form-control" value="@Model.Ticket.Old_Ticket" name="Old_Ticket">
+                    <input type="hidden" id="firstFEId" value="@Model.Ticket.FE_ID" />
+                    <input type="hidden" id="secondFEId" value="@Model.Ticket.FE_ID_2  " />
+                    <input type="hidden" id="IsSecondFEAvailable" value="@Model.Ticket.IsSecondFEEnabled  " />
+
+                    <input type="hidden" class="form-control" id="latitude" name="latitude" value="@Model.Ticket.latitude" placeholder="Latitude" />
+                    <input type="hidden" class="form-control" id="longitude" name="longitude" value="@Model.Ticket.longitude" placeholder="Longitude" />
+                    <div class="container-fluid">
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <!-- Basic Forms -->
+                                <div class="card">
+
+                                    <!-- /.box-header -->
+
+                                    <div class="card shadow-sm mt-4">
+                                        <div class="card-header bg-primary text-white">
+                                            <h5 class="mb-0" style="color:white"><i class="fas fa-user-circle"></i> Customer Details</h5>
+                                            <button type="button" class="btn btn-icon btn-info float-right" id="EUStatus" data-toggle="tooltip" title="View EU Status">
+                                                <i class="fas fa-sign"></i>
+                                            </button>
+                                        </div>
+                                        <div class="card-body">
+
+                                            <!-- Customer and Office -->
+                                            <div class="form-row mb-3">
+                                                <label for="EU_ID" class="col-sm-2 col-form-label">
+                                                    <i class="fas fa-building"></i> Customer
+                                                </label>
+                                                <div class="col-sm-4">
+                                                    <input type="text" class="form-control" value="@ViewBag.Customer" readonly>
+                                                </div>
+
+                                                <label for="EU_ID" class="col-sm-2 col-form-label">
+                                                    <i class="fas fa-briefcase"></i> Office
+                                                </label>
+                                                <div class="col-sm-3">
+                                                    <input type="text" class="form-control" value="@ViewBag.EU_Office" readonly>
+                                                </div>
+
+                                                <div class="col-sm-1 d-flex align-items-center">
+                                                    <button type="button" class="btn btn-icon btn-info has-ripple" data-toggle="modal tooltip" data-target="#contact_info" title="View Contact Info">
+                                                        <i class="fas fa-user"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <!-- Email Subject -->
+                                            <div class="form-row mb-3">
+                                                <label for="Email_Subject" class="col-sm-2 col-form-label">
+                                                    <i class="fas fa-envelope"></i> Email Subject
+                                                </label>
+                                                <div class="col-md-10">
+                                                    <textarea class="form-control" name="Email_Subject" id="Email_Subject" placeholder="Enter your Subject or Leave Blank" readonly style="height: 70px; overflow-y: auto;">@ViewBag.Email_Subject</textarea>
+                                                </div>
+                                            </div>
+
+                                            <!-- Customer Auto Mail -->
+                                            <div class="form-row mb-3">
+                                                <label for="email_office" class="col-sm-2 col-form-label">
+                                                    <i class="fas fa-mail-bulk"></i> Customer  Email
+                                                </label>
+                                                <div class="col-md-10">
+                                                    <input type="text" class="form-control" name="email_office" value="@ViewBag.email_office" autocomplete="nope" id="email_office" readonly>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <!-- /.box-body -->
+                                        <div class="modal fade bs-example-modal-lg" id="contact_info" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content" style="width: 1080px;margin-left: -10%;">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title" id="myLargeModalLabel">Detail</h4>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                        <div class="spinner-border text-primary" role="status" id="loadermodel">
+                                                            <span class="sr-only">Loading...</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-body">
+
+                                                        <div class="row">
+
+                                                            <div class="col-6">
+
+                                                                <input type="hidden" name="Contact_ID" id="Contact_ID" value="0" />
+
+                                                                <div class="form-row">
+                                                                    <label for="Website" class="col-sm-4 col-form-label">Person</label>
+                                                                    <div class="col-md-8">
+                                                                        <input type="text" class="form-control" name="Person" id="Person" placeholder="Enter Contact Person">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-row">
+                                                                    <label for="Email" class="col-sm-4 col-form-label">Designation</label>
+                                                                    <div class="col-md-8">
+                                                                        <input type="text" class="form-control" name="Designation" id="Designation" placeholder="Enter Contact Designation">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-row">
+                                                                    <label for="Email" class="col-sm-4 col-form-label">Department</label>
+                                                                    <div class="col-md-8">
+                                                                        <input type="text" class="form-control" name="Department" id="Department" placeholder="Enter Contact Department">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-row">
+                                                                    <label for="Number" class="col-sm-4 col-form-label">Number</label>
+                                                                    <div class="col-md-8">
+                                                                        <input type="text" class="form-control" name="Number" id="CNumber" placeholder="Enter Office Number">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-row">
+                                                                    <label for="City" class="col-sm-4 col-form-label">Email</label>
+                                                                    <div class="col-md-8">
+                                                                        <input type="text" class="form-control" name="Email" id="CEmail" placeholder="Enter Office Email">
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-row">
+                                                                    <div class="form-group col-md-12 text-center">
+
+                                                                        <input type="button" class="btn btn-primary" value="Add" id="Contact_btn" />
+                                                                        <button type="button" title="Add" class="btn btn-link has-ripple" id="Contact_add"><i class="fa fa-plus"></i></button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-sm-6 table-border-style">
+                                                                <div class="table-responsive">
+                                                                    <table class="table" id="Office_contact">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Select</th>
+                                                                                <th>Person</th>
+                                                                                <th>Action</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody></tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="modal-footer text-center">
+                                                            <button type="button" class="btn btn-info waves-effect " id="save_value" data-dismiss="modal">Ok</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card shadow-sm mt-4">
+                                        <div class="card-header bg-primary text-white">
+                                            <h5 class="mb-0" style="color:white"><i class="fas fa-clipboard-list"></i> Case Details</h5>
+                                        </div>
+                                        <div class="card-body" id="Ticket">
+
+                                            <!-- Case Mode and Case Type -->
+                                            <div class="form-row mb-3">
+                                                <label for="Ticket_Mode" class="col-sm-2 col-form-label">
+                                                    <i class="fas fa-cogs"></i> Case Mode
+                                                </label>
+                                                <div class="col-md-4">
+                                                    <select class="form-control" name="Ticket_Mode" id="Ticket_Mode" readonly>
+                                                        <option value="">Select Case Mode</option>
+                                                        @foreach (var i in ViewBag.Ticket_Mode)
+                                                        {
+                                                            <option value="@i.Value">@i.Text</option>
+                                                        }
+                                                    </select>
+                                                </div>
+
+                                                <label for="Ticket_Type" class="col-sm-2 col-form-label">
+                                                    <i class="fas fa-tags"></i> Case Type
+                                                </label>
+                                                <div class="col-md-4">
+                                                    <select class="form-control" name="Ticket_Type" id="Ticket_Type" readonly>
+                                                        <option value="">Select Case Type</option>
+                                                        @foreach (var i in ViewBag.Ticket_Type)
+                                                        {
+                                                            <option value="@i.Value">@i.Text</option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <!-- SLA -->
+                                            <div class="form-row mb-3">
+                                                <label for="SLA" class="col-sm-2 col-form-label">
+                                                    <i class="fas fa-stopwatch"></i> SLA
+                                                </label>
+                                                <div class="col-md-4">
+                                                    <select class="form-control" name="SLA" id="SLA" disabled>
+                                                        <option value="">Select SLA</option>
+                                                        @foreach (var i in ViewBag.SLA)
+                                                        {
+                                                            <option value="@i.Value">@i.Text</option>
+                                                        }
+                                                    </select>
+                                                    @if (Model.Ticket.Status == 20 || Model.Ticket.Status == 1414)
+                                                    {
+                                                        <input type="hidden" name="SLA" value="@Model.Ticket.SLA" />
+                                                    }
+                                                </div>
+
+                                                <!-- Case No -->
+                                                <label for="Case_No" class="col-sm-2 col-form-label">
+                                                    <i class="fas fa-hashtag"></i> Case No
+                                                </label>
+                                                <div class="col-md-4">
+                                                    <input type="text" class="form-control" value="@Model.Ticket.Case_No" name="Case_No" id="Case_No" placeholder="Enter your Case No" oninput="updateHiddenField()">
+                                                </div>
+                                            </div>
+
+                                            <!-- Scope of Work -->
+                                            <div class="form-row mb-3">
+                                                <label class="col-sm-2 col-form-label">
+                                                    <i class="fas fa-briefcase"></i> Scope of Work
+                                                </label>
+                                                <div class="col-md-10" style="height: 100px; overflow-y: auto;">
+                                                    <textarea class="form-control wrap-text" name="Job_Description" rows="6" readonly>@Model.Ticket.Job_Description</textarea>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="card shadow-sm mt-4">
+                                                <!-- Card Header -->
+                                                <div class="card-header bg-primary text-white">
+                                                    <h5 class="mb-0" style="color:white"><i class="fas fa-calendar-alt"></i> Case Dates</h5>
+                                                </div>
+
+                                                <!-- Card Body with Date Fields -->
+                                                <div class="card-body bg-light p-3 rounded">
+
+                                                    <!-- Case Date (IST) -->
+                                                    <div class="form-row align-items-center">
+                                                        <div class="col-md-4 mb-3">
+                                                            <label for="Ticket_Date" class="col-form-label d-block w-100 text-center">
+                                                                <i class="fas fa-calendar-alt"></i> Case Date (IST)
+                                                                <span data-toggle="tooltip" title="Date and time in Indian Standard Time">
+                                                                    <i class="fas fa-info-circle"></i>
+                                                                </span>
+                                                            </label>
+                                                            @Html.TextBoxFor(m => m.Ticket.Ticket_Date, "{0:s}", new { @class = "form-control text-center", type = "datetime-local", @readonly = "readonly", id = "CaseDtIndia" })
+                                                        </div>
+
+                                                        <!-- Case Date (Local) -->
+                                                        <div class="col-md-4 mb-3">
+                                                            <label for="LocalTime" id="LocalTimeLabel" class="col-form-label d-block w-100 text-center">
+                                                                <i class="fas fa-clock"></i> Case Date (Local)
+                                                                <span data-toggle="tooltip" title="Date and time in Case location timezone">
+                                                                    <i class="fas fa-info-circle"></i>
+                                                                </span>
+                                                            </label>
+                                                            <input type="datetime-local" class="form-control dateHour text-center" name="CaseDtLocal" value="@ViewBag.CaseDtLocal" id="CaseDtLocal" required readonly>
+                                                        </div>
+
+                                                        <!-- Case Date (EST) -->
+                                                        <div class="col-md-4 mb-3">
+                                                            <label for="USTime" class="col-form-label d-block w-100 text-center">
+                                                                <i class="fas fa-globe-americas"></i> Case Date (EST)
+                                                                <span data-toggle="tooltip" title="Date and time in Eastern Standard Time">
+                                                                    <i class="fas fa-info-circle"></i>
+                                                                </span>
+                                                            </label>
+                                                            <input type="datetime-local" class="form-control dateHour text-center" name="CaseDtUS" value="@ViewBag.CaseDtUs" id="CaseDtUS" required readonly>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+
+                                            <div class="card shadow-sm mt-4">
+                                                <div class="card-header bg-primary text-white">
+                                                    <h5 class="mb-0" style="color:white"><i class="fas fa-map-marker-alt"></i> Site Details</h5>
+                                                </div>
+                                                <div class="card-body">
+
+                                                    <!-- OEM and Site Name -->
+                                                    <div class="form-row mb-3">
+                                                        <label for="OEM" class="col-sm-2 col-form-label">
+                                                            <i class="fas fa-industry"></i> OEM
+                                                        </label>
+                                                        <div class="col-md-4">
+                                                            <select class="form-control" name="OEM" id="OEM" readonly>
+                                                                <option value="">Select OEM</option>
+                                                                @foreach (var i in ViewBag.OEM)
+                                                                {
+                                                                    <option value="@i.Value">@i.Text</option>
+                                                                }
+                                                            </select>
+                                                        </div>
+
+                                                        <label for="Site_Name" class="col-sm-2 col-form-label">
+                                                            <i class="fas fa-map-marker-alt"></i> Site Name
+                                                        </label>
+                                                        <div class="col-md-4">
+                                                            <input type="text" class="form-control" value="@Model.Ticket.Site_Name" name="Site_Name" id="Site_Name" placeholder="Enter your Site Name" readonly>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Street Address and Zip/Pin Code -->
+                                                    <div class="form-row mb-3">
+                                                        <label for="Street_Address" class="col-sm-2 col-form-label">
+                                                            <i class="fas fa-road"></i> Street Address
+                                                        </label>
+                                                        <div class="col-md-4">
+                                                            <input type="text" class="form-control" value="@Model.Ticket.Street_Address" name="Street_Address" id="Street_Address" placeholder="Enter your Street Address" readonly>
+                                                        </div>
+
+                                                        <label for="Zip_Pin_Code" class="col-sm-2 col-form-label">
+                                                            <i class="fas fa-mail-bulk"></i> ZipCode/Pincode
+                                                        </label>
+                                                        <div class="col-md-4">
+                                                            <input type="text" class="form-control" value="@Model.Ticket.Zip_Pin_Code" name="Zip_Pin_Code" id="ZipCode_Pincode" placeholder="Enter your ZipCode/Pincode" readonly>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- City and State -->
+                                                    <div class="form-row mb-3">
+                                                        <label for="City" class="col-sm-2 col-form-label">
+                                                            <i class="fas fa-city"></i> City
+                                                        </label>
+                                                        <div class="col-md-4">
+                                                            <input type="text" class="form-control" value="@Model.Ticket.City" name="City" id="City" placeholder="Enter your City" readonly>
+                                                        </div>
+
+                                                        <label for="State" class="col-sm-2 col-form-label">
+                                                            <i class="fas fa-map"></i> State
+                                                        </label>
+                                                        <div class="col-md-4">
+                                                            <input type="text" class="form-control" value="@Model.Ticket.State" name="State" id="State" placeholder="Enter your State" readonly>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Country -->
+                                                    <div class="form-row mb-3">
+                                                        <label for="Country" class="col-sm-2 col-form-label">
+                                                            <i class="fas fa-flag"></i> Country
+                                                        </label>
+                                                        <div class="col-md-4">
+                                                            <select class="form-control" name="Country" id="Country" readonly>
+                                                                <option value="">Select Country</option>
+                                                                @foreach (var i in ViewBag.Country)
+                                                                {
+                                                                    <option value="@i.Value">@i.Text</option>
+                                                                }
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+
+                                                <div class="card shadow-sm mt-4">
+                                                    <div class="card-header bg-primary text-white">
+                                                        <h5 class="mb-0" style="color:white"><i class="fas fa-calendar-alt"></i> Dispatched Dates</h5>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="form-row align-items-center">
+                                                            <!-- Dispatched Date (IST) -->
+                                                            <div class="col-md-4 mb-3">
+                                                                <label for="EU_Name" class="col-form-label d-block w-100 text-center">
+                                                                    <i class="fas fa-clock"></i> Dispatched Date (IST)
+                                                                    <span data-toggle="tooltip" title="Date and time in Indian Standard Time">
+                                                                        <i class="fas fa-info-circle"></i>
+                                                                    </span>
+                                                                </label>
+                                                                <input type="datetime-local" name="DispDtIndia" class="form-control dateHour text-center" value="@ViewBag.formattedDispDtIndia" id="DispDtUS" required readonly>
+                                                            </div>
+
+                                                            <!-- Dispatched Date (Local) -->
+                                                            <div class="col-md-4 mb-3">
+                                                                <label for="Dispatch_Date" class="col-form-label d-block w-100 text-center">
+                                                                    <i class="fas fa-globe"></i> Dispatched Date (Local)
+                                                                    <span data-toggle="tooltip" title="Date and time in Required Location">
+                                                                        <i class="fas fa-info-circle"></i>
+                                                                    </span>
+                                                                </label>
+                                                                @Html.TextBoxFor(m => m.Ticket.Dispatch_Date, "{0:s}", new { @class = "form-control text-center", type = "datetime-local", @readonly = "readonly", id = "Dispatch_Date" })
+                                                            </div>
+
+                                                            <!-- Dispatched Date (EST) -->
+                                                            <div class="col-md-4 mb-3">
+                                                                <label for="EU_Contact" class="col-form-label d-block w-100 text-center">
+                                                                    <i class="fas fa-clock"></i> Dispatched Date (EST)
+                                                                    <span data-toggle="tooltip" title="Date and time in Eastern Standard Time">
+                                                                        <i class="fas fa-info-circle"></i>
+                                                                    </span>
+                                                                </label>
+                                                                <input type="datetime-local" name="DispDtUs" class="form-control dateHour text-center" value="@ViewBag.formattedDispDtUs" id="DispDtUS" required readonly>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                        <!-- Update Button -->
+                                                        <div id="updateButtonContainer" class="text-center mt-3" style="display: none;">
+                                                            <button type="button" class="btn btn-primary btn-lg" id="updateDispatchDateBtn">
+                                                                <i class="fas fa-sync-alt"></i> Update Dispatched DT
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <!-- EU Details Section -->
+                                                <div class="card shadow-sm mt-4">
+                                                    <div class="card-header bg-primary text-white">
+                                                        <h5 class="mb-0" style="color:white"><i class="fas fa-user"></i> EU Details</h5>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <!-- EU Name and EU Contact -->
+                                                        <div class="form-row mb-3">
+                                                            <label for="EU_Name" class="col-sm-2 col-form-label">
+                                                                <i class="fas fa-id-badge"></i> EU Name
+                                                            </label>
+                                                            <div class="col-md-4">
+                                                                <input type="text" class="form-control" value="@Model.Ticket.EU_Name" autocomplete="nope" name="EU_Name" id="EU_Name" placeholder="Enter your Site Person Name" readonly>
+                                                            </div>
+
+                                                            <label for="EU_Contact" class="col-sm-2 col-form-label">
+                                                                <i class="fas fa-phone"></i> EU Contact
+                                                            </label>
+                                                            <div class="col-md-4">
+                                                                <input type="text" class="form-control" value="@Model.Ticket.EU_Contact" autocomplete="nope" name="EU_Contact" id="EU_Contact" placeholder="Enter your Site Person Contact" readonly>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- EU Email and Certification Need -->
+                                                        <div class="form-row mb-3">
+                                                            <label for="EU_Email" class="col-sm-2 col-form-label">
+                                                                <i class="fas fa-envelope"></i> EU Email
+                                                            </label>
+                                                            <div class="col-md-4">
+                                                                <input type="text" class="form-control" value="@Model.Ticket.EU_Email" autocomplete="nope" name="EU_Email" id="EU_Email" placeholder="Enter your Site Person Email" readonly>
+                                                            </div>
+
+                                                            <label for="Certification_Need" class="col-sm-2 col-form-label">
+                                                                <i class="fas fa-certificate"></i> Certification Need
+                                                            </label>
+                                                            <div class="col-md-4">
+                                                                <select class="form-control" name="Certification_Need" id="Certification_Need" disabled>
+                                                                    <option value="">Select Certification</option>
+                                                                    <option value="1">Yes</option>
+                                                                    <option value="0">No</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+
+
+                                                    </div>
+                                                </div>
+                                                <!-- TSE Details Section -->
+                                                <div class="card shadow-sm mt-4">
+                                                    <div class="card-header bg-primary text-white">
+                                                        <h5 class="mb-0" style="color:white"><i class="fas fa-user-tie"></i> TSE Details</h5>
+                                                    </div>
+                                                    <div class="card-body" id="TSENameContainer">
+                                                        <!-- TSE Name -->
+                                                        <div class="form-row mb-3">
+                                                            <label for="TSE_Name" class="col-sm-2 col-form-label">
+                                                                <i class="fas fa-user-tie"></i> Case Owner
+                                                            </label>
+                                                            <div class="col-md-4">
+                                                                @Html.TextBoxFor(m => m.Ticket.TSE_Name, new { @class = "form-control", @readonly = "readonly" })
+                                                            </div>
+
+                                                        </div>
+
+                                                        <!-- TSE Name 2 (Initially Hidden) -->
+                                                        @if (!string.IsNullOrEmpty(Model.Ticket.TSE_Name2))
+                                                        {
+                                                            <div class="form-row mb-3" id="TSENameField2">
+                                                                <label for="TSE_Name2" class="col-sm-2 col-form-label">
+                                                                    <i class="fas fa-user-tie"></i> TSE Name 2
+                                                                </label>
+                                                                <div class="col-md-4">
+                                                                    @Html.TextBoxFor(m => m.Ticket.TSE_Name2, new { @class = "form-control", @readonly = "readonly" })
+                                                                </div>
+                                                            </div>
+                                                        }
+
+                                                        <!-- TSE Name 3 (Initially Hidden) -->
+                                                        @if (!string.IsNullOrEmpty(Model.Ticket.TSE_Name3))
+                                                        {
+                                                            <div class="form-row mb-3" id="TSENameField3">
+                                                                <label for="TSE_Name3" class="col-sm-2 col-form-label">
+                                                                    <i class="fas fa-user-tie"></i> TSE Name 3
+                                                                </label>
+                                                                <div class="col-md-4">
+                                                                    @Html.TextBoxFor(m => m.Ticket.TSE_Name3, new { @class = "form-control", @readonly = "readonly" })
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="form-row m-t-10">
+                                                    <!-- Enable 2nd FE -->
+                                                    <div class="col-md-6 mb-3">
+                                                        <div class="custom-control custom-radio">
+                                                            <input type="radio" id="enableSecondFE" name="IsSecondFEEnabled" class="custom-control-input" value="true" @(Model.Ticket.IsSecondFEEnabled ? "checked" : "") disabled>
+                                                            <label class="custom-control-label" for="enableSecondFE">
+                                                                <i class="fas fa-user-plus"></i> Enable 2nd FE
+                                                            </label>
+                                                        </div>
+                                                        <div class="custom-control custom-radio">
+                                                            <input type="radio" id="disableSecondFE" name="IsSecondFEEnabled" class="custom-control-input" value="false" @(!Model.Ticket.IsSecondFEEnabled ? "checked" : "") disabled>
+                                                            <label class="custom-control-label" for="disableSecondFE">
+                                                                <i class="fas fa-user-slash"></i> Disable 2nd FE
+                                                            </label>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- FE Changed -->
+                                                    <div class="col-md-6 mb-3">
+                                                        <div class="custom-control custom-radio">
+                                                            <input type="radio" id="feChangedYes" name="feChanged" class="custom-control-input" value="true" @(Model.Ticket.feChanged ? "checked" : "") disabled>
+                                                            <label class="custom-control-label" for="feChangedYes">
+                                                                <i class="fas fa-exchange-alt"></i> FE Changed - Yes
+                                                            </label>
+                                                        </div>
+                                                        <div class="custom-control custom-radio">
+                                                            <input type="radio" id="feChangedNo" name="feChanged" class="custom-control-input" value="false" @(!Model.Ticket.feChanged ? "checked" : "") disabled>
+                                                            <label class="custom-control-label" for="feChangedNo">
+                                                                <i class="fas fa-times-circle"></i> FE Changed - No
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <input type="hidden" class="form-control" id="latitude" name="latitude" value="@Model.Ticket.latitude" placeholder="Latitude" />
+                                            <input type="hidden" class="form-control" id="longitude" name="longitude" value="@Model.Ticket.longitude" placeholder="Longitude" />
+
+                                            <div class="card shadow-sm mt-4">
+                                                <div class="card-header bg-primary text-white">
+                                                    <h5 class="mb-0" style="color:white"><i class="fas fa-user-tie"></i> FE Details</h5>
+                                                    <button type="button" class="btn btn-icon btn-info float-right" id="FEStatus" data-toggle="tooltip" title="View FE Status">
+                                                        <i class="fas fa-sign"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="card-body" id="FE">
+
+                                                    <!-- FE Details Section -->
+                                                    <div id="feDetailsSection">
+                                                        <div class="form-row m-t-10">
+                                                            <label for="FE_ID" class="col-sm-2 col-form-label">
+                                                                <i class="fas fa-id-badge"></i> FE Name
+                                                            </label>
+                                                            <div class="col-md-4">
+                                                                <select class="form-control" name="FE_ID" id="FE_ID" readonly></select>
+                                                            </div>
+                                                            <label for="FE_contact" class="col-sm-2 col-form-label">
+                                                                <i class="fas fa-phone"></i> Contact
+                                                            </label>
+                                                            <div class="col-md-4">
+                                                                <input type="text" class="form-control" name="FE_contact" id="FE_contact" readonly>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-row">
+                                                            <label for="FE_Email" class="col-sm-2 col-form-label">
+                                                                <i class="fas fa-envelope"></i> Email
+                                                            </label>
+                                                            <div class="col-md-4">
+                                                                <input type="text" class="form-control" name="FE_Email" id="FE_Email" readonly>
+                                                            </div>
+                                                            <label for="FE_Origin" class="col-sm-2 col-form-label">
+                                                                <i class="fas fa-map-marker-alt"></i> Origin
+                                                            </label>
+                                                            <div class="col-md-4">
+                                                                <input type="text" class="form-control" name="FE_Origin" id="FE_Origin" readonly>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-row">
+                                                            <label for="FE_Certification" class="col-sm-2 col-form-label">
+                                                                <i class="fas fa-certificate"></i> FE Certificates
+                                                            </label>
+                                                            <div class="col-md-10">
+                                                                <textarea class="form-control"
+                                                                          rows="5"
+                                                                          placeholder="Certification Name"
+                                                                          name="FE_Certification"
+                                                                          id="FE_Certification"
+                                                                          readonly
+                                                                          style="height: 200px; overflow-y: auto;">
+</textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    @if (Model.Ticket.IsSecondFEEnabled)
+                                                    {
+                                                        <!-- Second FE Details Section -->
+                                                        <div id="secondFEContainer" margin-top: 20px;">
+                                                            <div class="form-row">
+                                                                <label for="FE_ID_2" class="col-sm-2 col-form-label">
+                                                                    <i class="fas fa-id-badge"></i> FE Name (2nd)
+                                                                </label>
+                                                                <div class="col-md-4">
+                                                                    <select class="form-control" name="FE_ID_2" id="FE_2_ID" readonly></select>
+                                                                </div>
+                                                                <label for="FE_contact_2" class="col-sm-2 col-form-label">
+                                                                    <i class="fas fa-phone"></i> Contact (2nd)
+                                                                </label>
+                                                                <div class="col-md-4">
+                                                                    <input type="text" class="form-control" name="FE_contact_2" id="FE_2_contact" readonly>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-row">
+                                                                <label for="FE_Email_2" class="col-sm-2 col-form-label">
+                                                                    <i class="fas fa-envelope"></i> Email (2nd)
+                                                                </label>
+                                                                <div class="col-md-4">
+                                                                    <input type="text" class="form-control" name="FE_Email_2" id="FE_2_Email" readonly>
+                                                                </div>
+                                                                <label for="FE_Origin_2" class="col-sm-2 col-form-label">
+                                                                    <i class="fas fa-map-marker-alt"></i> Origin (2nd)
+                                                                </label>
+                                                                <div class="col-md-4">
+                                                                    <input type="text" class="form-control" name="FE_Origin_2" id="FE_2_Origin" readonly>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-row">
+                                                                <label for="FE_Certification_2" class="col-sm-2 col-form-label">
+                                                                    <i class="fas fa-certificate"></i> FE Certificates (2nd)
+                                                                </label>
+                                                                <div class="col-md-10">
+                                                                    <textarea class="form-control" rows="5" placeholder="Certification Name" name="FE_Certification_2" id="FE_2_Certification" readonly></textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+
+
+                                                </div>
+                                            </div>
+
+                                            @*------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*@
+                                        <div class="card-body" id="Activity" style="margin-top: -42px;">
+                                            <span class="heading-border">Activity Detail </span>
+
+                                            <div class="form-row m-t-10">
+                                                <label for="Ticket_Mode" class="col-sm-2 col-form-label">Ticket Status</label>
+                                                <div class="col-md-4">
+                                                    <select class="form-control" name="Status" id="Status" readonly>
+                                                        <option value="">Select Status</option>
+                                                        @foreach (var i in ViewBag.Status)
+                                                        {
+                                                            <option value="@i.Value">@i.Text</option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                                @if (Model.Ticket.Old_Ticket != null)
+                                                {
+                                                    <label for="Ticket_Mode" class="col-sm-2 col-form-label">Old Ticket Number</label>
+                                                    <div class="col-md-4">
+                                                        <input type="text" class="form-control" value="@ViewBag.Old_Ticket" readonly>
+                                                    </div>
+                                                }
+                                                else if (ViewBag.New_Ticket != null)
+                                                {
+                                                    <label for="Ticket_Mode" class="col-sm-2 col-form-label">New Ticket Number</label>
+                                                    <div class="col-md-4">
+                                                        <input type="text" class="form-control" value="@ViewBag.New_Ticket" readonly>
+                                                    </div>
+                                                }
+
+                                            </div>
+                                            <div class="form-row">
+                                                <label for="Reschedule_DT" class="col-sm-2 col-form-label RDT ">Reschedule Date </label>
+                                                <div class="col-md-4">
+                                                    @Html.TextBoxFor(m => m.Ticket.Reschedule_DT, "{0:s}", new { @class = "form-control RDT", type = "datetime-local", @readonly = "readonly" })
+                                                </div>
+
+                                                <label for="Reschedule_Reason" class="col-sm-2 col-form-label RDT ">Reschedule Reason </label>
+                                                <div class="col-md-4">
+                                                    <input type="text" class="form-control RDT" name="Reschedule_Reason" value="@Model.Ticket.Reschedule_Reason" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <label for="Decline_Reason" class="col-sm-2 col-form-label TDR">Decline Reason</label>
+                                                <div class="col-md-10">
+                                                    <!-- Textarea for decline reason with placeholder text -->
+                                                    <textarea class="form-control TDR"
+                                                              name="Decline_Reason"
+                                                              id="declineReasonTextarea"
+                                                              placeholder="Type Decline Reason"
+                                                              disabled>@Model.Ticket.Decline_Reason</textarea>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-row">
+                                                <label for="Cancel_Reason" class="col-sm-2 col-form-label TCR">Cancel Reason</label>
+                                                <div class="col-md-4">
+                                                    <select class="form-control TCR" name="Cancel_Reason" id="Cancel_Reason" readonly>
+                                                        <option value="">Select Cancel Reason</option>
+                                                        @foreach (var i in ViewBag.Cancel_Reason)
+                                                        {
+                                                            <option value="@i.Value">@i.Text</option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </div>
+
+
+                                            @*------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*@
+
+                                            <div class="form-row ">
+                                                <label class="col-sm-2 col-form-label sc" style="height:50%;">Is Pregame Given ? </label>
+                                                <div class="col-md-4">
+                                                    <select class="form-control sc" name="Pregame" id="Pregame" readonly>
+                                                        <option value="">Select Pregame</option>
+                                                        <option value="1">Yes</option>
+                                                        <option value="0">No</option>
+                                                    </select>
+                                                </div>
+
+                                            </div>
+
+
+                                            <div class="form-row ">
+                                                <label class="col-sm-2 col-form-label pg">Pregame Description</label>
+                                                <div class="col-md-10 pg">
+                                                    <textarea class="form-control" rows="3" placeholder="Add Pregame Description" name="pregame_detail" readonly style="height:360px;">@Model.Ticket.pregame_detail</textarea>
+                                                </div>
+                                            </div>
+
+
+
+                                            <div class="card shadow-sm mt-4" id="currencySectionContainer">
+                                                <div class="card-header bg-primary text-white">
+                                                    <h5 class="mb-0" style="color:white"><i class="fas fa-dollar-sign"></i> Currency</h5>
+                                                </div>
+                                                <div class="card-body">
+                                                    <!-- Currency Dropdown -->
+                                                    <div class="form-row m-t-10">
+                                                        <label for="Currency" class="col-sm-4 col-form-label">Currency</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="Currency" name="Currency" disabled>
+                                                                <option value="">Select Currency</option>
+                                                                @foreach (var currency in ViewBag.Currency)
+                                                                {
+                                                                    var selectedCurrency = Model.Ticket.TicketFeCharges?.FirstOrDefault()?.Currency;
+                                                                    <option value="@currency.Currency" @(currency.Currency == selectedCurrency ? "selected" : "")>
+                                                                        @currency.Country (@currency.Currency)
+                                                                    </option>
+                                                                }
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card shadow-sm mt-4" id="chargesSectionContainer">
+                                                <div class="card-header bg-primary text-white">
+                                                    <h5 class="mb-0" style="color:white"> <i class="fas fa-money-bill-wave"></i> Charges</h5>
+                                                </div>
+                                                <div class="card-body" id="">
+                                                    <input type="hidden" id="Ticket_Id" value="@Model.Ticket.Id" name="Ticket_Id" />
+
+                                                    <!-- Travel Charge Dropdown -->
+                                                    <div class="form-row align-items-center m-t-10">
+                                                        <label for="TravelCharge" class="col-sm-4 col-form-label">Travel Charge</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" name="Travel_Charge_1" id="TravelCharge" disabled>
+                                                                <option value="">Select</option>
+                                                                @if (Model.Ticket.TicketFeCharges != null && Model.Ticket.TicketFeCharges.Count() > 0)
+                                                                {
+                                                                    foreach (var Travel_Charge_1 in new List<SelectListItem>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                {
+                    new SelectListItem { Text = "Yes", Value = "True" },
+                    new SelectListItem { Text = "No", Value = "False" }
+                })
+                                                                    {
+                                                                        var travelChargeBool = bool.Parse(Travel_Charge_1.Value);
+                                                                        var highestIdTicketFeCharge = Model.Ticket.TicketFeCharges.OrderByDescending(c => c.Id).FirstOrDefault();
+                                                                        <option value="@Travel_Charge_1.Value" @(travelChargeBool == highestIdTicketFeCharge?.Travel_Charge_1 ? "selected" : "")>
+                                                                            @Travel_Charge_1.Text
+                                                                        </option>
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    <option value="True">Yes</option>
+                                                                    <option value="False">No</option>
+                                                                }
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Travel Amount Input -->
+                                                    <div class="form-row align-items-center m-t-10">
+                                                        <label for="TravelAmount" class="col-sm-4 col-form-label">Travel Amount</label>
+                                                        <div class="col-sm-8">
+                                                            @if (Model.Ticket.TicketFeCharges != null && Model.Ticket.TicketFeCharges.Count() > 0)
+                                                            {
+                                                                <input type="number" class="form-control" name="Travel_Amount_1" id="TravelAmount" value="@Model.Ticket.TicketFeCharges.FirstOrDefault().Travel_Amount_1" readonly />
+                                                            }
+                                                            else
+                                                            {
+                                                                <input type="number" class="form-control" name="Travel_Amount_1" id="TravelAmount" value="" />
+                                                            }
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Charge Type Dropdown -->
+                                                    <div class="form-row align-items-center m-t-10">
+                                                        <label for="ChargeType" class="col-sm-4 col-form-label">Charge Type</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" name="Charge_Type_1" id="ChargeType" disabled>
+                                                                <option value="">Select</option>
+                                                                @if (Model.Ticket.TicketFeCharges != null && Model.Ticket.TicketFeCharges.Count() > 0)
+                                                                {
+                                                                    foreach (var Charge_Type_1 in new List<SelectListItem>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                {
+                    new SelectListItem { Text = "Per Job", Value = "Per Job" },
+                    new SelectListItem { Text = "Per Hour", Value = "Per Hour" }
+                })
+                                                                    {
+                                                                        <option value="@Charge_Type_1.Value" @(Charge_Type_1.Value == Model.Ticket.TicketFeCharges.FirstOrDefault()?.Charge_Type_1 ? "selected" : "")>
+                                                                            @Charge_Type_1.Text
+                                                                        </option>
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    <option value="Per Job">Per Job</option>
+                                                                    <option value="Per Hour">Per Hour</option>
+                                                                }
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Per Job Input -->
+                                                    <div class="form-row align-items-center m-t-10">
+                                                        <label for="PerJob" class="col-sm-4 col-form-label">Per Job</label>
+                                                        <div class="col-sm-8">
+                                                            @if (Model.Ticket.TicketFeCharges != null && Model.Ticket.TicketFeCharges.Count() > 0)
+                                                            {
+                                                                <input type="number" class="form-control" name="Per_Job_1" id="PerJob" step="0.01" value="@Model.Ticket.TicketFeCharges.FirstOrDefault().Per_Job_1" readonly />
+                                                            }
+                                                            else
+                                                            {
+                                                                <input type="number" class="form-control" name="Per_Job_1" id="PerJob" step="0.01" value="" />
+                                                            }
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Per Hour Input -->
+                                                    <div class="form-row align-items-center m-t-10">
+                                                        <label for="PerHour" class="col-sm-4 col-form-label">Per Hour</label>
+                                                        <div class="col-sm-8">
+                                                            @if (Model.Ticket.TicketFeCharges != null && Model.Ticket.TicketFeCharges.Count() > 0)
+                                                            {
+                                                                <input type="number" class="form-control" name="Per_Hour_1" id="PerHour" step="0.01" value="@Model.Ticket.TicketFeCharges.FirstOrDefault().Per_Hour_1" readonly />
+                                                            }
+                                                            else
+                                                            {
+                                                                <input type="number" class="form-control" name="Per_Hour_1" id="PerHour" step="0.01" value="" />
+                                                            }
+                                                        </div>
+                                                    </div>
+
+
+                                                    <!-- Second Charges Section (Initially Hidden) -->
+                                                    <div class="card mb-4" id="secondChargesSection" style="display:none">
+                                                        <div class="card-header bg-secondary text-white">
+                                                            <h6 class="mb-0"><i class="fas fa-wallet"></i> Charges (2nd FE)</h6>
+                                                        </div>
+                                                        <div class="card-body charges-section">
+                                                            <!-- Travel Charge Dropdown -->
+                                                            <div class="form-row m-t-10">
+                                                                <label for="TravelCharge2" class="col-sm-4 col-form-label">Travel Charge</label>
+                                                                <div class="col-sm-8">
+                                                                    <select class="form-control" name="Travel_Charge_2" id="TravelCharge2" disabled>
+                                                                        <option value="">Select</option>
+                                                                        @if (Model.Ticket.TicketFeCharges != null && Model.Ticket.TicketFeCharges.Count() > 0)
+                                                                        {
+                                                                            foreach (var Travel_Charge_2 in new List<SelectListItem>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        {
+                                                                                    new SelectListItem { Text = "Yes", Value = "True" },
+                                                                                    new SelectListItem { Text = "No", Value = "False" }
+                                                                                })
+                                                                            {
+                                                                                var travelChargeBool = bool.Parse(Travel_Charge_2.Value);
+                                                                                <option value="@Travel_Charge_2.Value" @(travelChargeBool == Model.Ticket.TicketFeCharges.FirstOrDefault()?.Travel_Charge_2 ? "selected" : "")>
+                                                                                    @Travel_Charge_2.Text
+                                                                                </option>
+                                                                            }
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <option value="True">Yes</option>
+                                                                            <option value="False">No</option>
+                                                                        }
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+                                                            <!-- Travel Amount Input -->
+                                                            <div class="form-row m-t-10" id="travelAmountRow2">
+                                                                <label for="TravelAmount2" class="col-sm-4 col-form-label">Travel Amount</label>
+                                                                <div class="col-sm-8">
+                                                                    @if (Model.Ticket.TicketFeCharges != null && Model.Ticket.TicketFeCharges.Count() > 0)
+                                                                    {
+                                                                        <input type="number" class="form-control" name="Travel_Amount_2" id="TravelAmount2" step="0.01" value="@Model.Ticket.TicketFeCharges.FirstOrDefault().Travel_Amount_2" readonly />
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <input type="number" class="form-control" name="Travel_Amount_2" id="TravelAmount2" step="0.01" value="" />
+                                                                    }
+                                                                </div>
+                                                            </div>
+
+                                                            <!-- Charge Type Dropdown -->
+                                                            <div class="form-row m-t-10">
+                                                                <label for="ChargeType2" class="col-sm-4 col-form-label">Charge Type</label>
+                                                                <div class="col-sm-8">
+                                                                    <select class="form-control" name="Charge_Type_2" id="ChargeType2" disabled>
+                                                                        <option value="">Select</option>
+                                                                        @if (Model.Ticket.TicketFeCharges != null && Model.Ticket.TicketFeCharges.Count() > 0)
+                                                                        {
+                                                                            foreach (var Charge_Type_2 in new List<SelectListItem>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        {
+                                                                                    new SelectListItem { Text = "Per Job", Value = "Per Job" },
+                                                                                    new SelectListItem { Text = "Per Hour", Value = "Per Hour" }
+                                                                                })
+                                                                            {
+                                                                                <option value="@Charge_Type_2.Value" @(Charge_Type_2.Value == Model.Ticket.TicketFeCharges.FirstOrDefault()?.Charge_Type_2 ? "selected" : "")>
+                                                                                    @Charge_Type_2.Text
+                                                                                </option>
+                                                                            }
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <option value="Per Job">Per Job</option>
+                                                                            <option value="Per Hour">Per Hour</option>
+                                                                        }
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+                                                            <!-- Per Job Input -->
+                                                            <div class="form-row m-t-10" id="perJobRow2">
+                                                                <label for="PerJob2" class="col-sm-4 col-form-label">Per Job</label>
+                                                                <div class="col-sm-8">
+                                                                    @if (Model.Ticket.TicketFeCharges != null && Model.Ticket.TicketFeCharges.Count() > 0)
+                                                                    {
+                                                                        <input type="number" class="form-control" name="Per_Job_2" id="PerJob2" step="0.01" value="@Model.Ticket.TicketFeCharges.FirstOrDefault().Per_Job_2" readonly />
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <input type="number" class="form-control" name="Per_Job_2" id="PerJob2" step="0.01" value="" />
+                                                                    }
+                                                                </div>
+                                                            </div>
+
+                                                            <!-- Per Hour Input -->
+                                                            <div class="form-row m-t-10" id="perHourRow2">
+                                                                <label for="PerHour2" class="col-sm-4 col-form-label">Per Hour</label>
+                                                                <div class="col-sm-8">
+                                                                    @if (Model.Ticket.TicketFeCharges != null && Model.Ticket.TicketFeCharges.Count() > 0)
+                                                                    {
+                                                                        <input type="number" class="form-control" name="Per_Hour_2" id="PerHour2" step="0.01" value="@Model.Ticket.TicketFeCharges.FirstOrDefault().Per_Hour_2" readonly />
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <input type="number" class="form-control" name="Per_Hour_2" id="PerHour2" step="0.01" value="" />
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                            @using (Html.BeginForm("ValidationByManager", "Transaction", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                                            {
+                                                bool isSecondFEEnabled = Model.Ticket.IsSecondFEEnabled;
+                                                int status = Model.Ticket.Status;
+                                                var userRoles = User.IsInRole("Quality") || User.IsInRole("Sr.Help Desk Manager");
+                                                <input type="hidden" value="@Model.Ticket.Id" name="Ticket_Id">
+                                                <input type="hidden" value="@ViewBag.email_office" name="email_office">
+                                                <!-- Hidden field to store Case_No -->
+                                                <input type="hidden" name="Hidden_Case_No" id="Hidden_Case_No">
+
+
+                                                <div class="card shadow-sm mt-4" id="inTimeContainer">
+                                                    <div class="card-header bg-primary text-white">
+                                                        <h5 class="mb-0" style="color:white"><i class="fas fa-clock"></i> In Time</h5>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="form-row align-items-center">
+                                                            <!-- In Time (IST) -->
+                                                            <div class="col-md-4 mb-3">
+                                                                <label for="In_Time" class="col-form-label d-block w-100 text-center">
+                                                                    <i class="fas fa-clock"></i> In Time (IST)
+
+                                                                </label>
+                                                                @if (userRoles)
+                                                                {
+                                                                    <input class="form-control text-center" type="datetime-local" id="In_Time" name="InTimeIndia" value="@ViewBag.inTimeIndia" />
+                                                                }
+                                                                else
+                                                                {
+                                                                    <input class="form-control text-center" type="datetime-local" id="In_Time" name="InTimeIndia" value="@ViewBag.inTimeIndia" readonly="readonly" />
+                                                                }
+
+                                                            </div>
+
+                                                            <!-- In Time (Local) -->
+                                                            <div class="col-md-4 mb-3">
+                                                                <label for="inTimeLocal" class="col-form-label d-block w-100 text-center">
+                                                                    <i class="fas fa-globe"></i> In Time (Local)
+                                                                    <span data-toggle="tooltip" title="Date and time in your local time zone">
+                                                                        <i class="fas fa-info-circle"></i>
+                                                                    </span>
+                                                                </label>
+                                                                @Html.TextBox("inTimeLocal", ViewBag.inTimeLocal as DateTime?, "{0:s}", new { @class = "form-control text-center", type = "datetime-local", @readonly = "readonly", id = "inTimeLocal" })
+                                                            </div>
+
+                                                            <!-- In Time (EST) -->
+                                                            <div class="col-md-4 mb-3">
+                                                                <label for="inTimeUs" class="col-form-label d-block w-100 text-center">
+                                                                    <i class="fas fa-clock"></i> In Time (EST)
+                                                                    <span data-toggle="tooltip" title="Date and time in Eastern Standard Time">
+                                                                        <i class="fas fa-info-circle"></i>
+                                                                    </span>
+                                                                </label>
+                                                                @Html.TextBox("inTimeUs", ViewBag.inTimeUs as DateTime?, "{0:s}", new { @class = "form-control text-center", type = "datetime-local", @readonly = "readonly", id = "inTimeUs" })
+                                                            </div>
+
+
+
+                                                            <!-- Hidden Latitude and Longitude fields -->
+                                                            <input type="hidden" class="form-control" id="latitude" name="latitude" value="@Model.Ticket.latitude" placeholder="Latitude" />
+                                                            <input type="hidden" class="form-control" id="longitude" name="longitude" value="@Model.Ticket.longitude" placeholder="Longitude" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="card shadow-sm mt-4" id="outTimeContainer">
+                                                    <div class="card-header bg-primary text-white">
+                                                        <h5 class="mb-0" style="color:white"><i class="fas fa-clock"></i> Out Time</h5>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="form-row align-items-center">
+                                                            <!-- Out Time (IST) -->
+                                                            <div class="col-md-4 mb-3">
+                                                                <label for="Out_Time" class="col-form-label d-block w-100 text-center">
+                                                                    <i class="fas fa-clock"></i> Out Time (IST)
+                                                                    <span data-toggle="tooltip" title="Date and time in Indian Standard Time">
+                                                                        <i class="fas fa-info-circle"></i>
+                                                                    </span>
+                                                                </label>
+                                                                @if (userRoles)
+                                                                {
+                                                                    <input class="form-control text-center" type="datetime-local" id="Out_Time" name="OutTimeIndia" value="@ViewBag.OutTimeIndia" />
+                                                                }
+                                                                else
+                                                                {
+                                                                    <input class="form-control text-center" type="datetime-local" id="Out_Time" name="OutTimeIndia" value="@ViewBag.OutTimeIndia" readonly="readonly" />
+                                                                }
+                                                            </div>
+
+                                                            <!-- Out Time (Local) -->
+                                                            <div class="col-md-4 mb-3">
+                                                                <label for="OutTimeLocal" class="col-form-label d-block w-100 text-center">
+                                                                    <i class="fas fa-globe"></i> Out Time (Local)
+                                                                    <span data-toggle="tooltip" title="Date and time in your local time zone">
+                                                                        <i class="fas fa-info-circle"></i>
+                                                                    </span>
+                                                                </label>
+                                                                @Html.TextBox("OutTimeLocal", ViewBag.OutTimeLocal as DateTime?, "{0:s}", new { @class = "form-control text-center", type = "datetime-local", @readonly = "readonly", id = "OutTimeLocal" })
+                                                            </div>
+
+                                                            <!-- Out Time (EST) -->
+                                                            <div class="col-md-4 mb-3">
+                                                                <label for="OutTimeUs" class="col-form-label d-block w-100 text-center">
+                                                                    <i class="fas fa-clock"></i> Out Time (EST)
+                                                                    <span data-toggle="tooltip" title="Date and time in Eastern Standard Time">
+                                                                        <i class="fas fa-info-circle"></i>
+                                                                    </span>
+                                                                </label>
+                                                                @Html.TextBox("OutTimeUs", ViewBag.OutTimeUs as DateTime?, "{0:s}", new { @class = "form-control text-center", type = "datetime-local", @readonly = "readonly" })
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                if (Model.Ticket.IsSecondFEEnabled)
+                                                {
+
+
+                                                    <div class="card shadow-sm mt-4" id="inTime2ndFE">
+                                                        <div class="card-header bg-primary text-white">
+                                                            <h5 class="mb-0" style="color:white"><i class="fas fa-clock"></i> In Time - 2nd FE</h5>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div class="form-row align-items-center">
+                                                                <!-- In Time (IST) - 2nd FE -->
+                                                                <div class="col-md-4 mb-3">
+                                                                    <label for="In_Time2" class="col-form-label d-block w-100 text-center">
+                                                                        <i class="fas fa-clock"></i> In Time (IST) - 2nd FE
+                                                                        <span data-toggle="tooltip" title="Date and time in Indian Standard Time">
+                                                                            <i class="fas fa-info-circle"></i>
+                                                                        </span>
+                                                                    </label>
+                                                                    @if (userRoles)
+                                                                    {
+                                                                        <input class="form-control text-center" type="datetime-local" id="In_Time2" name="InTimeIndia2" value="@ViewBag.inTimeIndia2" />
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <input class="form-control text-center" type="datetime-local" id="In_Time2" name="InTimeIndia2" value="@ViewBag.inTimeIndia2" readonly="readonly" />
+                                                                    }
+
+                                                                </div>
+
+                                                                <!-- In Time (Local) - 2nd FE -->
+                                                                <div class="col-md-4 mb-3">
+                                                                    <label for="inTimeLocal2" class="col-form-label d-block w-100 text-center">
+                                                                        <i class="fas fa-globe"></i> In Time (Local) - 2nd FE
+                                                                        <span data-toggle="tooltip" title="Date and time in your local time zone">
+                                                                            <i class="fas fa-info-circle"></i>
+                                                                        </span>
+                                                                    </label>
+                                                                    @Html.TextBox("inTimeLocal2", ViewBag.inTimeLocal2 as DateTime?, "{0:s}", new { @class = "form-control text-center", type = "datetime-local", @readonly = "readonly", id = "inTimeLocal2" })
+                                                                </div>
+
+                                                                <!-- In Time (EST) - 2nd FE -->
+                                                                <div class="col-md-4 mb-3">
+                                                                    <label for="inTimeUs2" class="col-form-label d-block w-100 text-center">
+                                                                        <i class="fas fa-clock"></i> In Time (EST) - 2nd FE
+                                                                        <span data-toggle="tooltip" title="Date and time in Eastern Standard Time">
+                                                                            <i class="fas fa-info-circle"></i>
+                                                                        </span>
+                                                                    </label>
+                                                                    @Html.TextBox("inTimeUs2", ViewBag.inTimeUs2 as DateTime?, "{0:s}", new { @class = "form-control text-center", type = "datetime-local", @readonly = "readonly" })
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div><div class="card shadow-sm mt-4" id="outTime2ndFE">
+                                                        <div class="card-header bg-primary text-white">
+                                                            <h5 class="mb-0" style="color:white"><i class="fas fa-clock"></i> Out Time - 2nd FE</h5>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div class="form-row align-items-center">
+                                                                <!-- Out Time (IST) - 2nd FE -->
+                                                                <div class="col-md-4 mb-3">
+                                                                    <label for="Out_Time2" class="col-form-label d-block w-100 text-center">
+                                                                        <i class="fas fa-clock"></i> Out Time (IST) - 2nd FE
+                                                                        <span data-toggle="tooltip" title="Date and time in Indian Standard Time">
+                                                                            <i class="fas fa-info-circle"></i>
+                                                                        </span>
+                                                                    </label>
+                                                                    @if (userRoles)
+                                                                    {
+                                                                        <input class="form-control text-center" type="datetime-local" id="Out_Time2" name="OutTimeIndia2" value="@ViewBag.OutTimeIndia2" />
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <input class="form-control text-center" type="datetime-local" id="Out_Time2" name="OutTimeIndia2" value="@ViewBag.OutTimeIndia2" readonly="readonly" />
+                                                                    }
+
+                                                                </div>
+
+                                                                <!-- Out Time (Local) - 2nd FE -->
+                                                                <div class="col-md-4 mb-3">
+                                                                    <label for="OutTimeLocal2" class="col-form-label d-block w-100 text-center">
+                                                                        <i class="fas fa-globe"></i> Out Time (Local) - 2nd FE
+                                                                        <span data-toggle="tooltip" title="Date and time in your local time zone">
+                                                                            <i class="fas fa-info-circle"></i>
+                                                                        </span>
+                                                                    </label>
+                                                                    @Html.TextBox("OutTimeLocal2", ViewBag.OutTimeLocal2 as DateTime?, "{0:s}", new { @class = "form-control text-center", type = "datetime-local", @readonly = "readonly", id = "OutTimeLocal2" })
+                                                                </div>
+
+                                                                <!-- Out Time (EST) - 2nd FE -->
+                                                                <div class="col-md-4 mb-3">
+                                                                    <label for="OutTimeUs2" class="col-form-label d-block w-100 text-center">
+                                                                        <i class="fas fa-clock"></i> Out Time (EST) - 2nd FE
+                                                                        <span data-toggle="tooltip" title="Date and time in Eastern Standard Time">
+                                                                            <i class="fas fa-info-circle"></i>
+                                                                        </span>
+                                                                    </label>
+                                                                    @Html.TextBox("OutTimeUs2", ViewBag.OutTimeUs2 as DateTime?, "{0:s}", new { @class = "form-control text-center", type = "datetime-local", @readonly = "readonly" })
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+
+
+                                                <div class="form-row align-items-center" id="totalResolutionTimeLocalContainer" style="display: flex;">
+                                                    <!-- First FE's Resolution Time -->
+                                                    <label class="col-form-label chin" style="margin-right: 10px;">
+                                                        <i class="fas fa-clock"></i> Total Resolution Time (Local)
+                                                    </label>
+                                                    <div style="flex-grow: 1; margin-right: 20px;">
+                                                        <input type="text" id="totalResolutionTimeLocal" class="form-control chin" value="@Model.Ticket.Total_Hours" readonly="readonly" />
+                                                    </div>
+                                                </div>
+
+
+
+
+                                                if (Model.Ticket.IsSecondFEEnabled)
+                                                {
+                                                    <!-- Second FE's Resolution Time in a new row -->
+                                                    <div class="form-row align-items-center" id="secondFeResolutionTimeLocalContainer" style="display: flex; margin-top: 10px;">
+                                                        <label class="col-form-label chin" style="margin-right: 10px;">
+                                                            <i class="fas fa-user-clock"></i> Total Resolution Time (Local) - 2nd FE
+                                                        </label>
+                                                        <div style="flex-grow: 1;">
+                                                            <input type="text" id="totalResolutionTimeLocal2" class="form-control chin" value="@Model.Ticket.Total_Hours2" readonly="readonly" />
+                                                        </div>
+                                                    </div>
+                                                }
+
+                                                {
+                                                    string buttonText = string.Empty;
+
+                                                    if ((Model.Ticket.Status == 20 || Model.Ticket.Status == 1641) && User.IsInRole("Sr.Help Desk Manager"))
+                                                    {
+                                                        buttonText = "Manager/TL Approval";
+                                                    }
+                                                    else if (Model.Ticket.Status == 1631 && User.IsInRole("Quality"))
+                                                    {
+                                                        buttonText = "Quality Approval";
+                                                    }
+
+
+                                                    // Vender Remark visible only to Sr. Help Desk Manager when Status is 20
+                                                    if (Model.Ticket.Status == 20 && User.IsInRole("Sr.Help Desk Manager") || Model.Ticket.Status == 1631 && User.IsInRole("Quality") || Model.Ticket.Status == 1632 || Model.Ticket.Status == 1631 && User.IsInRole("Sr.Help Desk Manager"))
+                                                    {
+                                                        <div class="form-group row">
+                                                            <label class="col-sm-2 col-form-label">Vendor Remark</label>
+                                                            <div class="col-sm-10">
+                                                                <textarea class="form-control" id="venderRemark" name="Vender_Remark" rows="4">@Model.Ticket.Vender_Remark</textarea>
+                                                            </div>
+                                                        </div>
+
+                                                    }
+
+                                                    // Quality Remark visible only to Quality role when Status is 1631
+                                                    if (Model.Ticket.Status == 1631 && User.IsInRole("Quality") || Model.Ticket.Status == 1632)
+                                                    {
+                                                        <div class="form-group row">
+                                                            <label class="col-sm-2 col-form-label">Quality Remark</label>
+                                                            <div class="col-sm-10">
+                                                                <textarea class="form-control" id="qualityRemark"  name="Quality_Remark" rows="4">@Model.Ticket.Quality_Remark</textarea>
+                                                            </div>
+                                                        </div>
+                                                    }
+
+                                                     if (!string.IsNullOrEmpty(buttonText))
+                                                    {
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-12 text-center">
+                                                                <div class="btn-group" role="group">
+                                                                    <button type="submit" class="btn btn-success" id="approvedByManagerButton">@buttonText</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+
+
+                                                }
+
+                                            }
+
+
+                                            <div class="card shadow-sm p-3 mb-4 bg-white rounded">
+                                                @* Part Management and Return Label Section *@
+                                                <div class="form-row mb-3">
+                                                    <label for="Part_Management" class="col-sm-2 col-form-label cl" style="color:white"><i class="fas fa-cogs"></i> Part Management</label>
+                                                    <div class="col-md-4">
+                                                        <select class="form-control cl" name="Part_Management" id="Part_Management" disabled>
+                                                            <option value="">Select Part Management</option>
+                                                            @foreach (var i in ViewBag.Part_Management)
+                                                            {
+                                                                <option value="@i.Value">@i.Text</option>
+                                                            }
+                                                        </select>
+                                                    </div>
+
+                                                    <label for="Return_Label" class="col-sm-2 col-form-label pickup"><i class="fas fa-undo-alt"></i> Return Label</label>
+                                                    <div class="col-md-4">
+                                                        <select class="form-control pickup" name="Return_Label" id="Return_Label" disabled>
+                                                            <option value="">Select Return Label</option>
+                                                            <option value="1">Available</option>
+                                                            <option value="0">Not Available</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-row mb-3">
+                                                    <label for="Tracking_number" class="col-sm-2 col-form-label pickup-av"><i class="fas fa-barcode"></i> Tracking Number</label>
+                                                    <div class="col-md-4">
+                                                        <input type="text" class="form-control pickup-av" value="@Model.Ticket.Tracking_number" autocomplete="nope" placeholder="Enter tracking number" name="Tracking_number" id="Tracking_number" readonly />
+                                                    </div>
+
+                                                    <label for="Rl_Reason" class="col-sm-2 col-form-label pickup-nav"><i class="fas fa-info-circle"></i> Reason</label>
+                                                    <div class="col-md-4">
+                                                        <input type="text" class="form-control pickup-nav" value="@Model.Ticket.Rl_Reason" autocomplete="nope" placeholder="Reason for return" name="Rl_Reason" id="Rl_Reason" re />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            @* Handover Section *@
+                                            <div class="card shadow-sm p-3 mb-4 bg-white rounded">
+                                                <div class="form-row mb-3 handover-section">
+                                                    <label for="Part_Handover" class="col-sm-2 col-form-label handover" style="color:white"><i class="fas fa-handshake"></i> Part Handover</label>
+                                                    <div class="col-md-4">
+                                                        <select class="form-control handover" name="Part_Handover" id="Part_Handover" data-toggle="tooltip" title="Select part handover type">
+                                                            <option value="">Select Part Handover</option>
+                                                            @foreach (var i in ViewBag.Part_Handover)
+                                                            {
+                                                                <option value="@i.Value">@i.Text</option>
+                                                            }
+                                                        </select>
+                                                    </div>
+
+                                                    <label for="ph_Name" class="col-sm-2 col-form-label handover"><i class="fas fa-user"></i> Name</label>
+                                                    <div class="col-md-4">
+                                                        <input type="text" class="form-control handover" value="@Model.Ticket.ph_Name" autocomplete="nope" placeholder="Enter name" name="ph_Name" id="ph_Name" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-row mb-3">
+                                                    <label for="ph_contact" class="col-sm-2 col-form-label handover"><i class="fas fa-phone"></i> Contact</label>
+                                                    <div class="col-md-4">
+                                                        <input type="text" class="form-control handover" value="@Model.Ticket.ph_contact" autocomplete="nope" placeholder="Enter contact details" name="ph_contact" id="ph_contact" />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            @* Whatsapp Chat Section - Display dynamically *@
+                                            <div class="form-group row chin" style="display: none; align-items: center;">
+                                                <div style="flex-grow: 1; position: relative;">
+                                                    <textarea class="form-control" rows="3" placeholder="Add ClosureForm" autocomplete="nope"
+                                                              name="WhatsappChat" id="closureForm" style="width: 100%;">
+                                                                    @Model.Ticket.WhatsappChat
+                                                                </textarea>
+                                                </div>
+                                            </div>
+
+
+                                            @*<div class="form-row ">
+            <label for="FE_Part_Storage_Charge" class="col-sm-2 col-form-label pickup-av">FE Storage Charge</label>
+            <div class="col-md-4">
+                <select class="form-control pickup-av" name="FE_Part_Storage_Charge" id="FE_Part_Storage_Charge" readonly>
+                    <option value="">Select Part Storage Charge</option>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+        </div>*@
+
+
+
+
+                                            <div class="form-group row">
+                                                <div class="col-sm-12 text-center">
+                                                    <div class="btn-group" role="group">
+                                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#qualityScoreModal">
+                                                            Quality Score
+                                                        </button>
+
+                                                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#TicketHistory">View History</button>
+
+                                                        <!-- New button to view chat -->
+                                                        <button type="button" class="btn btn-warning" id="viewChatButton">View Chat</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                            @* Handling Quality Remark section *@
+                                            @{ var permittedUsers = ViewBag.Quality_Remark_Permission as List<string>;
+                                                var isUserPermitted = User.Identity.IsAuthenticated && permittedUsers != null && permittedUsers.Contains(User.Identity.Name);
+
+                                            }
+
+                                            <div class="modal fade" id="qualityScoreModal" tabindex="-1" role="dialog" aria-labelledby="qualityScoreModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header bg-primary text-white">
+                                                            <h5 class="modal-title" id="qualityScoreModalLabel">Update Quality Score</h5>
+                                                            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            @using (Html.BeginForm("viewTicketUpdate", "Transaction", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                                                            {
+                                                                @Html.AntiForgeryToken()
+                                                                @Html.ValidationSummary("", new { @class = "text-danger" })
+                                                                <input type="hidden" value="@Model.Ticket.Id" name="Ticket_id">
+
+                                                                <div id="handledByContainer">
+                                                                    <div class="form-row align-items-center mb-3">
+                                                                        <label for="Handler1Name" class="col-sm-2 col-form-label">Handled By 1</label>
+                                                                        <div class="col-sm-5">
+                                                                            <select class="form-control handledBySelect" name="Handler1Name" id="Handler1Name">
+                                                                                <option value="">Select</option>
+                                                                                @foreach (var handeledBy in ViewBag.HandledBy)
+                                                                                {
+                                                                                    <option value="@handeledBy" @(Model.QualityMarksBraekdown.Handler1Name == handeledBy ? "selected" : "")>@handeledBy</option>
+                                                                                }
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="col-sm-5">
+                                                                            <input type="number" step="any" class="form-control" name="Handler1Score" id="Handler1Score" placeholder="Enter score" min="-100" max="100" value="@Model.QualityMarksBraekdown.Handler1Score" style="display:@(Model.QualityMarksBraekdown.Handler1Score.HasValue ? "block" : "none");">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-row mb-3" id="remark1Row" style="display:@(!string.IsNullOrEmpty(Model.QualityMarksBraekdown.Remark1) ? "flex" : "none");">
+                                                                        <label for="Remark1" id="remark1label" class="col-sm-2 col-form-label">Remark 1</label>
+                                                                        <div class="col-sm-10">
+                                                                            <input type="text" class="form-control" name="Remark1" id="Remark1" placeholder="Enter remark" value="@Model.QualityMarksBraekdown.Remark1">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                if (Model.QualityMarksBraekdown.Handler2Name != null)
+                                                                {
+                                                                    <div class="form-row align-items-center mb-3">
+                                                                        <label for="Handler2Name" class="col-sm-2 col-form-label">Handled By 2</label>
+                                                                        <div class="col-sm-5">
+                                                                            <select class="form-control handledBySelect" name="Handler2Name" id="Handler2Name" required>
+                                                                                <option value="">Select</option>
+                                                                                @foreach (var createdBy in ViewBag.HandledBy)
+                                                                                {
+                                                                                    <option value="@createdBy" @(Model.QualityMarksBraekdown.Handler2Name == createdBy ? "selected" : "")>@createdBy</option>
+                                                                                }
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="col-sm-5">
+                                                                            <input type="number" step="any" class="form-control" name="Handler2Score" id="Handler2Score" placeholder="Enter score" min="0" max="100" value="@Model.QualityMarksBraekdown.Handler2Score">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-row mb-3">
+                                                                        <label for="Remark2" class="col-sm-2 col-form-label">Remark 2</label>
+                                                                        <div class="col-sm-10">
+                                                                            <textarea class="form-control" name="Remark2" id="Remark2" placeholder="Enter remark">@Model.QualityMarksBraekdown.Remark2</textarea>
+                                                                        </div>
+                                                                    </div>
+                                                                }
+
+                                                                if (Model.QualityMarksBraekdown.Handler3Name != null)
+                                                                {
+                                                                    <div class="form-row align-items-center mb-3">
+                                                                        <label for="Handler3Name" class="col-sm-2 col-form-label">Handled By 3</label>
+                                                                        <div class="col-sm-5">
+                                                                            <select class="form-control handledBySelect" name="Handler3Name" id="Handler3Name" required>
+                                                                                <option value="">Select</option>
+                                                                                @foreach (var createdBy in ViewBag.HandledBy)
+                                                                                {
+                                                                                    <option value="@createdBy" @(Model.QualityMarksBraekdown.Handler3Name == createdBy ? "selected" : "")>@createdBy</option>
+                                                                                }
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="col-sm-5">
+                                                                            <input type="number" step="any" class="form-control" name="Handler3Score" id="Handler3Score" placeholder="Enter score" min="0" max="100" value="@Model.QualityMarksBraekdown.Handler3Score">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-row mb-3">
+                                                                        <label for="Remark3" class="col-sm-2 col-form-label">Remark 3</label>
+                                                                        <div class="col-sm-10">
+                                                                            <textarea class="form-control" name="Remark3" id="Remark3" placeholder="Enter remark">@Model.QualityMarksBraekdown.Remark3</textarea>
+                                                                        </div>
+                                                                    </div>
+                                                                }
+
+                                                                if (Model.QualityMarksBraekdown.Handler4Name != null)
+                                                                {
+                                                                    <div class="form-row align-items-center mb-3">
+                                                                        <label for="Handler4Name" class="col-sm-2 col-form-label">Handled By 4</label>
+                                                                        <div class="col-sm-5">
+                                                                            <select class="form-control handledBySelect" name="Handler4Name" id="Handler4Name" required>
+                                                                                <option value="">Select</option>
+                                                                                @foreach (var createdBy in ViewBag.HandledBy)
+                                                                                {
+                                                                                    <option value="@createdBy" @(Model.QualityMarksBraekdown.Handler4Name == createdBy ? "selected" : "")>@createdBy</option>
+                                                                                }
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="col-sm-5">
+                                                                            <input type="number" step="any" class="form-control" name="Handler4Score" id="Handler4Score" placeholder="Enter score" min="0" max="100" value="@Model.QualityMarksBraekdown.Handler4Score">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-row mb-3">
+                                                                        <label for="Remark4" class="col-sm-2 col-form-label">Remark 4</label>
+                                                                        <div class="col-sm-10">
+                                                                            <textarea class="form-control" name="Remark4" id="Remark4" placeholder="Enter remark">@Model.QualityMarksBraekdown.Remark4</textarea>
+                                                                        </div>
+                                                                    </div>
+                                                                }
+
+                                                                <div class="form-row mb-3">
+                                                                    <div class="col-sm-12 text-right">
+                                                                        <button type="button" id="addHandledBy" class="btn btn-primary">+</button>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-row mb-3">
+                                                                    <div class="form-group col-md-4">
+                                                                        <label for="GreetFEScore" class=" col-sm-12 col-form-label">Greet FE (5)</label>
+                                                                        <textarea class="form-control text-center" id="GreetFEScore" name="Greet_FE_Score" rows="1" placeholder="Enter score" min="0" max="5" @(isUserPermitted ? "" : "disabled") required>@(Model.QualityMarksBraekdown?.Greet_FE_Score ?? "5")</textarea>
+                                                                    </div>
+                                                                    <div class="form-group col-md-4">
+                                                                        <label for="GDNameAndHandoverScore" class="col-sm-12 col-form-label">HD Name And Handover (5)</label>
+                                                                        <textarea class="form-control text-center" id="GDNameAndHandoverScore" name="GD_Name_And_Handover_Score" rows="1" placeholder="Enter score" min="0" max="5" @(isUserPermitted ? "" : "disabled") required>@(Model.QualityMarksBraekdown?.GD_Name_And_Handover_Score ?? "5")</textarea>
+                                                                    </div>
+                                                                    <div class="form-group col-md-4">
+                                                                        <label for="PregameManualSiteContactScore" class="col-sm-12 col-form-label">Pregame Manual Site Contact (5)</label>
+                                                                        <textarea class="form-control text-center" id="PregameManualSiteContactScore" name="Pregame_Manual_Site_Contact_Score" rows="1" placeholder="Enter score" min="0" max="5" @(isUserPermitted ? "" : "disabled") required>@(Model.QualityMarksBraekdown?.Pregame_Manual_Site_Contact_Score ?? "5")</textarea>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-row mb-3">
+                                                                    <div class="form-group col-md-4">
+                                                                        <label for="GreetTSEScore" class="col-sm-12 col-form-label">Greet TSE (5)</label>
+                                                                        <textarea class="form-control text-center" id="GreetTSEScore" name="Greet_TSE_Score" rows="1" placeholder="Enter score" min="0" max="5" @(isUserPermitted ? "" : "disabled") required>@(Model.QualityMarksBraekdown?.Greet_TSE_Score ?? "5")</textarea>
+                                                                    </div>
+                                                                    <div class="form-group col-md-4">
+                                                                        <label for="CommVerifSerialNumberScore" class="col-sm-12 col-form-label">Comm & Verif Serial Number With Photo (25)</label>
+                                                                        <textarea class="form-control text-center" id="CommVerifSerialNumberScore" name="Comm_Verif_Serial_Number_Score" rows="1" placeholder="Enter score" min="0" max="25" @(isUserPermitted ? "" : "disabled") required>@(Model.QualityMarksBraekdown?.Comm_Verif_Serial_Number_Score ?? "25")</textarea>
+                                                                    </div>
+                                                                    <div class="form-group col-md-4">
+                                                                        <label for="FEFollowingInstructionScore" class=" col-sm-12 col-form-label">FE Following the Instruction (10)</label>
+                                                                        <textarea class="form-control text-center" id="FEFollowingInstructionScore" name="FE_Following_Instruction_Score" rows="1" placeholder="Enter score" min="0" max="10" @(isUserPermitted ? "" : "disabled") required>@(Model.QualityMarksBraekdown?.FE_Following_Instruction_Score ?? "10")</textarea>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-row mb-3">
+                                                                    <div class="form-group col-md-4">
+                                                                        <label for="PartsDetailsScore" class="col-sm-12 col-form-label">Parts Details (10)</label>
+                                                                        <textarea class="form-control text-center" id="PartsDetailsScore" name="Parts_Details_Score" rows="1" placeholder="Enter score" min="0" max="10" @(isUserPermitted ? "" : "disabled") required>@(Model.QualityMarksBraekdown?.Parts_Details_Score ?? "10")</textarea>
+                                                                    </div>
+                                                                    <div class="form-group col-md-4">
+                                                                        <label for="CloserFormScore" class="col-sm-12 col-form-label">Closer Form (15)</label>
+                                                                        <textarea class="form-control text-center" id="CloserFormScore" name="Closer_Form_Score" rows="1" placeholder="Enter score" min="0" max="15" @(isUserPermitted ? "" : "disabled") required>@(Model.QualityMarksBraekdown?.Closer_Form_Score ?? "15")</textarea>
+                                                                    </div>
+                                                                    <div class="form-group col-md-4">
+                                                                        <label for="TicketCreationScore" class="col-sm-12 col-form-label">Ticket Creation (15)</label>
+                                                                        <textarea class="form-control text-center" id="TicketCreationScore" name="Ticket_Creation_Score" rows="1" placeholder="Enter score" min="0" max="15" @(isUserPermitted ? "" : "disabled") required>@(Model.QualityMarksBraekdown?.Ticket_Creation_Score ?? "15")</textarea>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-row mb-3">
+                                                                    <div class="form-group col-md-4">
+                                                                        <label for="ThankYouScore" class="col-sm-12 col-form-label">Thank You (5)</label>
+                                                                        <textarea class="form-control text-center" id="ThankYouScore" name="Thank_You_Score" rows="1" placeholder="Enter score" min="0" max="5" @(isUserPermitted ? "" : "disabled") required>@(Model.QualityMarksBraekdown?.Thank_You_Score ?? "5")</textarea>
+                                                                    </div>
+                                                                    <div class="form-group col-md-8">
+                                                                        <label for="Quality_Remark" class="col-sm-12 col-form-label">Additional Remark</label>
+                                                                        <textarea class="form-control text-center" id="additionalRemark" rows="3" placeholder="Additional Remark" autocomplete="off" name="Additional_Remark" @(isUserPermitted ? "" : "disabled")>@(Model.QualityMarksBraekdown.Additional_Remark ?? "")</textarea>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-row mb-3">
+                                                                    <div class="form-group col-md-4">
+                                                                        <label for="Total_Score" class="col-sm-12 col-form-label">Total Quality Score</label>
+                                                                        <textarea class="form-control text-center" id="totalScore" name="Total_Score" rows="1" placeholder="Enter percentage" @(isUserPermitted ? "" : "disabled") readonly>@(Model.QualityMarksBraekdown?.Total_Score ?? "100")</textarea>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-row mb-3">
+                                                                    <label for="example-text-input" class="col-sm-2 col-form-label">Scored By:</label>
+                                                                    <div class="col-sm-5">
+                                                                        <input class="form-control" type="text" id="scoredBy" name="ModifiedBy" value="@Model.QualityMarksBraekdown.ModifiedBy" readonly>
+                                                                    </div>
+                                                                    <label for="example-text-input" class="col-sm-2 col-form-label">Scored On:</label>
+                                                                    <div class="col-sm-3">
+                                                                        <input class="form-control" type="text" name="ModifiedOn" value="@Model.QualityMarksBraekdown.ModifiedOn" readonly>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group row">
+                                                                    <div class="col-sm-12 text-center">
+                                                                        <button type="button" class="btn btn-secondary" id="calculateTotal" @(isUserPermitted ? "" : "disabled")>Calculate</button>
+                                                                        <input type="submit" class="btn btn-primary" id="updateButton" value="Update" @(isUserPermitted ? "" : "disabled") />
+                                                                    </div>
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+            <div class="modal fade bs-example-modal-lg" id="modal_FieldEngineer" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="myLargeModalLabel">Field Engineer</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        </div>
+                        <div class="modal-body table-responsive">
+
+                            <table class="table" id="FieldEngineer_Tic" style="max-height: 500px;max-width:100%;overflow: scroll;">
+                                <tbody>
+                                    <tr class="thead-dark">
+                                        <th>Name</th>
+                                        <th>Status</th>
+                                        <th>Remark</th>
+                                        <th>Status Sent On </th>
+                                        <th>FE Status Changed On </th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer text-center">
+                            <button type="button" class="btn btn-info waves-effect " data-dismiss="modal">ok</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade bs-example-modal-lg" id="TicketHistory" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="myLargeModalLabel">Ticket History </h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="col-sm-12">
+                                <div class="form-row">
+                                    <label for="example-text-input" class="col-sm-2 col-form-label Place">Ticket No:</label>
+                                    <div class="col-sm-3">
+                                        <input class="form-control" type="text" id="th_TicketNo" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <label for="example-text-input" class="col-sm-2 col-form-label Place">Created By:</label>
+                                    <div class="col-sm-5">
+                                        <input class="form-control" type="text" id="th_CreatedBy" readonly>
+                                    </div>
+                                    <label for="example-text-input" class="col-sm-2 col-form-label Place">Created On:</label>
+                                    <div class="col-sm-3">
+                                        <input class="form-control" type="text" id="th_CreatedOn" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <label for="example-text-input" class="col-sm-2 col-form-label Place">Comments:</label>
+                                    <div class="col-sm-10">
+                                        <textarea class="form-control" type="text" id="th_Comments" style="height:100%;" readonly></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <table class="table" id="Show" style="max-height: 500px; overflow: scroll;">
+                                <thead>
+                                    <tr class="thead-dark">
+                                        <th>Modified By</th>
+                                        <th>Modified On</th>
+                                        <th>Comments/Remark</th>
+                                        <th>Status</th>
+                                        <th id="th_SLA">SLA</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Rows will be appended here -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer text-center">
+                            <button type="button" class="btn btn-info waves-effect" data-dismiss="modal">ok</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="modal fade bs-example-modal-lg" id="modal_Pincode" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="myLargeModalLabel">Pincode/Zipcode</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        </div>
+                        <div class="modal-body table-responsive">
+                            <table class="table" id="FieldEngineer_PinZip" style="max-height: 500px;max-width:500px;overflow: scroll;">
+                                <tbody>
+                                    <tr class="thead-dark">
+                                        <th>Pincode/Zipcode</th>
+                                        <th>City</th>
+                                        <th>State</th>
+                                        <th>Country</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer text-center">
+                            <button type="button" class="btn btn-info waves-effect " data-dismiss="modal">ok</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="modal fade" id="myModal">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content  text-center">
+                        <div class="modal-header">
+                            <h4 class="modal-title text-center "><i class="fa fa-info-circle" aria-hidden="true"></i> Information</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <ul>
+                                @if (TempData["message"] != null)
+                                {
+                                    var messages = TempData["message"] as List<string>;
+                                    if (messages != null)
+                                    {
+                                        foreach (var message in messages)
+                                        {
+                                            <li style="font-size: 20px;">@Html.Raw(message)</li>
+                                        }
+                                    }
+                                }
+                            </ul>
+                        </div>
+                        <div class="modal-footer">
+                            <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+
+                            <a href="#" data-dismiss="modal" aria-label="Close" class="btn btn-primary">OK</a>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+
+
+
+
+
+            <div class="modal fade" id="FEmyModal">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content  text-center">
+                        <div class="modal-header">
+                            <h4 class="modal-title text-center "><i class="fa fa-info-circle" aria-hidden="true"></i> Information</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="swal-icon swal-icon--error">
+                                <div class="swal-icon--error__x-mark">
+                                    <span class="swal-icon--error__line swal-icon--error__line--left"></span>
+                                    <span class="swal-icon--error__line swal-icon--error__line--right"></span>
+                                </div>
+                            </div>
+                            <p style="font-size: 20px;" id="FEerror"></p>
+
+                        </div>
+                        <div class="modal-footer">
+                            <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+
+                            <a href="#" data-dismiss="modal" aria-label="Close" class="btn btn-primary">OK</a>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.modal -->
+@section scripts
+{
+    <script src="~/assets/js/jsPages/jsViewTicket.js?v=<%= DateTime.Now.Ticks %>"></script>
+
+    @if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+
+            window.onload = function () {
+                $('#myModal').modal('show');
+            };
+        </script>
+    }
+    <script>
+
+
+             $('#Certification').val([@Model.Ticket.Certification_Name]).trigger("change");
+    </script>
+
+    <script type="text/javascript">
+
+
+        $(document).ready(function () {
+            $("#OEM").val("@Model.Ticket.OEM");
+            $("#Country").val("@Model.Ticket.Country");
+            $("#Status").val("@Model.Ticket.Status");
+            $("#Cancel_Reason").val("@Model.Ticket.Cancel_Reason");
+            $("#Pregame").val("@Model.Ticket.Pregame");
+            $("#Part_Management").val("@Model.Ticket.Part_Management");
+            $("#Part_Handover").val("@Model.Ticket.Part_Handover");
+            $("#Ticket_Mode").val("@Model.Ticket.Ticket_Mode");
+            $("#Ticket_Type").val("@Model.Ticket.Ticket_Type");
+
+            $("#SLA").val("@Model.Ticket.SLA");
+
+            $("#Certification_Need").val("@Model.Ticket.Certification_Need");
+
+            $("#CT_Buss_Hrs").val("@ViewBag.Cust_Business");
+            $("#CT_Non_Buss_Hrs").val("@ViewBag.Cust_Business_Non");
+            $("#CT_Minimum_Hrs").val("@ViewBag.Cust_Minimum");
+            $("#CT_Fixed").val("@ViewBag.Cust_Charges_job");
+
+
+            $("#Return_Label").val("@Model.Ticket.Return_Label");
+            $("#Customer_Email_Send").val("@Model.Ticket.Customer_Email");
+            $("#FE_Email_Send").val("@Model.Ticket.FE_Email");
+
+            if (@Model.Ticket.Part_Management == 22) {
+                $(".pickup").css('display', 'block');
+                $(".handover").css('display', 'none');
+
+                if (@Model.Ticket.Return_Label == 1) {
+                    $(".pickup-av").css('display', 'block');
+                    $(".pickup-nav").css('display', 'none');
+                }
+                else if (@Model.Ticket.Return_Label == 0) {
+                    $(".pickup-av").css('display', 'block');
+                    $(".pickup-nav").css('display', 'block');
+                }
+                else
+                {
+                    $("#Return_Label option:selected").val("");
+                    $(".pickup-av").css('display', 'none');
+                    $(".pickup-nav").css('display', 'none');
+                }
+
+
+            }
+            else if (@Model.Ticket.Part_Management == 23) {
+                $(".pickup").css('display', 'none');
+                $(".handover").css('display', 'block');
+                $(".pickup-av").css('display', 'none');
+                $(".pickup-nav").css('display', 'none');
+            }
+            else
+            {
+                $(".pickup").css('display', 'none');
+                $(".handover").css('display', 'none');
+                $(".pickup-av").css('display', 'none');
+                $(".pickup-nav").css('display', 'none');
+            }
+
+            if (@Model.Ticket.Certification_Need == 1) {
+
+                $(".cert").css('display', 'grid');
+            }
+            else {
+                $(".cert").css('display', 'none');
+            }
+
+            if (@Model.Ticket.Status == 19) {
+                $(".sc").css('display', 'none');
+                $(".cl").css('display', 'none');
+                $(".RDT").css('display', 'block');
+                $(".TDR").css('display', 'none');
+                $(".TCR").css('display', 'none');
+                $(".chin").css('display', 'none');
+
+            }
+            else if (@Model.Ticket.Status == 21) {
+                $(".sc").css('display', 'none');
+                $(".cl").css('display', 'none');
+                $(".RDT").css('display', 'none');
+                $(".TDR").css('display', 'none');
+                $(".TCR").css('display', 'block');
+                $(".chin").css('display', 'none');
+
+            }
+            else if (@Model.Ticket.Status == 1362) {
+                $(".sc").css('display', 'none');
+                $(".cl").css('display', 'none');
+                $(".RDT").css('display', 'none');
+                $(".TDR").css('display', 'block');
+                $(".TCR").css('display', 'none');
+                $(".chin").css('display', 'none');
+
+            }
+            else if (@Model.Ticket.Status == 1372) {
+                $(".sc").css('display', 'block');
+                $(".cl").css('display', 'none');
+                $(".RDT").css('display', 'none');
+                $(".TDR").css('display', 'none');
+                $(".TCR").css('display', 'none');
+                $(".chin").css('display', 'none');
+
+            }
+            else if (@Model.Ticket.Status == 20 || @Model.Ticket.Status == 1631 || @Model.Ticket.Status== 1632 || @Model.Ticket.Status== 1641) {
+                $(".sc").css('display', 'block');
+                $(".cl").css('display', 'block');
+                $(".RDT").css('display', 'none');
+                $(".TDR").css('display', 'none');
+                $(".TCR").css('display', 'none');
+                $(".chin").css('display', 'block');
+
+            }
+            else if (@Model.Ticket.Status == 1415) {
+                $(".chin").css('display', 'block');
+                $(".sc").css('display', 'none');
+                $(".cl").css('display', 'none');
+                $(".RDT").css('display', 'none');
+                $(".TDR").css('display', 'none');
+                $(".TCR").css('display', 'none');
+                $(".pg").css('display', 'none');
+
+            }
+            else {
+                $(".sc").css('display', 'none');
+                $(".cl").css('display', 'none');
+                $(".RDT").css('display', 'none');
+                $(".TDR").css('display', 'none');
+                $(".TCR").css('display', 'none');
+                $(".chin").css('display', 'none');
+            }
+
+             if ('@Model.Ticket.Pregame' == '') {
+
+
+            }
+            else if('@Model.Ticket.Pregame' == '1')
+            {
+                $(".sc").css('display', 'block');
+                $(".pg").css('display', 'block');
+            }
+            else
+            {
+                $(".pg").css('display', 'none');
+            }
+
+            if(@Model.Ticket.Is_Reschedule == 1)
+            {
+                $(".RDT").css('display', 'block');
+                $(".TDR").css('display', 'none');
+                $(".TCR").css('display', 'none');
+
+
+            }
+
+            $.get(baseurl + "Transaction/GetTicketHistory", { tn: @Model.Ticket.Id }, function (data) {
+                if (data.tv == "success") {
+                    if (Object.keys(data.hist).length > 0) {
+
+                        $.each(data.hist, function (i, val) {
+                            $("#th_TicketNo").val(data.hist[i]['Ticket_No']);
+                            $("#th_CreatedBy").val(data.hist[i]['CreatedBy']);
+                            $("#th_CreatedOn").val(data.hist[i]['Createdon']);
+                            $("#th_Comments").val(data.hist[i]['Remark']);
+                            $("#th_Status").val(data.hist[i]['Status']);
+                            $("#th_SLA").val(data.hist[i]['SLA']);
+
+                            $('#Show tr:last').after('<tr><td>' + data.hist[i]['CreatedBy'] + '</td><td>' + data.hist[i]['Createdon'] + '</td><td>' + data.hist[i]['Remark'] + '</td><td>' + data.hist[i]['Status']+'</td><td>' + data.hist[i]['SLA'] + '</td></tr>');
+
+                        });
+                        $('#Show tr:last').remove();
+                    }
+
+                }
+                else {
+                }
+
+            });
+
+            if(@Model.Ticket.FE_ID > 0)
+            {
+
+                $.get(baseurl + "Transaction/getFEInfo", { id:@Model.Ticket.FE_ID}, function (data) {
+                    if (data.res == "Success") {
+
+
+                        $('#FE_ID').empty();
+                        $('#FE_ID').append('<option value =' + data.CC['FE_ID'] + '>' + data.CC['FE_Name'] + '</option>');
+                        $('#FE_contact').val(data.CC['Phone'] );
+                        $('#FE_Email').val(data.CC['Email'] );
+                        $('#FE_Origin').val(data.CC['FE_Origin'] );
+                        $('#FE_Certification').val(data.cert );
+                        $('#FE_Buss_Hrs').val(data.CC['Charges_Business_Hour'] );
+                        $('#FE_Non_Buss_Hrs').val(data.CC['Charges_Non_Business_Hour'] );
+                        $('#FE_Minimum_Hrs').val(data.CC['Minimum_Hrs'] );
+                        $('#FE_Fixed').val(data.CC['Charge_Job'] );
+
+                    }
+
+                });
+            }
+
+
+        });
+
+    </script>
+
+    <script>
+            var ticketIdValue = $('#ticketId').val();
+            $('#viewChatButton').click(function () {
+            var url = '@Url.Action("ChatIndex", "Chat")' + '?ticketId=' + ticketIdValue;
+            window.open(url, '_blank');
+            });
+    </script>
+
+}
+
+
+
+
+
+
+
+
+
+
+

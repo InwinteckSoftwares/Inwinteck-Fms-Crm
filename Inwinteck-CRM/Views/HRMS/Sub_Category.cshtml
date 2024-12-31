@@ -1,0 +1,216 @@
+﻿@model List<HRMS.Models.Exp_Sub_Category>
+@{
+    ViewBag.Title = "Sub Category";
+    Layout = ViewBag.Layout;
+
+}
+
+
+<!-- Page Header -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="page-head-box">
+            <h3>Sub Category</h3>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index","Dashboard")">Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Sub Category</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- /Page Header -->
+<!-- Search Filter -->
+<div class="row filter-row">
+    <div class="col-md-8"></div>
+    <div class="col-md-4">
+        <div class="add-emp-section">
+            <a href="#" class="btn btn-success btn-add-emp" data-toggle="modal" data-target="#add_subcategory" style="width: auto;"><i class="fas fa-plus"></i> Add Sub Category</a>
+        </div>
+    </div>
+</div>
+<!-- /Search Filter -->
+
+<div class="row">
+    <div class="col-md-12">
+        <div>
+            <table class="table table-striped custom-table mb-0 datatable">
+                <thead>
+                    <tr>
+                        <th>Sub Category Name</th>
+                        <th>Status</th>
+                        <th class="text-right">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Count > 0)
+                    {
+                        foreach (var i in Model)
+                        {
+                            <tr>
+                                <td>@i.Sub_Category_Name</td>
+                                @if (i.Status == 1)
+                                {
+
+                                    <td>
+                                        <a href="@Url.Action("statusSubCategory","HRMS", new { id = i.Id})"><span class="badge bg-inverse-success"> Active </span></a>
+                                    </td>
+                                }
+                                else
+                                {
+
+                                    <td>
+                                        <a href="@Url.Action("statusSubCategory","HRMS", new { id = i.Id})"><span class="badge bg-inverse-danger"> Deative </span></a>
+                                    </td>
+                                }
+                                <td class="text-right ico-sec d-flex justify-content-end">
+                                    <a href="#" data-toggle="modal" data-target="#edit_subcategory_@i.Id"><i class="fas fa-pen"></i></a>
+
+                                    <!-- Edit Category Modal -->
+                                    <div id="edit_subcategory_@i.Id" class="modal custom-modal fade" role="dialog" style="padding-right: 16px;">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Edit Sub Category</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <i class="fas fa-times"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    @using (Html.BeginForm("editSubCategory", "HRMS", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                                                    {
+                                                        @Html.AntiForgeryToken()
+                                                        @Html.ValidationSummary("", new { @class = "text-danger" })
+                                                        <input type="hidden" value="@i.Id" name="Id">
+                                                        <input type="hidden" value="@i.CreatedBy" name="CreatedBy">
+                                                        <input type="hidden" value="@i.CreatedOn" name="CreatedOn">
+                                                        <input type="hidden" value="@i.Status" name="Status">
+
+                                                        <div class="form-group text-left">
+                                                            <label>Category <span class="text-danger">*</span></label>
+                                                            <br />
+                                                            <select class="select" name="Category_Id" required>
+                                                                <option value="">select Category</option>
+                                                                @foreach (var d in ViewBag.Category)
+                                                                {
+                                                                    if (i.Category_Id == Convert.ToInt32(d.Value))
+                                                                    {
+                                                                        <option value="@d.Value" selected>@d.Text</option>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <option value="@d.Value">@d.Text</option>
+                                                                    }
+
+                                                                }
+                                                            </select>
+                                                        </div>
+
+
+                                                        <div class="form-group text-left">
+                                                            <label>Sub Category Name <span class="text-danger">*</span></label>
+                                                            <input class="form-control" value="@i.Sub_Category_Name" name="Sub_Category_Name" type="text" required>
+                                                        </div>
+
+                                                        <div class="submit-section">
+                                                            <button class="btn btn-primary cancel-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                                                            <button class="btn btn-primary submit-btn">Save</button>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /Edit Category Modal -->
+
+                                </td>
+                            </tr>
+
+                        }
+                    }
+                    else
+                    {
+                        <tr><td colspan="4" class="text-center"> <code style="font-size:20px;"> <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <br /> No Record Found </code></td></tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<!-- Add Category Modal -->
+<div id="add_subcategory" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Sub Category</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("addSubCategory", "HRMS", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary("", new { @class = "text-danger" })
+                    <input type="hidden" value="1" name="Status">
+                    <div class="form-group">
+                        <label>Category <span class="text-danger">*</span></label>
+                        <select class="select" name="Category_Id" required>
+                            <option value="">select Category</option>
+                            @foreach (var i in ViewBag.Category)
+                            {
+                                <option value="@i.Value">@i.Text</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Sub Category Name <span class="text-danger">*</span></label>
+                        <input class="form-control" name="Sub_Category_Name" type="text" required>
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary cancel-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                        <button class="btn btn-primary submit-btn">Submit</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Add Category Modal -->
+
+
+<div class="modal custom-modal fade" id="msgBox">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-header">
+                    <h3 style="font-size: 20px;">@TempData["message"] </h3>
+                </div>
+                <div class="modal-btn">
+                    <div class="submit-section col-sm-4 offset-sm-4">
+                        <a href="#" data-dismiss="modal" aria-label="Close" class="btn btn-primary cancel-btn">OK</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+@section scripts
+{
+    @if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+
+            window.onload = function () {
+                $('#msgBox').modal('show');
+            };
+        </script>
+    }
+
+}

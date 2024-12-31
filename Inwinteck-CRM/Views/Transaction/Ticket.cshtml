@@ -1,0 +1,304 @@
+﻿@model List<Inwinteck_CRM.Models.TicketDetails>
+@{
+    ViewBag.Title = "Ticket || Transaction";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var today = DateTime.Today;  // Only comparing the date, not time
+
+    // Check user roles
+    var isSrHelpDeskManager = HttpContext.Current.User.IsInRole("Sr.Help Desk Manager");
+    var isQuality = HttpContext.Current.User.IsInRole("Quality");
+}
+<style>
+    /* Existing Styles */
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        color: #333;
+        margin: 0;
+        padding: 20px;
+    }
+
+    h2 {
+        text-align: center;
+        color: #0f709a;
+        margin-top: 0;
+    }
+
+    .table-container {
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: white;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: center;
+        border: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #0f709a;
+        color: white;
+    }
+
+    tr:nth-child(even) {
+        background-color: #e1f2e6;
+    }
+
+    tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    tbody td {
+        white-space: nowrap;
+    }
+
+    .highlight-row {
+        background-color: rgba(255, 99, 71, 0.2); /* Light reddish background */
+        color: #8b0000; /* Darker red text */
+        font-weight: bold;
+    }
+
+        .highlight-row td {
+            border-color: #f08080; /* Border to match reddish theme */
+        }
+
+    .highlight-row {
+        background-color: rgba(255, 165, 0, 0.2); /* Light orange background */
+    }
+</style>
+
+
+<!-- Content Header (Page header) -->
+<div class="page-header">
+    <div class="container-fluid d-sm-flex justify-content-between">
+        <h4>Ticket</h4>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">Transaction</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Ticket</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<!-- Main content -->
+<div class="container-fluid">
+    <div class="search-container">
+        <label for="sortDropdown">Sort by: </label>
+        <select id="sortDropdown" onchange="sortTable()">
+            <option value="">Select</option>
+            <option value="requestedDateAsc">Ticket Date Ascending</option>
+            <option value="requestedDateDesc">Ticket Date Descending</option>
+            <option value="dispatchedDateAsc">Dispatched Date Ascending</option>
+            <option value="dispatchedDateDesc">Dispatched Date Descending</option>
+        </select>
+    </div>
+
+    <label for="dateFilter">Filter for Dispatched Date: </label>
+    <input type="date" id="dateFilter" onchange="filterByDate()">
+
+    @{
+        if (User.IsInRole("Sr.Help Desk Manager"))
+        {
+            <div class="download-container">
+                <label for="inputDate">Select Date for Export: </label>
+                <input type="date" id="inputDate">
+                <button onclick="downloadExcel()">Download Excel</button>
+            </div>
+        }
+    }
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive dt-responsive">
+                        <table id="reportTable" class="table table-striped table-bordered nowrap m-t-10">
+                            <thead>
+                                <tr>
+                                    <th>Action</th>
+                                    <th>Ticket No</th>
+                                    <th>Ticket Created</th>
+                                    <th>Customer Name</th>
+                                    <th>Case No</th>
+                                    <th>Case Date</th>
+                                    <th>Site Country</th>
+                                    <th>Site City</th>
+                                    <th>Dispatch Date & Time</th>
+                                    <th>FE Name</th>
+                                    <th>Checked In Time</th>
+                                    <th>Status</th>
+                                    <th>Created By</th>
+                                    <th>Individual Scores</th>
+                                    <th>Ticket Score</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody">
+                                @if (Model.Count > 0)
+                                {
+                                    foreach (var i in Model)
+                                    {
+                                        var dispatchDate = i.Dispatch != null ? DateTime.Parse(i.Dispatch.ToString()) : (DateTime?)null;
+                                        var isDispatchDateInPast = dispatchDate != null && dispatchDate.Value.Date < today;
+
+                                        // Conditions to apply the highlight-row class:
+                                        // 1. User is Sr. Help Desk Manager, Status is 20, and Dispatch Date is in the past
+                                        // 2. User is Quality, Status is 1631, and Dispatch Date is in the past
+                                        var shouldHighlightRed = (isSrHelpDeskManager && i.Status_ID == 20 && isDispatchDateInPast)
+                                                                 || (isQuality && i.Status_ID == 1631 && isDispatchDateInPast);
+
+                                        <tr class="@(shouldHighlightRed ? "highlight-row" : "")">
+                                            <td>
+                                                @if (i.Status_ID == 20 || i.Status_ID == 1362 || i.Status_ID == 21 || i.Status_ID == 19 || i.Status_ID == 1631 || i.Status_ID == 1632 || i.Status_ID == 1641)
+                                                {
+                                                    <a href="@Url.Action("viewTicket", "Transaction", new { Id = i.Id })" title="View" style="margin-left: 10px;"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                                                }
+                                                else
+                                                {
+                                                    <a href="@Url.Action("editTicket", "Transaction", new { Id = i.Id })" title="edit"><i class="fa fa-edit"></i></a>
+                                                    <a href="@Url.Action("viewTicket", "Transaction", new { Id = i.Id })" title="View" style="margin-left: 10px;"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                                                }
+                                            </td>
+                                            <td>@i.Ticket_No</td>
+                                            <td>@i.Ticket_Created</td>
+                                            <td title="Contact : @i.EU_Contact Email : @i.EU_Email">@i.EU_Name</td>
+                                            <td>@i.Case_No</td>
+                                            <td>@i.Case_Date</td>
+                                            <td>@i.Country</td>
+                                            <td>@i.City</td>
+                                            <td>@i.Dispatch</td>
+                                            <td title="Contact : @i.FE_Contact Email : @i.FE_Email">@i.FE_Name</td>
+                                            <td>@i.checked_In</td>
+                                            <td>@i.Status</td>
+                                            <td>@i.Username</td>
+                                            <td>@Html.Raw(i.Handlers)</td>
+                                            <td>@i.Ticket_Score</td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr><td colspan="21" class="text-center"> <code style="font-size:20px;"> <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <br /> No Record Found </code></td></tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content text-center">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">
+                    <i class="fa fa-info-circle" aria-hidden="true"></i> Information
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Content will be dynamically inserted here -->
+            </div>
+            <div class="modal-footer">
+                <a href="#" data-dismiss="modal" aria-label="Close" class="btn btn-primary">OK</a>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts
+{
+    <script src="~/assets/js/moment.min.js"></script>
+    <script src="~/assets/js/jsPages/jsTicket.js"></script>
+
+    <script type="text/javascript">
+        let isFilteringOrSorting = false;
+        let table;
+        let originalRows = [];
+
+        // Function to get date from table row
+        function getDate(row, cellIndex) {
+            const cellText = row.cells[cellIndex]?.innerText?.trim();
+            return cellText ? new Date(cellText) : null; // Use Date directly
+        }
+
+        // Function to sort the table
+        function sortTable() {
+            isFilteringOrSorting = true;
+
+            const sortValue = document.getElementById("sortDropdown").value;
+            const rows = Array.from(table.rows().nodes());
+
+            rows.sort((a, b) => {
+                const dateA = getDate(a, sortValue.includes("requested") ? 2 : 8);
+                const dateB = getDate(b, sortValue.includes("requested") ? 2 : 8);
+                if (!dateA || !dateB) return 0;
+
+                return sortValue.endsWith("Asc") ? dateA - dateB : dateB - dateA;
+            });
+
+            table.clear().rows.add(rows).draw();
+        }
+
+        // Function to filter rows by date
+        function filterByDate() {
+            isFilteringOrSorting = true;
+
+            const dateValue = document.getElementById("dateFilter").value;
+            if (!dateValue) {
+                table.clear().rows.add(originalRows).draw();
+                return;
+            }
+
+            const selectedDate = new Date(dateValue);
+            const filteredRows = originalRows.filter(row => {
+                const rowDate = getDate(row, 8);
+                return rowDate && rowDate.toDateString() === selectedDate.toDateString();
+            });
+
+            table.clear().rows.add(filteredRows).draw();
+        }
+
+        $(document).ready(function () {
+            const tableElement = $('#reportTable');
+
+            // Initialize DataTable
+            if (!$.fn.dataTable.isDataTable(tableElement)) {
+                table = tableElement.DataTable({
+                    paging: true,
+                    pageLength: 10,
+                    lengthMenu: [10, 20, 50, 100],
+                    searching: true,
+                    order: [],
+                    columnDefs: [{ orderable: false, targets: "_all" }]
+                });
+                originalRows = Array.from(table.rows().nodes());
+            }
+
+            // Handle URL parameters for search
+            const params = new URLSearchParams(window.location.search);
+            const searchType = params.get("searchtype");
+            const searchText = params.get("searchtext");
+
+            if (searchType && searchText) {
+                $("#searchtype").val(searchType);
+                $("#searchtext").val(searchText);
+            }
+        });
+    </script>
+
+
+
+}
+

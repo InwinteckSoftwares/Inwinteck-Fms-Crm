@@ -1,0 +1,28 @@
+﻿@model HRMS.Models.ShiftPattern
+
+@{ 
+    Layout = "~/Views/Shared/_LayoutHRMS.cshtml";
+}
+
+<h2>Create Shift Pattern</h2>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        @Html.LabelFor(m => m.PatternName)
+        @Html.TextBoxFor(m => m.PatternName, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.WeekdayShiftTime)
+        @Html.TextBoxFor(m => m.WeekdayShiftTime, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.WeekendShiftTime)
+        @Html.TextBoxFor(m => m.WeekendShiftTime, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.IsFixedWeekOff)
+        @Html.CheckBoxFor(m => m.IsFixedWeekOff)
+    </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+}

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Inwinteck FMS | Ticket Generated</title>
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            background-color: #5983c2; /* Lighter background color */
+            color: #333;
+            padding: 20px;
+            border-radius: 8px 8px 0 0;
+            text-align: center;
+        }
+
+            .header img {
+                width: 150px;
+                margin-bottom: 20px;
+            }
+
+        .content {
+            padding: 20px;
+            text-align: center;
+        }
+
+            .content p {
+                margin-bottom: 15px;
+            }
+
+            .content b {
+                color: #0f709a;
+            }
+
+        .footer {
+            background-color: #f4f4f4;
+            color: #747474;
+            text-align: center;
+            padding: 10px;
+            font-size: 12px;
+            border-radius: 0 0 8px 8px;
+        }
+
+            .footer p {
+                margin: 5px 0;
+            }
+
+            .footer img {
+                width: 50px;
+                margin-top: 10px;
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="https://fms.inwinteck.com/assets/images/logo.png" alt="Inwinteck Logo">
+            <h1>Thank You for Contacting Inwinteck</h1>
+        </div>
+        <div class="content">
+            <p>We have received your request for case ID <b>{Case_no}</b>.</p>
+            <p>We appreciate the opportunity to serve you.</p>
+            <h2>Scope of Work</h2>
+            <p>{Job_Description}</p>
+            <p>A ticket has been created for this case with the Inwinteck Ticket No <b>{Ticket_no}</b>.</p>
+            <p>Our support desk will contact you shortly.</p>
+            <p>Thank you once again for this opportunity.</p>
+        </div>
+        <div class="footer">
+            <p>This is an auto-generated email. Please do not reply.</p>
+            <p>Team Inwinteck</p>
+        </div>
+    </div>
+</body>
+</html>

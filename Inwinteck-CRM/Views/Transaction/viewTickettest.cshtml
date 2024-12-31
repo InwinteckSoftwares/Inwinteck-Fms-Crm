@@ -1,0 +1,1923 @@
+﻿@model Inwinteck_CRM.Models.Ticket
+@{
+    ViewBag.Title = "view Ticket || Transaction";
+    Layout = "~/Views/Shared/_LayoutTicket.cshtml";
+}
+
+<style type="text/css">
+    /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+    #map_wrapper {
+        height: 400px;
+    }
+
+    #map_canvas {
+        width: 100%;
+        height: 100%;
+    }
+
+    .cert {
+        display: none;
+    }
+
+    .pg {
+        display: none;
+    }
+
+    .sc {
+        display: none;
+    }
+
+    .cl {
+        display: none;
+    }
+
+    .chin {
+        display: none;
+    }
+
+    #office_add {
+        display: none;
+    }
+
+    #Contact_add {
+        display: none;
+    }
+
+    #loadermodel {
+        display: none;
+    }
+</style>
+<nav class="pcoded-navbar menupos-fixed menu-light brand-blue">
+    <div class="navbar-wrapper">
+        <div class="navbar-content scroll-div">
+            <ul class="nav pcoded-inner-navbar" style="margin-top: 45%;font-size: 16px;">
+                <li class="nav-item active">
+                    <a href="#" class="nav-link  text-center has-ripple"><span class="pcoded-mtext">INFO BAR</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="#Customer" class="nav-link btm-border-left"><span class="pcoded-micon"><i class="fas fa-user-circle"></i></span><span class="pcoded-mtext">Customer</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="#Ticket" class="nav-link btm-border-left"><span class="pcoded-micon"><i class="fas fa-info-circle"></i></span><span class="pcoded-mtext">Case Details</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="#Site" class="nav-link btm-border-left"><span class="pcoded-micon"><i class="fas fa-map-marker-alt"></i></span><span class="pcoded-mtext">Site</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="#FE" class="nav-link btm-border-left"><span class="pcoded-micon"><i class="fas fa-user"></i></span><span class="pcoded-mtext">FE Detail</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="#Activity" class="nav-link btm-border-left"><span class="pcoded-micon"><i class="fas fa-ticket-alt"></i></span><span class="pcoded-mtext">Activity</span></a>
+                </li>
+            </ul>
+
+            <h5 class="left-nav">Ticket NO: @Model.Ticket_No</h5>
+            @*<h5 class="left-nav">FE Currency: @ViewBag.Currency</h5>*@
+            <h5 class="left-nav">Currency: USD</h5>
+        </div>
+    </div>
+</nav>
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper container" style="margin-top: -15px;">
+        <div class="pcoded-content-ticket">
+            <div class="pcoded-inner-content">
+                <div class="main-body">
+                    @using (Html.BeginForm("editTickettest", "Transaction", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary("", new { @class = "text-danger" })
+                        <input type="hidden" value="@Model.CreatedBy" name="CreatedBy">
+                        <input type="hidden" value="@Model.CreatedOn" name="CreatedOn">
+                        <input type="hidden" value="@Model.Ticket_No" name="Ticket_No">
+                        <input type="hidden" value="@Model.EU_Office" name="EU_Office" id="Office">
+                        <input type="hidden" class="form-control" value="@Model.EU_ID" name="EU_ID" id="EU_ID">
+                        <input type="hidden" class="form-control" value="@Model.Old_Ticket" name="Old_Ticket">
+                        <div class="container-fluid">
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <!-- Basic Forms -->
+                                    <div class="card">
+
+                                        <!-- /.box-header -->
+                                        <div class="card-body" id="Customer" style="margin-top: -15px;">
+                                            <span class="heading-border">Customer Details</span>
+
+                                            <div class="form-row m-t-10">
+                                                <label for="EU_ID" class="col-sm-2 col-form-label">Customer</label>
+                                                <div class="col-sm-4">
+                                                    <input type="text" class="form-control" value="@ViewBag.Customer" readonly>
+                                                </div>
+                                                <label for="EU_ID" class="col-sm-2 col-form-label">Office</label>
+                                                <div class="col-sm-3">
+                                                    <input type="text" class="form-control" value="@ViewBag.EU_Office" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <label for="Email_Subject" class="col-sm-2 col-form-label">Email Subject</label>
+                                                <div class="col-md-4">
+                                                    <input type="text" class="form-control" name="Email_Subject" value="@ViewBag.Email_Subject" id="Email_Subject" placeholder="Enter your Subject or Leave Blank" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <label for="Email_Subject" class="col-sm-2 col-form-label">Customer Auto Mail</label>
+                                                <div class="col-md-10">
+                                                    <input type="text" class="form-control" name="email_office" value="@ViewBag.email_office" id="email_office" readonly>
+                                                </div>
+
+                                            </div>
+
+                                            <!-- /.box-body -->
+                                            <div class="modal fade bs-example-modal-lg" id="contact_info" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content" style="width: 1080px;margin-left: -10%;">
+                                                        <div class="modal-header">
+                                                            <h4 class="modal-title" id="myLargeModalLabel">Detail</h4>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                            <div class="spinner-border text-primary" role="status" id="loadermodel">
+                                                                <span class="sr-only">Loading...</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-body">
+
+                                                            <div class="row">
+
+                                                                <div class="col-6">
+
+                                                                    <input type="hidden" name="Contact_ID" id="Contact_ID" value="0" />
+
+                                                                    <div class="form-row">
+                                                                        <label for="Website" class="col-sm-4 col-form-label">Person</label>
+                                                                        <div class="col-md-8">
+                                                                            <input type="text" class="form-control" name="Person" id="Person" placeholder="Enter Contact Person">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-row">
+                                                                        <label for="Email" class="col-sm-4 col-form-label">Designation</label>
+                                                                        <div class="col-md-8">
+                                                                            <input type="text" class="form-control" name="Designation" id="Designation" placeholder="Enter Contact Designation">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-row">
+                                                                        <label for="Email" class="col-sm-4 col-form-label">Department</label>
+                                                                        <div class="col-md-8">
+                                                                            <input type="text" class="form-control" name="Department" id="Department" placeholder="Enter Contact Department">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-row">
+                                                                        <label for="Number" class="col-sm-4 col-form-label">Number</label>
+                                                                        <div class="col-md-8">
+                                                                            <input type="text" class="form-control" name="Number" id="CNumber" placeholder="Enter Office Number">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-row">
+                                                                        <label for="City" class="col-sm-4 col-form-label">Email</label>
+                                                                        <div class="col-md-8">
+                                                                            <input type="text" class="form-control" name="Email" id="CEmail" placeholder="Enter Office Email">
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="form-row">
+                                                                        <div class="form-group col-md-12 text-center">
+
+                                                                            <input type="button" class="btn btn-primary" value="Add" id="Contact_btn" />
+                                                                            <button type="button" title="Add" class="btn btn-link has-ripple" id="Contact_add"><i class="fa fa-plus"></i></button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-sm-6 table-border-style">
+                                                                    <div class="table-responsive">
+                                                                        <table class="table" id="Office_contact">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th>Select</th>
+                                                                                    <th>Person</th>
+                                                                                    <th>Action</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody></tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="modal-footer text-center">
+                                                                <button type="button" class="btn btn-info waves-effect " id="save_value" data-dismiss="modal">Ok</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="card-body" id="Ticket" style="margin-top: -42px;">
+                                            <span class="heading-border">Case Details</span>
+
+                                            <div class="form-row m-t-10">
+                                                <label for="Ticket_Mode" class="col-sm-2 col-form-label">Case Mode</label>
+                                                <div class="col-md-4">
+                                                    <select class="form-control" name="Ticket_Mode" id="Ticket_Mode" readonly>
+                                                        <option value="">Select Ticket Mode</option>
+                                                        @foreach (var i in ViewBag.Ticket_Mode)
+                                                        {
+                                                            <option value="@i.Value">@i.Text</option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                                <label for="Ticket_Type" class="col-sm-2 col-form-label">Case Type</label>
+                                                <div class="col-md-4">
+                                                    <select class="form-control" name="Ticket_Type" id="Ticket_Type" readonly>
+                                                        <option value="">Select Ticket Type</option>
+                                                        @foreach (var i in ViewBag.Ticket_Type)
+                                                        {
+                                                            <option value="@i.Value">@i.Text</option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-row">
+                                                <label for="SLA" class="col-sm-2 col-form-label">SLA</label>
+                                                <div class="col-md-4">
+                                                    <select class="form-control" name="SLA" id="SLA" readonly>
+                                                        <option value="">Select SLA</option>
+                                                        @foreach (var i in ViewBag.SLA)
+                                                        {
+                                                            <option value="@i.Value">@i.Text</option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                                <label for="Ticket_Date" class="col-sm-2 col-form-label">Case Date</label>
+                                                <div class="col-md-4">
+                                                    @Html.TextBoxFor(m => m.Ticket_Date, "{0:s}", new { @class = "form-control", type = "datetime-local", @readonly = "readonly" })
+
+                                                </div>
+                                            </div>
+
+                                            <div class="form-row">
+                                                <label for="Ticket_Priority" class="col-sm-2 col-form-label">Case Priority</label>
+                                                <div class="col-md-4">
+                                                    <select class="form-control" name="Ticket_Priority" id="Ticket_Priority" readonly>
+                                                        <option value="">Select Priority</option>
+                                                        @foreach (var i in ViewBag.Ticket_Priority)
+                                                        {
+                                                            <option value="@i.Value">@i.Text</option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                                <label for="Case_No" class="col-sm-2 col-form-label">Case No</label>
+                                                <div class="col-md-4">
+                                                    <input type="text" class="form-control" value="@Model.Case_No" name="Case_No" id="Case_No" placeholder="Enter your Case No" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <label class="col-sm-2 col-form-label">Scope of Work</label>
+                                                <div class="col-md-10">
+                                                    <textarea class="form-control" rows="3" placeholder="Add Scope of Work" name="Job_Description" readonly>@Model.Job_Description</textarea>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="card-body" id="Site" style="margin-top: -40px;">
+                                            <span class="heading-border">Site Details</span>
+
+                                            <div class="form-row m-t-10">
+                                                @*<label for="OEM" class="col-sm-2 col-form-label">OEM</label>
+                                                <div class="col-md-4">
+                                                    <select class="form-control" name="OEM" id="OEM" readonly>
+                                                        <option value="">Select OEM</option>
+                                                        @foreach (var i in ViewBag.OEM)
+                                                        {
+                                                            <option value="@i.Value">@i.Text</option>
+                                                        }
+                                                    </select>
+                                                </div>*@
+                                                <label for="Site_Name" class="col-sm-2 col-form-label">Site Name</label>
+                                                <div class="col-md-4">
+                                                    <input type="text" class="form-control" value="@Model.Site_Name" name="Site_Name" id="Site_Name" placeholder="Enter your Site Name" readonly>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-row">
+
+                                                <label for="Street_Address" class="col-sm-2 col-form-label">Street Address</label>
+                                                <div class="col-md-4">
+                                                    <input type="text" class="form-control" value="@Model.Street_Address" name="Street_Address" placeholder="Enter your Street Address" readonly>
+                                                </div>
+                                                <label for="Zip_Pin_Code" class="col-sm-2 col-form-label">ZipCode/Pincode</label>
+                                                <div class="col-md-4">
+                                                    <input type="text" class="form-control" value="@Model.Zip_Pin_Code" name="Zip_Pin_Code" id="ZipCode_Pincode" placeholder="Enter your ZipCode/Pincode" readonly>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-row">
+
+                                                <label for="City" class="col-sm-2 col-form-label">City</label>
+                                                <div class="col-md-4">
+                                                    <input type="text" class="form-control" value="@Model.City" name="City" id="City" placeholder="Enter your City" readonly>
+                                                </div>
+                                                <label for="State" class="col-sm-2 col-form-label">State</label>
+                                                <div class="col-md-4">
+                                                    <input type="text" class="form-control" value="@Model.State" name="State" id="State" placeholder="Enter your State" readonly>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-row">
+                                                <label for="Country" class="col-sm-2 col-form-label">Country</label>
+                                                <div class="col-md-4">
+                                                    <select class="form-control" name="Country" id="Country" readonly>
+                                                        <option value="">Select Country</option>
+                                                        @foreach (var i in ViewBag.Country)
+                                                        {
+                                                            <option value="@i.Value">@i.Text</option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                                <label for="Dispatch_Date" class="col-sm-2 col-form-label">Dispatch Date & Time</label>
+                                                <div class="col-md-4">
+                                                    @Html.TextBoxFor(m => m.Dispatch_Date, "{0:s}", new { @class = "form-control", type = "datetime-local", @readonly = "readonly" })
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <label for="EU_Name" class="col-sm-2 col-form-label">EU Name</label>
+                                                <div class="col-md-4">
+                                                    <input type="text" class="form-control" value="@Model.EU_Name" name="EU_Name" id="EU_Name" placeholder="Enter your Site Person Name" readonly>
+                                                </div>
+                                                <label for="EU_Contact" class="col-sm-2 col-form-label">EU Contact</label>
+                                                <div class="col-md-4">
+                                                    <input type="text" class="form-control" value="@Model.EU_Contact" name="EU_Contact" id="EU_Contact" placeholder="Enter your Site Person Contact" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <label for="EU_Email" class="col-sm-2 col-form-label">EU Email</label>
+                                                <div class="col-md-4">
+                                                    <input type="text" class="form-control" value="@Model.EU_Email" name="EU_Email" id="EU_Email" placeholder="Enter your Site Person Email" readonly>
+                                                </div>
+                                                @*<label for="Certification_Need" class="col-sm-2 col-form-label">Certification Need</label>
+                                                <div class="col-md-4">
+                                                    <select class="form-control" name="Certification_Need" id="Certification_Need" readonly>
+                                                        <option value="">Select Certification</option>
+                                                        <option value="1">Yes</option>
+                                                        <option value="0">No</option>
+
+                                                    </select>
+                                                </div>*@
+                                            </div>
+                                            @*<div class="form-row">
+                                                <label for="Certification_Name" class="col-sm-2 col-form-label cert">Certification Name</label>
+                                                <div class="col-md-10 cert">
+                                                    <select class="js-example-basic-multiple col-sm-12" name="Certification_Name" multiple="multiple" id="Certification" readonly>
+                                                        @foreach (var i in ViewBag.Certification)
+                                                        {
+                                                            <option value="@i.Value">@i.Text</option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </div>*@
+
+
+
+                                        </div>
+
+
+                                        <input type="hidden" class="form-control" id="latitude" name="latitude" value="@Model.latitude" placeholder="Latitude" />
+                                        <input type="hidden" class="form-control" id="longitude" name="longitude" value="@Model.longitude" placeholder="Longitude" />
+
+                                        <div class="card-body" id="FE">
+                                            <span class="heading-border">FE Details </span>
+
+                                            <div class="form-row m-t-10">
+                                                <label for="Ticket_Mode" class="col-sm-2 col-form-label">FE Name</label>
+                                                <div class="col-md-4">
+                                                    <select class="form-control" name="FE_ID" id="FE_ID" readonly></select>
+                                                </div>
+                                                <label for="FE_contact" class="col-sm-2 col-form-label">Contact</label>
+                                                <div class="col-md-4">
+                                                    <input type="text" class="form-control" name="FE_contact" id="FE_contact" readonly>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-row">
+                                                <label for="FE_Em" class="col-sm-2 col-form-label">Email</label>
+                                                <div class="col-md-4">
+                                                    <input type="text" class="form-control" name="FE_Em" id="FE_Email" readonly>
+                                                </div>
+                                                <label for="FE_Origin" class="col-sm-1 col-form-label">Origin</label>
+                                                <div class="col-md-5">
+                                                    <input type="text" class="form-control" name="FE_Origin" id="FE_Origin" readonly>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-row">
+                                                <label for="FE_Certification" class="col-sm-2 col-form-label">Certification Name</label>
+                                                <div class="col-md-10">
+                                                    <textarea class="form-control" rows="3" placeholder="Certification Name" name="FE_Certification" id="FE_Certification" readonly></textarea>
+
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <label for="Travel_charges" class="col-sm-2 col-form-label">Travel Charges</label>
+                                                <div class="col-md-4">
+                                                    <select class="form-control" name="Other_Charge" id="Other_Charge" readonly>
+                                                        <option value="">Select Travel Charges</option>
+                                                        <option value="1">Yes</option>
+                                                        <option value="0">No</option>
+                                                    </select>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        @*------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*@
+                                        <div class="card-body" id="Activity" style="margin-top: -42px;">
+                                            <span class="heading-border">Activity Detail </span>
+
+                                            <div class="form-row m-t-10">
+                                                <label for="Ticket_Mode" class="col-sm-2 col-form-label">Ticket Status</label>
+                                                <div class="col-md-4">
+                                                    <select class="form-control" name="Status" id="Status" readonly>
+                                                        <option value="">Select Status</option>
+                                                        @foreach (var i in ViewBag.Status)
+                                                        {
+                                                            <option value="@i.Value">@i.Text</option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                                @if (Model.Old_Ticket != null)
+                                                {
+                                                    <label for="Ticket_Mode" class="col-sm-2 col-form-label">Old Ticket Number</label>
+                                                    <div class="col-md-4">
+                                                        <input type="text" class="form-control" value="@ViewBag.Old_Ticket" readonly>
+                                                    </div>
+                                                }
+                                                else if (ViewBag.New_Ticket != null)
+                                                {
+                                                    <label for="Ticket_Mode" class="col-sm-2 col-form-label">New Ticket Number</label>
+                                                    <div class="col-md-4">
+                                                        <input type="text" class="form-control" value="@ViewBag.New_Ticket" readonly>
+                                                    </div>
+                                                }
+
+                                            </div>
+                                            <div class="form-row">
+                                                <label for="Reschedule_DT" class="col-sm-2 col-form-label RDT ">Reschedule Date </label>
+                                                <div class="col-md-4">
+                                                    @Html.TextBoxFor(m => m.Reschedule_DT, "{0:s}", new { @class = "form-control RDT", type = "datetime-local", @readonly = "readonly" })
+                                                </div>
+
+                                                <label for="Reschedule_Reason" class="col-sm-2 col-form-label RDT ">Reschedule Reason </label>
+                                                <div class="col-md-4">
+                                                    <input type="text" class="form-control RDT" name="Reschedule_Reason" value="@Model.Reschedule_Reason" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <label for="Decline_Reason" class="col-sm-2 col-form-label TDR">Decline Reason</label>
+                                                <div class="col-md-4">
+                                                    <select class="form-control TDR" name="Decline_Reason" id="Decline_Reason" readonly>
+                                                        <option value="">Select Decline Reason</option>
+                                                        @foreach (var i in ViewBag.Decline_Reason)
+                                                        {
+                                                            <option value="@i.Value">@i.Text</option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <label for="Cancel_Reason" class="col-sm-2 col-form-label TCR">Cancel Reason</label>
+                                                <div class="col-md-4">
+                                                    <select class="form-control TCR" name="Cancel_Reason" id="Cancel_Reason" readonly>
+                                                        <option value="">Select Cancel Reason</option>
+                                                        @foreach (var i in ViewBag.Cancel_Reason)
+                                                        {
+                                                            <option value="@i.Value">@i.Text</option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </div>
+
+
+                                            @*------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*@
+
+                                            <div class="form-row ">
+                                                <label class="col-sm-2 col-form-label sc" style="height:50%;">Is Pregame Given ? </label>
+                                                <div class="col-md-4">
+                                                    <select class="form-control sc" name="Pregame" id="Pregame" readonly>
+                                                        <option value="">Select Pregame</option>
+                                                        <option value="1">Yes</option>
+                                                        <option value="0">No</option>
+                                                    </select>
+                                                </div>
+                                                <label class="col-sm-2 col-form-label pg " style="height:50%;">Pregame File</label>
+                                                <div class="col-md-4 pg">
+                                                    <input type="file" class="dropify" data-default-file="@Model.pregame_upload" name="pht" data-max-file-size="5024K">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-row ">
+                                                <label class="col-sm-2 col-form-label pg">Pregame Description</label>
+                                                <div class="col-md-10 pg">
+                                                    <textarea class="form-control" rows="3" placeholder="Add Pregame Description" name="pregame_detail" readonly style="height:360px;">@Model.pregame_detail</textarea>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-row ">
+                                                <label class="col-sm-2 col-form-label chin">In Time</label>
+                                                <div class="col-md-4">
+                                                    @Html.TextBoxFor(m => m.In_Time, "{0:s}", new { @class = "form-control chin", type = "datetime-local", @readonly = "readonly" })
+                                                </div>
+                                                <label class="col-sm-2 col-form-label cl">Out Time</label>
+                                                <div class="col-md-4">
+                                                    @Html.TextBoxFor(m => m.Out_Time, "{0:s}", new { @class = "form-control cl", type = "datetime-local", @readonly = "readonly" })
+                                                </div>
+                                            </div>
+
+
+
+                                            @*==========================================================================================================*@
+                                            @*<div class="modal fade bs-example-modal-lg" id="Part" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+                                                    <div class="modal-dialog modal-lg">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h4 class="modal-title" id="myLargeModalLabel">Part Details</h4>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                            </div>
+                                                            <div class="modal-body">
+
+                                                                <table class="table" id="maintable">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Part Type</th>
+                                                                            <th>Serial No</th>
+                                                                            <th>Make Model</th>
+                                                                            <th>Part Description</th>
+                                                                            <th>Action</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr class="data-contact-person">
+                                                                            <td>
+                                                                                <input type="text" name="IV[0].Part_type" class="form-control f-name01" />
+                                                                            </td>
+                                                                            <td>
+                                                                                <input type="text" name="IV[0].Serial_No" class="form-control l-name01" />
+                                                                            </td>
+                                                                            <td>
+                                                                                <input type="text" name="IV[0].Make_Model" class="form-control email01" />
+                                                                            </td>
+                                                                            <td>
+                                                                                <input type="text" name="IV[0].Part_Description" class="form-control email02" />
+                                                                            </td>
+                                                                            <td>
+                                                                                <button type="button" id="btnAdd" class="btn btn-xs btn-primary classAdd"><i class="fas fa-plus-circle"></i></button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+
+                                                                <div class="modal-footer text-center">
+
+                                                                    <button type="button" class="btn btn-info waves-effect " data-dismiss="modal">ok</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>*@
+                                            @*==========================================================================================================*@
+                                            <div class="form-row ">
+                                                <label for="Part_Management" class="col-sm-2 col-form-label cl">Part Management</label>
+                                                <div class="col-md-4">
+                                                    <select class="form-control cl" name="Part_Management" id="Part_Management" readonly>
+                                                        <option value="">Select Part Management</option>
+                                                        @foreach (var i in ViewBag.Part_Management)
+                                                        {
+                                                            <option value="@i.Value">@i.Text</option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                                <label for="Return_Label" class="col-sm-2 col-form-label pickup">Return Label</label>
+                                                @*===================== Handover =================================*@
+                                                <label class="col-sm-2 col-form-label handover">Part Handover</label>
+                                                @*==================== Handover ==================================*@
+                                                <div class="col-md-4">
+                                                    <select class="form-control pickup" name="Return_Label" id="Return_Label" readonly>
+                                                        <option value="">Select Return Label</option>
+                                                        <option value="1">Available</option>
+                                                        <option value="0">Not Available</option>
+                                                    </select>
+                                                    @*======================== Handover ==============================*@
+                                                    <select class="form-control handover" name="Part_Handover" id="Part_Handover" readonly>
+                                                        <option value="">Select Part Handover</option>
+                                                        @foreach (var i in ViewBag.Part_Handover)
+                                                        {
+                                                            <option value="@i.Value">@i.Text</option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-row ">
+                                                <label for="Tracking_number" class="col-sm-2 col-form-label pickup-av">Tracking Number</label>
+                                                @*=================  Handover  =====================================*@
+                                                <label for="ph_Name" class="col-sm-2 col-form-label handover">Name</label>
+                                                @*===================== Handover =================================*@
+                                                <div class="col-md-4">
+                                                    <input type="text" class="form-control pickup-av" value="@Model.Tracking_number" name="Tracking_number" id="Tracking_number" readonly>
+                                                    @*=================== Handover ===================================*@
+                                                    <input type="text" class="form-control handover" value="@Model.ph_Name" name="ph_Name" id="ph_Name" readonly>
+                                                </div>
+                                                <label for="Rl_Reason" class="col-sm-2 col-form-label  pickup-nav"> Reason </label>
+                                                @*=================  Handover =====================================*@
+                                                <label for="ph_contact" class="col-sm-2 col-form-label handover"> Contact </label>
+                                                @*======================= Handover ===============================*@
+                                                <div class="col-md-4">
+                                                    <input type="text" class="form-control pickup-nav" value="@Model.Rl_Reason" name="Rl_Reason" id="Rl_Reason" readonly>
+                                                    @*=====================  Handover =================================*@
+                                                    <input type="text" class="form-control handover" value="@Model.ph_contact" name="ph_contact" id="ph_contact" readonly>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-row ">
+                                                <label for="FE_Part_Storage_Charge" class="col-sm-2 col-form-label pickup-av">FE Storage Charge</label>
+                                                <div class="col-md-4">
+                                                    <select class="form-control pickup-av" name="FE_Part_Storage_Charge" id="FE_Part_Storage_Charge" readonly>
+                                                        <option value="">Select Part Storage Charge</option>
+                                                        <option value="1">Yes</option>
+                                                        <option value="0">No</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+                                            @*------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*@
+
+
+                                            <div class="form-row">
+                                                <div class="form-group col-md-12 text-center">
+
+                                                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#TicketHistory">View History</button>
+                                                    <a href="@Url.Action("Tickettest","Transaction")" class="btn btn-info">Cancel</a>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+
+                                    </div>
+                                    <!-- /.box -->
+                                    <!-- /.box -->
+
+                                </div>
+                            </div>
+
+                        </div>
+                    }
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<div class="modal fade bs-example-modal-lg" id="modal_FieldEngineer" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">Field Engineer</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body table-responsive">
+
+                <table class="table" id="FieldEngineer_Tic" style="max-height: 500px;max-width:100%;overflow: scroll;">
+                    <tbody>
+                        <tr class="thead-dark">
+                            <th>Name</th>
+                            <th>Status</th>
+                            <th>Remark</th>
+                            <th>Status Sent On </th>
+                            <th>FE Status Changed On </th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer text-center">
+                <button type="button" class="btn btn-info waves-effect " data-dismiss="modal">ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade bs-example-modal-lg" id="TicketHistory" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">Ticket History </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="col-sm-12">
+                    <div class="form-row">
+                        <label for="example-text-input" class="col-sm-2 col-form-label Place">Ticket No:</label>
+                        <div class="col-sm-3">
+                            <input class="form-control" type="text" id="th_TicketNo" readonly>
+                        </div>
+
+                    </div>
+                    <div class="form-row">
+                        <label for="example-text-input" class="col-sm-2 col-form-label Place">Created By:</label>
+                        <div class="col-sm-5">
+                            <input class="form-control" type="text" id="th_CreatedBy" readonly>
+                        </div>
+                        <label for="example-text-input" class="col-sm-2 col-form-label Place">Created On:</label>
+                        <div class="col-sm-3">
+                            <input class="form-control" type="text" id="th_CreatedOn" readonly>
+                        </div>
+
+                    </div>
+
+                    <div class="form-row">
+                        <label for="example-text-input" class="col-sm-2 col-form-label Place">Comments:</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" type="text" id="th_Comments" style="height:100%;" readonly></textarea>
+                        </div>
+                    </div>
+                </div>
+                <table class="table" id="Show" style="max-height: 500px;overflow: scroll;">
+                    <tbody>
+                        <tr class="thead-dark">
+                            <th>Modified By</th>
+                            <th>Modified On</th>
+                            <th>Comments/Remark</th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer text-center">
+                <button type="button" class="btn btn-info waves-effect " data-dismiss="modal">ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bs-example-modal-lg" id="modal_Pincode" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">Pincode/Zipcode</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body table-responsive">
+
+                <table class="table" id="FieldEngineer_PinZip" style="max-height: 500px;max-width:500px;overflow: scroll;">
+                    <tbody>
+                        <tr class="thead-dark">
+                            <th>Pincode/Zipcode</th>
+                            <th>City</th>
+                            <th>State</th>
+                            <th>Country</th>
+                            <th>Action</th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer text-center">
+                <button type="button" class="btn btn-info waves-effect " data-dismiss="modal">ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content  text-center">
+            <div class="modal-header">
+                <h4 class="modal-title text-center "><i class="fa fa-info-circle" aria-hidden="true"></i> Information</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 20px;">@Html.Raw(TempData["message"]) </p>
+            </div>
+            <div class="modal-footer">
+                <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+
+                <a href="#" data-dismiss="modal" aria-label="Close" class="btn btn-primary">OK</a>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
+
+
+
+<div class="modal fade" id="FEmyModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content  text-center">
+            <div class="modal-header">
+                <h4 class="modal-title text-center "><i class="fa fa-info-circle" aria-hidden="true"></i> Information</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="swal-icon swal-icon--error">
+                    <div class="swal-icon--error__x-mark">
+                        <span class="swal-icon--error__line swal-icon--error__line--left"></span>
+                        <span class="swal-icon--error__line swal-icon--error__line--right"></span>
+                    </div>
+                </div>
+                <p style="font-size: 20px;" id="FEerror"></p>
+
+            </div>
+            <div class="modal-footer">
+                <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+
+                <a href="#" data-dismiss="modal" aria-label="Close" class="btn btn-primary">OK</a>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+@section scripts
+{
+    @if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+
+            window.onload = function () {
+                $('#myModal').modal('show');
+                GoLocation()
+            };
+        </script>
+    }
+    else
+    {
+        <script type="text/javascript">
+            window.onload = function () {
+
+                GoLocation()
+            };
+        </script>
+    }
+
+    <script type="text/javascript">
+
+
+        function clicked(item) {
+            var id = $(item).attr("id");
+
+            $("#FE").val($('#nam-' + id).val());
+            $("#FE_ID").val($('#FEI-' + id).val());
+
+        }
+
+
+
+        @*function getFEdetails(code, country) {
+
+            $.get(baseurl + "Transaction/getFEdetails", { PinCode: code, Country: country,ticket:@Model.Id }, function (data) {
+                if (data.res == "Success") {
+
+                    $('#FE_ID').empty();
+                    $.each(data.CC, function (i, val) {
+
+
+                        $('#FE_ID').append('<option value =' + data.CC[i]['FE_ID'] + '>' + data.CC[i]['FE_Name'] + '</option>');
+                    });
+
+                    getFEInfo(code,country);
+                }
+                else {
+
+                    $('#FE_ID').empty();
+                    $('#FE_ID').append('<option value = "">Select Field Engineer Name</option>');
+                    $('#FEerror').text('No FE Found in Master.');
+                    $('#FEmyModal').modal('show');
+                }
+
+            });
+
+
+
+        }*@
+
+        function getFEInfo(id){
+
+            $.get(baseurl + "Transaction/getFEInfo", { id:id}, function (data) {
+                if (data.res == "Success") {
+
+                    $('#FE_ID').empty();
+                    $('#FE_ID').append('<option value =' + data.CC['FE_ID'] + '>' + data.CC['FE_Name'] + '</option>');
+                    $('#FE_contact').val(data.CC['Phone'] );
+                    $('#FE_Email').val(data.CC['Email'] );
+                    $('#FE_Origin').val(data.CC['FE_Origin'] );
+                    $('#FE_Certification').val(data.cert );
+                    $('#FE_Buss_Hrs').val(data.CC['Charges_Business_Hour'] );
+                    $('#FE_Non_Buss_Hrs').val(data.CC['Charges_Non_Business_Hour'] );
+                    $('#FE_Minimum_Hrs').val(data.CC['Minimum_Hrs'] );
+                    $('#FE_Fixed').val(data.CC['Charge_Job'] );
+
+                }
+                else {
+                    $('#FE_contact').val('' );
+                    $('#FE_Email').val('');
+                    $('#FE_Origin').val('');
+                    $('#FE_Certification').val('');
+                    $('#FE_Buss_Hrs').val('');
+                    $('#FE_Non_Buss_Hrs').val('');
+                    $('#FE_Minimum_Hrs').val('');
+                    $('#FE_Fixed').val('');
+                    $('#FEerror').text('No FE Found in Master.');
+                    $('#FEmyModal').modal('show');
+                }
+
+            });
+        }
+
+        function getFEMail(id){
+
+            $.get(baseurl + "Transaction/getFEMail", { id:id,Ticket : @Model.Id}, function (data) {
+                if (data.res == "Success") {
+
+
+                    $('#FEerror').text('Email Sent to ' + data.fename);
+                    $('#FEmyModal').modal('show');
+
+                }
+                else {
+                    $('#FEerror').text('No FE Found in Master.');
+                    $('#FEmyModal').modal('show');
+                }
+
+            });
+        }
+
+        function clickedon(item) {
+            var id = $(item).attr("id");
+
+            $("#City").val($('#city-' + id).val());
+            $("#State").val($('#state-' + id).val());
+            $("#Country").val($('#Country-' + id).val());
+
+            var country = $('#Country-' + id).val();
+            var code = $('#pin-' + id).val();
+
+            getFEdetails(code, country);
+
+        }
+
+
+
+        $(document).ready(function () {
+
+            $("#OEM").val("@Model.OEM");
+            $("#Country").val("@Model.Country");
+            $("#Status").val("@Model.Status");
+
+            $("#Other_Charge").val("@Model.Other_Charge");
+            $("#Pregame").val("@Model.Pregame");
+            $("#Part_Management").val("@Model.Part_Management");
+            $("#Part_Handover").val("@Model.Part_Handover");
+            $("#Ticket_Mode").val("@Model.Ticket_Mode");
+            $("#Ticket_Type").val("@Model.Ticket_Type");
+            $("#Ticket_Priority").val("@Model.Ticket_Priority");
+            $("#SLA").val("@Model.SLA");
+
+            $("#Certification_Need").val("@Model.Certification_Need");
+
+            $("#CT_Buss_Hrs").val("@ViewBag.Cust_Business");
+            $("#CT_Non_Buss_Hrs").val("@ViewBag.Cust_Business_Non");
+            $("#CT_Minimum_Hrs").val("@ViewBag.Cust_Minimum");
+            $("#CT_Fixed").val("@ViewBag.Cust_Charges_job");
+
+            $("#FE_Pay_Type").val("@Model.FE_Pay_Type");
+            $("#FE_Payment_Mode").val("@Model.FE_Payment_Mode");
+            $("#CT_Pay_Type").val("@Model.CT_Pay_Type");
+            $("#CT_Payment_Mode").val("@Model.CT_Payment_Mode");
+
+            $("#Return_Label").val("@Model.Return_Label");
+            $("#FE_Part_Storage_Charge").val("@Model.FE_Part_Storage_Charge");
+            $("#Other_Charge").val("@Model.Other_Charge");
+            $("#Customer_Email_Send").val("@Model.Customer_Email");
+            $("#FE_Email_Send").val("@Model.FE_Email");
+
+            if (@Model.Part_Management == 22) {
+                $(".pickup").css('display', 'block');
+                $(".handover").css('display', 'none');
+
+                if (@Model.Return_Label == 1) {
+                    $(".pickup-av").css('display', 'block');
+                    $(".pickup-nav").css('display', 'none');
+                }
+                else if (@Model.Return_Label == 0) {
+                    $(".pickup-av").css('display', 'block');
+                    $(".pickup-nav").css('display', 'block');
+                }
+                else
+                {
+                    $("#Return_Label option:selected").val("");
+                    $(".pickup-av").css('display', 'none');
+                    $(".pickup-nav").css('display', 'none');
+                }
+
+                if (@Model.FE_Part_Storage_Charge == 1) {
+                    $(".fe-charge").css('display', 'block');
+                }
+                else if (@Model.FE_Part_Storage_Charge == 0) {
+                    $(".fe-charge").css('display', 'none');
+                }
+                else
+                {
+                    $("#FE_Part_Storage_Charge option:selected").val("");
+                    $(".fe-charge").css('display', 'none');
+                }
+            }
+            else if (@Model.Part_Management == 23) {
+                $(".pickup").css('display', 'none');
+                $(".handover").css('display', 'block');
+                $(".pickup-av").css('display', 'none');
+                $(".pickup-nav").css('display', 'none');
+            }
+            else
+            {
+                $(".pickup").css('display', 'none');
+                $(".handover").css('display', 'none');
+                $(".pickup-av").css('display', 'none');
+                $(".pickup-nav").css('display', 'none');
+            }
+
+            if (@Model.Certification_Need == 1) {
+
+                $(".cert").css('display', 'grid');
+            }
+            else {
+                $(".cert").css('display', 'none');
+            }
+
+            if (@Model.Other_Charge == 1) {
+                $(".other-charge").css('display', 'block');
+            }
+            else if (@Model.Other_Charge  == 0) {
+                $(".other-charge").css('display', 'none');
+            }
+            else
+            {
+                $("#Other_Charge option:selected").val("");
+                $(".other-charge").css('display', 'none');
+            }
+
+
+            if (@Model.Customer_Email == 1) {
+                $(".customer-email").css('display', 'block');
+            }
+            else if (@Model.Customer_Email == 0) {
+                $(".customer-email").css('display', 'none');
+            }
+            else
+            {
+                $("#Customer_Email_Send option:selected").val("");
+                $(".customer-email").css('display', 'none');
+            }
+
+
+            if (@Model.FE_Email == 1) {
+                $(".fe-email").css('display', 'block');
+
+            }
+            else if (@Model.FE_Email  == 0) {
+                $(".fe-email").css('display', 'none');
+                $("#FE_Email_Name").val('');
+            }
+            else
+            {
+                $("#FE_Email option:selected").val('');
+                $(".fe-email").css('display', 'none');
+                $("#FE_Email_Name").val('');
+            }
+
+
+
+
+
+            if (@Model.Status == 19) {
+                $(".sc").css('display', 'none');
+                $(".cl").css('display', 'none');
+                $(".RDT").css('display', 'block');
+                $(".TDR").css('display', 'none');
+                $(".TCR").css('display', 'none');
+                $(".chin").css('display', 'none');
+                $("#Reschedule_DT").prop("required",true);
+                $("#Decline_Reason").prop("required",false);
+                $("#Cancel_Reason").prop("required",false);
+            }
+            else if (@Model.Status == 21) {
+                $(".sc").css('display', 'none');
+                $(".cl").css('display', 'none');
+                $(".RDT").css('display', 'none');
+                $(".TDR").css('display', 'none');
+                $(".TCR").css('display', 'block');
+                $(".chin").css('display', 'none');
+                $("#Reschedule_DT").prop("required",false);
+                $("#Decline_Reason").prop("required",false);
+                $("#Cancel_Reason").prop("required",true);
+            }
+            else if (@Model.Status == 1362)
+            {
+                $(".sc").css('display', 'none');
+                $(".cl").css('display', 'none');
+                $(".RDT").css('display', 'none');
+                $(".TDR").css('display', 'block');
+                $(".TCR").css('display', 'none');
+                $(".chin").css('display', 'none');
+                $("#Reschedule_DT").prop("required",false);
+                $("#Decline_Reason").prop("required",true);
+                $("#Cancel_Reason").prop("required",false);
+            }
+            else if(@Model.Status == 1372)
+            {
+                $(".sc").css('display', 'block');
+                $(".cl").css('display', 'none');
+                $(".RDT").css('display', 'none');
+                $(".TDR").css('display', 'none');
+                $(".TCR").css('display', 'none');
+                $(".chin").css('display', 'none');
+                $("#Reschedule_DT").prop("required",false);
+                $("#Decline_Reason").prop("required",false);
+                $("#Cancel_Reason").prop("required",false);
+            }
+            else if(@Model.Status == 20)
+            {
+                $(".sc").css('display', 'block');
+                $(".cl").css('display', 'block');
+                $(".RDT").css('display', 'none');
+                $(".TDR").css('display', 'none');
+                $(".TCR").css('display', 'none');
+                $(".chin").css('display', 'block');
+                $("#Reschedule_DT").prop("required",false);
+                $("#Decline_Reason").prop("required",false);
+                $("#Cancel_Reason").prop("required",false);
+            }
+            else if (@Model.Status == 1415)
+            {
+                $(".chin").css('display', 'block');
+                $(".sc").css('display', 'none');
+                $(".cl").css('display', 'none');
+                $(".RDT").css('display', 'none');
+                $(".TDR").css('display', 'none');
+                $(".TCR").css('display', 'none');
+                $(".pg").css('display', 'none');
+                $("#Reschedule_DT").prop("required", false);
+                $("#Decline_Reason").prop("required", false);
+                $("#Cancel_Reason").prop("required", false);
+
+            }
+            else {
+                $(".sc").css('display', 'none');
+                $(".cl").css('display', 'none');
+                $(".RDT").css('display', 'none');
+                $(".TDR").css('display', 'none');
+                $(".TCR").css('display', 'none');
+                $(".chin").css('display', 'none');
+                $("#Reschedule_DT").prop("required",false);
+                $("#Decline_Reason").prop("required",false);
+                $("#Cancel_Reason").prop("required",false);
+            }
+
+             if ('@Model.Pregame' == '') {
+
+
+            }
+            else if('@Model.Pregame' == '1')
+            {
+                $(".sc").css('display', 'block');
+                $(".pg").css('display', 'block');
+            }
+            else
+            {
+                $(".pg").css('display', 'none');
+            }
+
+            $.get(baseurl + "/Transaction/GetContact", { Cnt: @Model.EU_Office }, function (data) {
+
+                if (data.res == "Success") {
+                    $('#Office_contact tr').has('td').empty();
+
+                    $.each(data.CC, function (i, val) {
+
+                        $('#Office_contact tr:last').after('<tr><td> <input type="checkbox" name="customCheck_' + data.CC[i]['Id'] + '" class="form-control" id="customCheck_' + data.CC[i]['Id'] + '"  value="' + data.CC[i]['Email'] + '" style="width: 20px; height: 20px;"></td><td><span class="badge" style="font-size:100%;">'
+                            + data.CC[i]['Person'] + " , " + data.CC[i]['Designation'] + '</span></td><td> <button type="button" title="edit" class="btn btn-link has-ripple" id=' + data.CC[i]['Id'] +
+                                ' onclick="Contactfill(this.id)"><i class="fa fa-edit"></i></button> <button type="button" title="delete" class="btn btn-link has-ripple" id=' + data.CC[i]['Id'] +
+                                ' onclick="Contactdelete(this.id)" style="margin-left:10%;"><i class="fa fa-trash"></i></button></td><tr>');
+                    });
+
+                    $("#Contact_ID").val(0);
+                    $("#Person").val('');
+                    $("#Designation").val('');
+                    $("#Department").val('');
+                    $("#CNumber").val('');
+                    $("#CEmail").val('');
+
+                } else {
+
+                }
+            });
+
+
+            if(@Model.Is_Reschedule == 1)
+            {
+                $(".RDT").css('display', 'block');
+                $(".TDR").css('display', 'none');
+                $(".TCR").css('display', 'none');
+                $("#Reschedule_DT").prop("required",true);
+                $("#Decline_Reason").prop("required",false);
+                $("#Cancel_Reason").prop("required",false);
+
+            }
+
+
+
+            $('#Certification').select2({
+                multiple: true,
+                placeholder: 'Add Certification Name...'
+            });
+
+            $('#Certification').val([@Model.Certification_Name]).trigger("change");
+
+            $.get(baseurl + "Transaction/GetTicketHistory", { tn: @Model.Id }, function (data) {
+                if (data.tv == "success") {
+                    if (Object.keys(data.hist).length > 0) {
+
+
+                        $.each(data.hist, function (i, val) {
+                            $("#th_TicketNo").val(data.hist[i]['Ticket_No']);
+                            $("#th_CreatedBy").val(data.hist[i]['CreatedBy']);
+                            $("#th_CreatedOn").val(data.hist[i]['Createdon']);
+                            $("#th_Comments").val(data.hist[i]['Remark']);
+                            $('#Show tr:last').after('<tr><td>'+ data.hist[i]['CreatedBy'] + '</td><td>'+ data.hist[i]['Createdon'] + '</td><td>'+ data.hist[i]['Remark'] + '</td></tr>');
+                        });
+                        $('#Show tr:last').remove();
+                    }
+
+                }
+                else {
+                }
+
+            });
+
+
+
+
+            if(@Model.FE_ID > 0)
+            {
+
+                $.get(baseurl + "Transaction/getFEInfo", { id:@Model.FE_ID}, function (data) {
+                    if (data.res == "Success") {
+
+
+                        $('#FE_ID').empty();
+                        $('#FE_ID').append('<option value =' + data.CC['FE_ID'] + '>' + data.CC['FE_Name'] + '</option>');
+                        $('#FE_contact').val(data.CC['Phone'] );
+                        $('#FE_Email').val(data.CC['Email'] );
+                        $('#FE_Origin').val(data.CC['FE_Origin'] );
+                        $('#FE_Certification').val(data.cert );
+                        $('#FE_Buss_Hrs').val(data.CC['Charges_Business_Hour'] );
+                        $('#FE_Non_Buss_Hrs').val(data.CC['Charges_Non_Business_Hour'] );
+                        $('#FE_Minimum_Hrs').val(data.CC['Minimum_Hrs'] );
+                        $('#FE_Fixed').val(data.CC['Charge_Job'] );
+
+                    }
+                    else {
+                    }
+
+                });
+
+            }
+            else
+            {
+                @*getFEdetails(@Model.Zip_Pin_Code, '@Model.Country');*@
+            }
+
+
+
+            $(document).on("click", ".classAdd", function () { //
+                var rowCount = $('.data-contact-person').length + 1;
+                var i = rowCount - 1;
+                var contactdiv = '<tr class="data-contact-person">' +
+                    '<td><input type="text" name="IV[' + i + '].Part_type" class="form-control f-name01" /></td>' +
+                    '<td><input type="text" name="IV[' + i + '].Serial_No" class="form-control l-name01" /></td>' +
+                    '<td><input type="text" name="IV[' + i + '].Make_Model" class="form-control email01" /></td>' +
+                    '<td><input type="text" name="IV[' + i + '].Part_Description" class="form-control email02" /></td>' +
+                    '<td><button type="button" id="btnAdd" class="btn btn-xs btn-primary classAdd"><i class="fas fa-plus-circle"></i></button>' +
+                    '<button type="button" id="btnDelete" class="deleteContact btn btn btn-danger btn-xs"><i class="fas fa-minus-circle"></i></button></td>' +
+                    '</tr>';
+                $('#maintable').append(contactdiv); // Adding these controls to Main table class
+            });
+
+            $(document).on("click", ".deleteContact", function () {
+                $(this).closest("tr").remove(); // closest used to remove the respective 'tr' in which I have my controls
+            });
+
+
+        });
+
+
+
+
+
+        $("#Status").change(function () {
+
+            if ($("#Status option:selected").val() == 19) {
+                $(".sc").css('display', 'none');
+                $(".cl").css('display', 'none');
+                $(".RDT").css('display', 'block');
+                $(".TDR").css('display', 'none');
+                $(".TCR").css('display', 'none');
+                $(".chin").css('display', 'none');
+                $(".pg").css('display', 'none');
+                $("#Reschedule_DT").prop("required",true);
+                $("#Decline_Reason").prop("required",false);
+                $("#Cancel_Reason").prop("required",false);
+            }
+            else if ($("#Status option:selected").val() == 21) {
+                $(".sc").css('display', 'none');
+                $(".cl").css('display', 'none');
+                $(".RDT").css('display', 'none');
+                $(".TDR").css('display', 'none');
+                $(".TCR").css('display', 'block');
+                $(".chin").css('display', 'none');
+                $("#Reschedule_DT").prop("required",false);
+                $("#Decline_Reason").prop("required",false);
+                $("#Cancel_Reason").prop("required",true);
+            }
+            else if ($("#Status option:selected").val() == 1362)
+            {
+                $(".sc").css('display', 'none');
+                $(".cl").css('display', 'none');
+                $(".RDT").css('display', 'none');
+                $(".TDR").css('display', 'block');
+                $(".TCR").css('display', 'none');
+                $(".chin").css('display', 'none');
+                $(".pg").css('display', 'none');
+                $("#Reschedule_DT").prop("required",false);
+                $("#Decline_Reason").prop("required",true);
+                $("#Cancel_Reason").prop("required",false);
+            }
+            else if($("#Status option:selected").val() == 1372)
+            {
+                $(".sc").css('display', 'block');
+                $(".cl").css('display', 'none');
+                $(".RDT").css('display', 'none');
+                $(".TDR").css('display', 'none');
+                $(".TCR").css('display', 'none');
+                $(".chin").css('display', 'none');
+                $("#Reschedule_DT").prop("required",false);
+                $("#Decline_Reason").prop("required",false);
+                $("#Cancel_Reason").prop("required",false);
+            }
+            else if($("#Status option:selected").val() == 20)
+            {
+                $(".sc").css('display', 'none');
+                $(".cl").css('display', 'block');
+                $(".RDT").css('display', 'none');
+                $(".TDR").css('display', 'none');
+                $(".TCR").css('display', 'none');
+                $(".chin").css('display', 'block');
+                $(".pg").css('display', 'none');
+                $("#Reschedule_DT").prop("required",false);
+                $("#Decline_Reason").prop("required",false);
+                $("#Cancel_Reason").prop("required",false);
+            }
+            else if ($("#Status option:selected").val() == 1415)
+            {
+                $(".chin").css('display', 'block');
+                $(".sc").css('display', 'none');
+                $(".cl").css('display', 'none');
+                $(".RDT").css('display', 'none');
+                $(".TDR").css('display', 'none');
+                $(".TCR").css('display', 'none');
+                $(".pg").css('display', 'none');
+                $("#Reschedule_DT").prop("required", false);
+                $("#Decline_Reason").prop("required", false);
+                $("#Cancel_Reason").prop("required", false);
+
+            }
+            else if ($("#Status option:selected").val() == 1414) {
+                $(".chin").css('display', 'none');
+                $(".sc").css('display', 'none');
+                $(".cl").css('display', 'none');
+                $(".RDT").css('display', 'none');
+                $(".TDR").css('display', 'none');
+                $(".TCR").css('display', 'none');
+                $(".pg").css('display', 'none');
+                $("#Reschedule_DT").prop("required", false);
+                $("#Decline_Reason").prop("required", false);
+                $("#Cancel_Reason").prop("required", false);
+
+            }
+            else {
+                $(".sc").css('display', 'none');
+                $(".cl").css('display', 'none');
+                $(".RDT").css('display', 'none');
+                $(".TDR").css('display', 'none');
+                $(".TCR").css('display', 'none');
+                $(".chin").css('display', 'none');
+                $("#Reschedule_DT").prop("required",false);
+                $("#Decline_Reason").prop("required",false);
+                $("#Cancel_Reason").prop("required",false);
+            }
+
+        });
+
+
+
+
+
+        $("#Part_Management").change(function () {
+
+            if ($("#Part_Management option:selected").val() == 22) {
+                $(".pickup").css('display', 'block');
+                $(".handover").css('display', 'none');
+            }
+            else if ($("#Part_Management option:selected").val() == 23) {
+                $(".pickup").css('display', 'none');
+                $(".handover").css('display', 'block');
+                $(".pickup-av").css('display', 'none');
+                $(".pickup-nav").css('display', 'none');
+            }
+            else
+            {
+                $(".pickup").css('display', 'none');
+                $(".handover").css('display', 'none');
+                $(".pickup-av").css('display', 'none');
+                $(".pickup-nav").css('display', 'none');
+            }
+        });
+
+        $("#Other_Charge").change(function () {
+
+            if ($("#Other_Charge option:selected").val() == 1) {
+                $(".other-charge").css('display', 'block');
+            }
+            else if ($("#Other_Charge option:selected").val() == 0) {
+                $(".other-charge").css('display', 'none');
+            }
+            else
+            {
+                $("#Other_Charge option:selected").val("");
+                $(".other-charge").css('display', 'none');
+            }
+        });
+
+        $("#Customer_Email_Send").change(function () {
+
+            if ($("#Customer_Email_Send option:selected").val() == 1) {
+                $(".customer-email").css('display', 'block');
+            }
+            else if ($("#Customer_Email_Send option:selected").val() == 0) {
+                $(".customer-email").css('display', 'none');
+            }
+            else
+            {
+                $("#Customer_Email_Send option:selected").val("");
+                $(".customer-email").css('display', 'none');
+            }
+        });
+
+        $("#FE_Email_Send").change(function () {
+
+            if ($("#FE_Email_Send option:selected").val() == 1) {
+                $(".fe-email").css('display', 'block');
+                $("#FE_Email_Name").val($("#FE_Email").val());
+
+            }
+            else if ($("#FE_Email option:selected").val() == 0) {
+                $(".fe-email").css('display', 'none');
+                $("#FE_Email_Name").val('');
+            }
+            else
+            {
+                $("#FE_Email option:selected").val('');
+                $(".fe-email").css('display', 'none');
+                $("#FE_Email_Name").val('');
+            }
+        });
+
+        $("#Return_Label").change(function () {
+
+            if ($("#Return_Label option:selected").val() == 1) {
+                $(".pickup-av").css('display', 'block');
+                $(".pickup-nav").css('display', 'none');
+            }
+            else if ($("#Return_Label option:selected").val() == 0) {
+                $(".pickup-av").css('display', 'block');
+                $(".pickup-nav").css('display', 'block');
+            }
+            else
+            {
+                $("#Return_Label option:selected").val("");
+                $(".pickup-av").css('display', 'none');
+                $(".pickup-nav").css('display', 'none');
+            }
+        });
+
+        $("#FE_Part_Storage_Charge").change(function () {
+
+            if ($("#FE_Part_Storage_Charge option:selected").val() == 1) {
+                $(".fe-charge").css('display', 'block');
+            }
+            else if ($("#FE_Part_Storage_Charge option:selected").val() == 0) {
+                $(".fe-charge").css('display', 'none');
+            }
+            else
+            {
+                $("#FE_Part_Storage_Charge option:selected").val("");
+                $(".fe-charge").css('display', 'none');
+            }
+        });
+
+        $("#Certification_Need").change(function () {
+
+            if ($("#Certification_Need option:selected").val() == 1) {
+
+                $(".cert").css('display', 'grid');
+            }
+            else {
+                $(".cert").css('display', 'none');
+            }
+        });
+
+
+        $("#Pregame").change(function () {
+
+            if ($("#Pregame option:selected").val() == 1) {
+
+                $(".pg").css('display', 'grid');
+            }
+            else {
+                $(".pg").css('display', 'none');
+            }
+        });
+
+
+        @*function getAllEmpData() {
+            var data = [];
+            $('tr.data-contact-person').each(function () {
+                var Part_Type = $(this).find('.f-name01').val();//Bind to the first name with class f-name01
+                var Serial_No = $(this).find('.l-name01').val();//Bind to the last name with class l-name01
+                var Make_Model = $(this).find('.email01').val();//Bind to the emailId with class email01
+                var Part_description = $(this).find('.email02').val();//Bind to the emailId with class email01
+                var alldata = {
+                    Part_Type, //FName as per Employee class name in .cs
+                   Serial_No, //LName as per Employee class name in .cs
+                  Make_Model, //EmailId as per Employee class name in .cs
+                   Part_description, //EmailId as per Employee class name in .cs
+                 @Model.Id,
+                }
+                data.push(alldata);
+            });
+            console.log(data);//
+            return data;
+        }
+        $("#btnSubmit").click(function () {
+            debugger
+            var data = JSON.stringify(getAllEmpData());
+            //console.log(data);
+            $.ajax({
+                url: baseurl + 'Transaction/PartSaveData',//Home.aspx is the page
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.l({ 'empdata': data }),
+                success: function () {
+                  //  alert("Data Added Successfully");
+                },
+                error: function () {
+                 //   alert("Data Added Successfully");
+                }
+            });
+        });*@
+
+        function printData() {
+            var divToPrint = document.getElementById("printTable");
+            newWin = window.open("");
+            newWin.document.write(divToPrint.outerHTML);
+            newWin.print();
+            newWin.close();
+        }
+        $('.btn-print-invoice').on('click', function () {
+            printData();
+        })
+
+        function Contactfill(id) {
+
+            $.get(baseurl + "/Master/GetContact", { Id: id }, function (data) {
+
+                if (data.res == "Success") {
+                    $("#Contact_ID").val(data.CC['Id']);
+                    $("#Person").val(data.CC['Person']);
+                    $("#Designation").val(data.CC['Designation']);
+                    $("#Department").val(data.CC['Department']);
+                    $("#CNumber").val(data.CC['Number']);
+                    $("#CEmail").val(data.CC['Email']);
+                    $("#Contact_btn").val('Update');
+                    $("#Contact_add").css('display', 'unset');
+                }
+                else {
+
+                }
+            });
+        }
+
+        function Contactdelete(id) {
+            debugger
+            var code = $("#Office").val();
+            $("#loadermodel").css('display', 'unset');
+            $.get(baseurl + "/Transaction/deleteContact", { OC: id }, function (data) { });
+
+
+            $.get(baseurl + "/Transaction/GetContact", { Cnt: code }, function (data) {
+
+                if (data.res == "Success") {
+                    $('#Office_contact tr').has('td').empty();
+
+                    $.each(data.CC, function (i, val) {
+
+                        $('#Office_contact tr:last').after('<tr><td> <input type="checkbox" name="customCheck_' + data.CC[i]['Id'] + '" class="form-control" id="customCheck_' + data.CC[i]['Id'] + '"  value="' + data.CC[i]['Email'] + '" style="width: 20px; height: 20px;"></td><td><span class="badge" style="font-size:100%;">'
+                            + data.CC[i]['Person'] + " , " + data.CC[i]['Designation'] + '</span></td><td> <button type="button" title="edit" class="btn btn-link has-ripple" id=' + data.CC[i]['Id'] +
+                                ' onclick="Contactfill(this.id)"><i class="fa fa-edit"></i></button> <button type="button" title="delete" class="btn btn-link has-ripple" id=' + data.CC[i]['Id'] +
+                                ' onclick="Contactdelete(this.id)" style="margin-left:10%;"><i class="fa fa-trash"></i></button></td><tr>');
+                    });
+
+                    $("#Contact_ID").val(0);
+                    $("#Person").val('');
+                    $("#Designation").val('');
+                    $("#Department").val('');
+                    $("#CNumber").val('');
+                    $("#CEmail").val('');
+
+                } else {
+
+                }
+            });
+
+
+
+            $("#loadermodel").css('display', 'none');
+        }
+
+
+        $("#Contact_btn").click(function () {
+            $("#loadermodel").css('display', 'unset');
+            var code = $("#Office").val();
+            debugger
+            $.get(baseurl + "/Transaction/ContactEUMaster", {
+                Office_ID: $("#Office").val(), Person: $("#Person").val(),
+                Designation: $("#Designation").val(), Department: $("#Department").val(), Number: $("#CNumber").val(), Email: $("#CEmail").val(),
+                Contact_ID: $("#Contact_ID").val()
+            }, function (data) { });
+
+            $.get(baseurl + "/Transaction/GetContact", { Cnt: code }, function (data) {
+
+                if (data.res == "Success") {
+                    $('#Office_contact tr').has('td').empty();
+
+                    $.each(data.CC, function (i, val) {
+
+                        $('#Office_contact tr:last').after('<tr><td> <input type="checkbox" name="customCheck_' + data.CC[i]['Id'] + '" class="form-control" id="customCheck_' + data.CC[i]['Id'] + '"  value="' + data.CC[i]['Email'] + '" style="width: 20px; height: 20px;"></td><td><span class="badge" style="font-size:100%;">'
+                            + data.CC[i]['Person'] + " , " + data.CC[i]['Designation'] + '</span></td><td> <button type="button" title="edit" class="btn btn-link has-ripple" id=' + data.CC[i]['Id'] +
+                                ' onclick="Contactfill(this.id)"><i class="fa fa-edit"></i></button> <button type="button" title="delete" class="btn btn-link has-ripple" id=' + data.CC[i]['Id'] +
+                                ' onclick="Contactdelete(this.id)" style="margin-left:10%;"><i class="fa fa-trash"></i></button></td><tr>');
+                    });
+                    $("#Contact_ID").val(0);
+                    $("#Person").val('');
+                    $("#Designation").val('');
+                    $("#Department").val('');
+                    $("#CNumber").val('');
+                    $("#CEmail").val('');
+
+                } else {
+
+                }
+            });
+            $("#loadermodel").css('display', 'none');
+        });
+
+
+        $("#Contact_add").click(function () {
+            $("#Contact_ID").val(0);
+            $("#Person").val('');
+            $("#Designation").val('');
+            $("#Department").val('');
+            $("#CNumber").val('');
+            $("#CEmail").val('');
+            $("#Contact_btn").val('Add');
+            $("#Contact_add").css('display', 'none');
+        });
+
+        $('#save_value').click(function () {
+
+            var val = [];
+            $(':checkbox:checked').each(function (i) {
+                val[i] = $(this).val();
+            });
+            $('#email_office').val(val);
+
+        });
+
+
+        $('#FEStatus').click(function () {
+
+            var code = @Model.Id
+            $.get(baseurl + "/Transaction/GetFETicketStatus", { Ticket: code }, function (data) {
+
+                if (data.res == "Success") {
+
+                        $('#FieldEngineer_Tic tr').has('td').remove();
+                        $.each(data.PZ, function (i, val) {
+
+                            $('#FieldEngineer_Tic tr:last').after('<tr><td>' + data.PZ[i]['Name'] + '</td> <td>' +
+                                data.PZ[i]['Status'] + '</td><td>' + data.PZ[i]['Remark'] + '</td><td>' + data.PZ[i]['Sent'] + '</td><td>' + data.PZ[i]['Request'] + '</td><tr>');
+                        });
+
+                        $('#modal_FieldEngineer').modal('show');
+
+
+
+
+                } else {
+
+                }
+            });
+
+        });
+    </script>
+
+    <script>
+        var map;
+
+        function GoLocation() {
+
+            map = new google.maps.Map(document.getElementById('map_canvas'), {
+                zoom:14,
+                mapTypeId: 'roadmap',
+                center: {lat:@Model.latitude,lng:@Model.longitude}
+            });
+            $.get("@Url.Action("getFEdetailsMaptest", "Transaction", new { id = Model.Id})", function (data, status) {
+                var iconName ;
+                var marker=[];
+                var contentString= [];
+                var infowindow = [];
+                for (var i=0; i < data.length;i++){
+
+
+                   // iconName = data[i].Type == 'FE' ? "/icon/icon-fe.png" : 'FE_Rej' ? "/icon/icon-fe-rej.png" : 'FE_Cert' ? "/icon/icon-fe-cert.png" : "/icon/icon-eu.png"
+
+                    if (data[i].Type == 'FE')
+                    {
+                        latLng = new google.maps.LatLng(data[i].latitude, data[i].longitude);
+                        iconName = "/icon/icon-fe.png";
+                        contentString[i] = '<div id="content_' + data[i].FE_ID +'" style="width:350px;">' +
+
+                                                    '<h3 id="FEHeading_'+data[i].FE_ID+'" style="text-align: center;color: #505050;">' + data[i].FE_Name + '</h1></div>';
+                    }
+                    else if (data[i].Type == 'FE_Rej') {
+
+                        latLng = new google.maps.LatLng(data[i].latitude, data[i].longitude);
+                        iconName = "/icon/icon-fe-rej.png";
+                        contentString[i] = '<div id="content_' + data[i].FE_ID + '" style="width:350px;">' +
+
+                            '<h3 id="FEHeading_' + data[i].FE_ID + '" style="text-align: center;color: #505050;">' + data[i].FE_Name + '</h1></div>';
+                    }
+                    else if (data[i].Type == 'FE_Cert') {
+
+                        latLng = new google.maps.LatLng(data[i].latitude, data[i].longitude);
+                        iconName = "/icon/icon-fe-cert.png";
+                        contentString[i] = '<div id="content_' + data[i].FE_ID + '" style="width:350px;">' +
+
+                            '<h3 id="FEHeading_' + data[i].FE_ID + '" style="text-align: center;color: #505050;">' + data[i].FE_Name + '</h1></div>';
+                    }
+                    else if (data[i].Type == 'FE_Deactive') {
+
+                        latLng = new google.maps.LatLng(data[i].latitude, data[i].longitude);
+                        iconName = "/icon/icon-fe-rej.png";
+                        contentString[i] = '<div id="content_' + data[i].FE_ID + '" style="width:350px;">' +
+
+                            '<h3 id="FEHeading_' + data[i].FE_ID + '" style="text-align: center;color: #505050;">' + data[i].FE_Name + '</h1></div>';
+                    }
+                    else if (data[i].Type == 'FE_Deactive_NoLan') {
+                        debugger
+                        var location = data[i].latitude + ' ' + data[i].longitude;
+                        var lat = "";
+                        var lng = "";
+                        axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
+                            params: {
+                                address: location,
+                                key: 'AIzaSyBvhQbrULBXqk9wPb9RjTeacVk3A3g-ci8'
+                            }
+                        })
+                            .then(function (response) {
+                                // Log full response
+                                console.log(response);
+
+                                // Formatted Address
+                                var formattedAddress = response.data.results[0].formatted_address;
+                                debugger
+
+                                // Address Components
+                                var addressComponents = response.data.results[0].address_components;
+
+                                // Geometry
+                                lat = response.data.results[0].geometry.location.lat;
+                                lng = response.data.results[0].geometry.location.lng;
+
+
+
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+
+                        latLng = new google.maps.LatLng(lat, lng);
+                        iconName = "/icon/icon-fe-rej.png";
+                        contentString[i] = '<div id="content_' + data[i].FE_ID + '" style="width:350px;">' +
+
+                            '<h3 id="FEHeading_' + data[i].FE_ID + '" style="text-align: center;color: #505050;">' + data[i].FE_Name + '</h1></div>';
+                    }
+                    else
+                    {
+
+                        latLng = new google.maps.LatLng(data[i].latitude, data[i].longitude);
+                        iconName = "/icon/icon-eu.png";
+                        contentString[i] = '<div id="content">' +
+                                                    '<h3 id="EUHeading" style="text-align: center;color: #505050;">' + data[i].FE_Name + '</h1>' +
+                                                    '<div id="bodyContent">' +
+                                                    '<label><b>Site Origin : </b> ' + data[i].FE_Origin + '</label></div>';
+                    }
+
+                    marker[i] = new google.maps.Marker({
+                        position: latLng,
+                        map: map,
+                        icon: iconName
+                    });
+
+                    infowindow[i] = new google.maps.InfoWindow({
+                        content: contentString[i]
+                    });
+
+                    google.maps.event.addListener(marker[i], 'click', (function (marker, i) {
+                        return function () {
+                            infowindow[i].open(map, marker[i]);
+                        }
+                    })(marker, i));
+                }
+
+            });
+
+        }
+
+
+
+    </script>
+
+
+}
+
+
+
+
+
+
+
+
+
+
+

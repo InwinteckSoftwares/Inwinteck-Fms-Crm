@@ -1,0 +1,122 @@
+﻿@{
+    Layout = null;
+    var username = User.Identity.Name; // Assuming you are using ASP.NET Identity
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Thank You for Logging In</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #e0f7ff, #99d4ff); /* Light blue gradient background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .header {
+            width: 100%;
+            padding: 1rem 2rem;
+            background-color: #007bff; /* Match logo color */
+            color: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .navbar {
+            width: 100%;
+            background-color: #007bff; /* Match logo color */
+            color: #ffffff;
+            padding: 0.5rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+            .navbar a {
+                color: #ffffff;
+                text-decoration: none;
+                margin-left: 1rem;
+            }
+
+                .navbar a:hover {
+                    text-decoration: underline;
+                }
+
+        .container {
+            background: #ffffff;
+            padding: 2rem 3rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin-top: 6rem; /* Adjust for the navbar */
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #007bff; /* Match logo color */
+        }
+
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+            .user-info a {
+                margin-left: 1rem;
+                color: #ffffff;
+                text-decoration: none;
+            }
+
+                .user-info a:hover {
+                    text-decoration: underline;
+                }
+
+        .logo {
+            height: 40px; /* Adjust the height as needed */
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <img src="~/assets/images/logo.png" alt="Logo" class="logo">
+        <div>Welcome, @username</div>
+        <div class="user-info">
+            <a href="@Url.Action("ChatHdToSource", "Chat")">Chat To Helpdesk</a>
+            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+            {
+                @Html.AntiForgeryToken()
+                <a href="javascript:document.getElementById('logoutForm').submit()" class="dropdown-item">
+                    <i class="feather icon-log-out"></i> Log Out
+                </a>
+            }
+        </div>
+    </div>
+    <div class="container">
+        <h1>Thank You for Logging In</h1>
+        <p>Use the link sent to your email to log in to the chat page.</p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Inwinteck FMS | Welcome FE</title>
+    <style>
+        /* General Styles */
+        body, html {
+            font-family: 'Helvetica', 'Arial', sans-serif;
+            background-color: #f1f5f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        h3 {
+            font-family: 'Roboto', sans-serif;
+            color: #1e293b;
+            margin-bottom: 30px;
+            font-size: 28px;
+            letter-spacing: 1px;
+        }
+
+        p {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #475569;
+            margin-bottom: 20px;
+        }
+
+        .font-montserrat {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .color-primary {
+            color: #2563eb;
+        }
+
+        a {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+            a:hover {
+                text-decoration: underline;
+            }
+
+        .button {
+            display: inline-block;
+            background-color: #2563eb;
+            color: #fff;
+            padding: 14px 30px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 50px;
+            margin-top: 30px;
+            transition: background-color 0.3s ease;
+            letter-spacing: 0.5px;
+        }
+
+            .button:hover {
+                background-color: #1d4ed8;
+            }
+
+
+           
+
+        .logo {
+            margin: 40px 0;
+        }
+
+        .img-responsive {
+            max-width: 100px;
+        }
+
+        @media only screen and (max-width: 768px) {
+            .container {
+                padding: 25px;
+            }
+
+            p {
+                font-size: 15px;
+            }
+
+            h3 {
+                font-size: 24px;
+            }
+
+            .button {
+                padding: 12px 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Main Container -->
+    <div class="container">
+
+        <!-- Greeting Section -->
+        <h3 class="color-primary">Welcome to Inwinteck, {name}!</h3>
+
+        <!-- User Details -->
+        <p>
+            We are excited to have you onboard as a new Field Engineer. Here's a summary of your details:<br>
+            <b>Type:</b> <span class="font-montserrat color-primary">{Type}</span><br>
+            <b>City:</b> <span class="font-montserrat color-primary">{City}</span><br>
+            <b>Country:</b> <span class="font-montserrat color-primary">{Country}</span>
+        </p>
+
+        <!-- Main Message -->
+        <p>
+            Thank you for starting your registration process. To complete your profile and activate your account, simply log in to <a href="https://fms.inwinteck.com/">Inwinteck FMS</a> using the credentials provided below.
+        </p>
+
+        <!-- Credentials -->
+        <p>Your login credentials are:</p>
+        <p>
+            <b>Username:</b> <span class="font-montserrat">{username}</span><br />
+            <b>Password:</b> <span class="font-montserrat">{password}</span>
+        </p>
+
+        <!-- Call to Action -->
+        <p>
+            <a href="https://fms.inwinteck.com/" class="button">Activate Your Account</a>
+        </p>
+
+        <!-- Logo Section -->
+        <div class="logo">
+            <img src="https://fms.inwinteck.com/assets/images/logo.png" alt="Inwinteck Logo" class="img-responsive center-block">
+            <p>This is an auto-generated email, please do not reply.</p>
+
+        </div>
+
+    </div> <!-- End of Container -->
+    
+
+</body>
+</html>

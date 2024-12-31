@@ -1,0 +1,203 @@
+﻿@model List<Inwinteck_CRM.Models.Country_Dialing_Code>
+@{
+    ViewBag.Title = "Country Code || Master";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Content Header (Page header) -->
+<div class="page-header">
+    <div class="container-fluid d-sm-flex justify-content-between">
+        <h4>Country Code</h4>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">Master</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Country Code</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<!-- Main content -->
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Basic Forms -->
+            <div class="card">
+
+                <!-- /.box-header -->
+                <div class="card-body">
+                    <div class="row">
+                        @using (Html.BeginForm("CountryCode", "Master", FormMethod.Get, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                        {
+                            <div class="col-12">
+                                <div class="form-row">
+                                    <label for="example-text-input" class="col-sm-2 col-form-label">Search</label>
+                                    <div class="col-sm-5">
+                                        <select class="form-control" name="searchtype" id="searchtype">
+                                            <option>Select Parameter to Search</option>
+                                            <option value="country">Country</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <input class="form-control" type="search" name="searchtext" id="searchtext" placeholder="Enter your Keyword for search ">
+                                    </div>
+
+                                </div>
+
+                                <div class="box-footer text-center">
+
+
+                                    <button type="submit" class="btn btn-primary ">Search</button>
+
+                                    <a href="@Url.Action("addCountryCode", "Master")" class="btn btn-primary " title="Add new Country">Create Country Code</a>
+
+
+                                </div>
+                            </div>
+                        }
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.box-body -->
+
+
+            </div>
+            <!-- /.box -->
+            <!-- /.box-header -->
+            <div class="card">
+
+                <div class="card-body ">
+
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tr class="thead-dark">
+                                <th>Action</th>
+                                <th>Country Name</th>
+                                <th>Country Dial Code</th>
+                                <th>Status</th>
+                            </tr>
+                            @if (Model.Count > 0)
+                            {
+                                foreach (var i in Model)
+                                {
+                                    <tr>
+                                        <td style="text-align: center;">
+
+                                            <a href="@Url.Action("editCountryCode", "Master", new { Id = i.Id })" title="edit"><i class="fa fa-edit"></i></a>
+
+                                            <a href="@Url.Action("viewCountryCode", "Master", new { Id = i.Id })" title="View" style="margin-left: 10px;"><i class="fa fa-eye" aria-hidden="true"></i></a>
+
+                                        </td>
+                                        <td>@i.Country</td>
+                                        <td>@i.Code</td>
+                                        @if (@i.Status == 1)
+                                        {
+
+                                            <td>
+                                                <a href="@Url.Action("statusCountryCode", "Master", new { Id = i.Id })" )>
+                                                    <span class="badge badge-success mr-2 d-sm-inline d-none">Active</span>
+                                                </a>
+
+                                            </td>
+
+
+                                        }
+                                        else
+                                        {
+
+                                            <td>
+                                                <a href="@Url.Action("statusCountryCode", "Master", new { Id = i.Id })" )>
+                                                    <span class="badge badge-danger mr-2 d-sm-inline d-none">Deactive</span>
+                                                </a>
+                                            </td>
+
+
+                                        }
+
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr><td colspan="4" class="text-center"> <code style="font-size:20px;"> <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <br /> No Record Found </code></td></tr>
+                            }
+                        </table>
+
+                    </div>
+                    <!-- /.col -->
+                    <!-- /.row -->
+                </div>
+
+
+                <div class="col-md-12" style="overflow: auto;">
+                    <nav aria-label="...">
+                        <ul class="pagination">
+
+                            @for (int i = 0; i <= ViewBag.pageCount; i++)
+                            {
+                                if (i == ViewBag.pageNo)
+                                {
+                                    <li class="page-item active" aria-current="page"><a class="page-link" href="#">@(i + 1) <span class="sr-only">(current)</span></a></li>
+
+                                }
+                                else
+                                {
+
+                                    <li class="page-item">
+
+                                        @Html.ActionLink((i + 1).ToString(), "CountryCode", new
+                                   { pageNo = i }, new { @class = "page-link" })
+
+
+                                    </li>
+
+                                }
+                            }
+
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- /.content -->
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        function getUrlVars() {
+            var vars = [], hash;
+            var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+            for (var i = 0; i < hashes.length; i++) {
+                hash = hashes[i].split('=');
+                vars.push(hash[0]);
+                vars[hash[0]] = hash[1];
+            }
+            return vars;
+        }
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var param1 = getUrlVars()["searchtype"];
+            var param2 = getUrlVars()["searchtext"];
+            if (param1 != null && param2 != null) {
+                $("#searchtype").val(param1);
+                $("#searchtext").val('@ViewBag.Search');
+            }
+
+        });
+    </script>
+}
+
+
+
+

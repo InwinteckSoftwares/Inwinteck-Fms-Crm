@@ -1,0 +1,124 @@
+﻿@model List<HRMS.Models.Kra_Score_Mng>
+@{
+    ViewBag.Title = "KRA Master";
+    Layout = ViewBag.Layout;
+    ViewBag.Manger = ViewBag.Mng;
+}
+
+
+
+<!-- Page Header -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="page-head-box">
+            <h3>KRA</h3>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index","Dashboard")">Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">KRA Score</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- /Page Header -->
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped custom-table mb-0 datatable">
+                        <thead>
+                            <tr>
+                                <th>Employee Name</th>
+                                <th>Designation</th>
+                                <th>Kra Date</th>
+                                <th>Self Score</th>
+                                <th>RM Score</th>
+                                <th>TL Score</th>
+                                <th>TM Score</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Count > 0)
+                            {
+                                foreach (var i in Model)
+                                {
+                            <tr>
+                                <td>@i.Employee_Name</td>
+                                <td>@i.Designation</td>
+                                <td>@i.Kra_Date.ToString("dd MMM yyyy")</td>
+                                <td>@i.Total_Self_Score</td>
+                                <td>@i.Total_RM_Score</td>
+                                <td>@i.Total_TL_Score</td>
+                                <td>@i.Total_TP_Score</td>
+                                <td>
+                                    @if (i.Top_Management_Remark == "")
+                                    {
+                                        <a href="@Url.Action("delete_Kra_Mng", "HRMS", new { id = i.Id })"><i class="fas fa-trash"></i></a>
+
+                                        <a href="@Url.Action("edit_Kra_Mng", "HRMS", new { id = i.Id })"><i class="fas fa-edit"></i></a>
+
+                                        <a href="@Url.Action("view_Kra_Mng", "HRMS", new { id = i.Id })"><i class="fas fa-eye"></i></a>
+
+                                    }
+                                    else if (i.Top_Management_Remark != null)
+                                    {
+                                        <a href="@Url.Action("view_Kra_Mng", "HRMS", new { id = i.Id })"><i class="fas fa-eye"></i></a>
+                                    }
+                                    else
+                                    {
+                                        <a href="@Url.Action("delete_Kra_Mng", "HRMS", new { id = i.Id })"><i class="fas fa-trash"></i></a>
+
+                                        <a href="@Url.Action("edit_Kra_Mng", "HRMS", new { id = i.Id })"><i class="fas fa-edit"></i></a>
+
+                                        <a href="@Url.Action("view_Kra_Mng", "HRMS", new { id = i.Id })"><i class="fas fa-eye"></i></a>
+
+                                    }
+                                </td>
+                            </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal custom-modal fade" id="msgBox">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-header">
+                    <h3 style="font-size: 20px;">@TempData["message"] </h3>
+                </div>
+                <div class="modal-btn">
+                    <div class="submit-section col-sm-4 offset-sm-4">
+                        <a href="#" data-dismiss="modal" aria-label="Close" class="btn btn-primary cancel-btn">OK</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+@section scripts
+{
+    @if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+
+            window.onload = function () {
+                $('#msgBox').modal('show');
+            };
+        </script>
+    }
+
+}

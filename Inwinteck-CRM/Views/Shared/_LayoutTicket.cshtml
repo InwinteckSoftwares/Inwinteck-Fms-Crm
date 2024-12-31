@@ -1,0 +1,180 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>@ViewBag.Title</title>
+
+    <!-- prism css -->
+    <link rel="stylesheet" href="~/assets/css/plugins/prism-coy.css">
+
+    <!-- vendor css -->
+    <link rel="stylesheet" href="~/assets/css/style.css">
+
+    <link rel="stylesheet" href="~/assets/dropify/css/dropify.min.css">
+
+    <!-- select2 css -->
+    <link rel="stylesheet" href="~/assets/css/plugins/select2.min.css">
+
+    <!-- data tables css -->
+    <link rel="stylesheet" href="~/assets/css/plugins/dataTables.bootstrap4.min.css">
+</head>
+
+<body>
+    <!-- Loader Starts -->
+    <div id="loader-wrapper" style="display: none;">
+        <div id="loader" style="display: none;">
+            <img src="~/assets/images/Ripple-1s-200px.gif" />
+        </div>
+    </div>
+    <!-- Loader Ends -->
+
+    @Html.Action("_Menu", "Partial")
+    @RenderBody();
+
+    <!-- Notification Sound -->
+    <audio id="notificationSound" src="~/assets/audio/original-sms-sound-on-samsung.mp3" preload="auto" loop></audio>
+
+    @*<audio id="notificationSound"  preload="auto"></audio>*@
+
+    <!-- Notification Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">New Ticket Notification</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Content will be dynamically updated -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Libraries -->
+    <!-- Load jQuery first -->
+    <script src="~/HRMS/new/assets/js/jquery-3.6.0.min.js"></script>
+
+    <!-- Load Popper.js version 1.x for Bootstrap 4 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+
+    <!-- Load Bootstrap 4 -->
+    <script src="~/assets/js/plugins/bootstrap.min.js"></script>
+
+    <script src="~/assets/js/ripple.js"></script>
+    <script src="~/assets/js/pcoded.min.js" defer></script>
+
+    <!-- Additional Plugins -->
+    <script src="~/assets/js/plugins/prism.js"></script>
+    <script src="~/assets/js/horizontal-menu.js"></script>
+    <script src="~/assets/dropify/js/dropify.min.js"></script>
+    <script src="~/assets/js/pages/dropify.js"></script>
+
+    <!-- Datatables and Select2 -->
+    <script src="~/assets/js/plugins/jquery.dataTables.min.js"></script>
+    <script src="~/assets/js/plugins/dataTables.bootstrap4.min.js"></script>
+    <script src="~/assets/js/pages/data-advance-custom.js"></script>
+    <script src="~/assets/js/plugins/select2.full.min.js"></script>
+    <script src="~/assets/js/pages/form-select-custom.js"></script>
+
+    <!-- External Libraries -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBvhQbrULBXqk9wPb9RjTeacVk3A3g-ci8"></script>
+    <script src="~/assets/js/axios.min.js"></script>
+
+    <!-- SignalR Libraries -->
+    <script src="~/Scripts/jquery.signalR-2.4.3.min.js"></script>
+    <script src="~/signalr/hubs"></script> <!-- This loads the dynamically generated hub script -->
+    <!-- Tooltip Initialization Script -->
+    <script type="text/javascript">
+     // var baseurl = "http://localhost:1957/";
+      var baseurl = "https://fms.inwinteck.com/"
+
+        $(function () {
+            // Enable tooltips
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+
+        // Show loader on form submit
+        $("form").submit(function (e) {
+            $("#loader-wrapper").show();
+            $("#loader").show();
+        });
+            
+        // SignalR Notification Setup
+        $(function () {
+            // Reference the SignalR hub
+            var ticketNotificationHub = $.connection.ticketNotificationHub;
+
+            // Function to handle incoming notifications
+            ticketNotificationHub.client.receiveNewTicketNotification = function (ticket) {
+                showNotification(ticket.Ticket_No);
+            };
+
+            // Function to start the connection with reconnect logic
+            function startHubConnection() {
+                $.connection.hub.start()
+                    .done(function () {
+                        console.log('Connected to Ticket Notification Hub');
+                    })
+                    .fail(function (error) {
+                        console.log('Failed to connect to Ticket Notification Hub: ', error);
+                    });
+            }
+
+            // Error handling and automatic reconnection on disconnect
+            $.connection.hub.disconnected(function () {
+                console.log('Disconnected from Ticket Notification Hub. Reconnecting in 5 seconds...');
+                setTimeout(startHubConnection, 5000); // Retry connection every 5 seconds
+            });
+
+            // Call the start connection function
+            startHubConnection();
+
+            // Function to display notifications
+            function showNotification(ticketNumber) {
+                const sound = document.getElementById("notificationSound");
+                sound.playbackRate = 0.7;
+                sound.play();
+
+                // Display modal with ticket info
+                $('#myModal .modal-body').html(`<p style="font-size: 20px;">New Ticket Added: ${ticketNumber}</p>`);
+                $('#myModal').modal('show');
+
+                // Display browser notification
+                if (Notification.permission === 'granted') {
+                    new Notification('New Ticket', {
+                        body: `New ticket available: ${ticketNumber}`,
+                        icon: 'https://via.placeholder.com/150' // Optional icon
+                    });
+                } else if (Notification.permission !== 'denied') {
+                    Notification.requestPermission().then(permission => {
+                        if (permission === 'granted') {
+                            new Notification('New Ticket', {
+                                body: `New ticket available: ${ticketNumber}`,
+                                icon: 'https://via.placeholder.com/150' // Optional icon
+                            });
+                        }
+                    });
+                }
+            }
+
+            // Stop sound and reset when modal is closed
+            $('#myModal').on('hidden.bs.modal', function () {
+                const sound = document.getElementById("notificationSound");
+                sound.pause();
+                sound.currentTime = 0;
+            });
+        });
+
+
+    </script>
+
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

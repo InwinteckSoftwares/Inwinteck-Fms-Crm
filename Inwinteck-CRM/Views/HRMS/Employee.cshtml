@@ -1,0 +1,339 @@
+﻿
+@{
+    ViewBag.Title = "Employee";
+    Layout = "~/Views/Shared/_LayoutHRMS-emp.cshtml";
+}
+
+
+<!-- start page title -->
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="profile-view">
+                    <div class="profile-img-wrap">
+                        <div class="profile-img">
+                            <a href="#"><img alt="" src="~/HRMS/new/assets/img/profiles/avatar-02.jpg"></a>
+                        </div>
+                    </div>
+                    <div class="profile-basic">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="profile-info-left">
+                                    <h3 class="user-name m-t-0 mb-0">Komal Vijay Gade</h3>
+                                    <h6 class="text-muted">HR Team</h6>
+                                    <small class="text-muted">HR Manager</small>
+                                    <div class="staff-id">Employee ID : IWT03</div>
+                                    <div class="small doj text-muted">Date of Join : 09 April 2021</div>
+                                </div>
+                            </div>
+                            <div class="col-md-7">
+                                <ul class="personal-info">
+                                    <li>
+                                        <div class="title">Phone:</div>
+                                        <div class="text"><a href="">9876543210</a></div>
+                                    </li>
+                                    <li>
+                                        <div class="title">Email:</div>
+                                        <div class="text"><a href="">komal.gade@inwinteck.com</a></div>
+                                    </li>
+                                    <li>
+                                        <div class="title">Birthday:</div>
+                                        <div class="text">24th July</div>
+                                    </li>
+                                    <li>
+                                        <div class="title">Address:</div>
+                                        <div class="text">Somewhere , near earth , Thane , Maharashtra</div>
+                                    </li>
+                                    <li>
+                                        <div class="title">Gender:</div>
+                                        <div class="text">Female</div>
+                                    </li>
+                                    <li>
+                                        <div class="title">Reports to:</div>
+                                        <div class="text">
+                                            <div class="avatar-box">
+                                                <div class="avatar avatar-xs">
+                                                    <img src="~/HRMS/new/assets/img/profiles/avatar-16.jpg" alt="">
+                                                </div>
+                                            </div>
+                                            <a href="#">
+                                                Vijay Kanchangire
+                                            </a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pro-edit"><a class="edit-icon" href="@Url.Action("Profile","HRMS")"><i class="fas fa-pencil-alt"></i></a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 d-flex">
+        <div class="card punch-status flex-fill">
+            <div class="card-body">
+                <h5 class="card-title">Timesheet</h5>
+
+                <div class="punch-finger">
+                    <i class="fas fa-fingerprint"></i>
+                    <div class="punch-det">
+                        <h6>Punch In at</h6>
+                        <p>Wed, 11th Mar 2021 10.00 AM</p>
+                    </div>
+                </div>
+
+                <div class="punch-btn-section">
+                    <div class="col-6">
+                        <div class="social-source text-center mt-3">
+                            <button type="button" class="btn btn-primary waves-effect waves-light" disabled>Punch In</button>
+
+                        </div>
+
+                        <div class="social-source text-center mt-3">
+                            <button type="submit" class="btn btn-primary waves-effect waves-light">Punch Out</button>
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+
+                        <div class="social-source text-center mt-3">
+                            <button type="button" class="btn btn-primary waves-effect waves-light">Break In</button>
+                        </div>
+
+                        <div class="social-source text-center mt-3">
+                            <button type="button" class="btn btn-primary waves-effect waves-light" disabled>Break Out</button>
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="statistics">
+                    <ul>
+                        <li>
+                            <div class="stats-box">
+                                <p>Break</p>
+                                <h6>1.21 hrs</h6>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="stats-box">
+                                <p>Overtime</p>
+                                <h6>3 hrs</h6>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 d-flex">
+        <div class="card recent-activity flex-fill">
+            <div class="card-body">
+                <h5 class="card-title">Today Activity</h5>
+                <ul class="res-activity-list">
+                    <li>
+                        <p class="mb-0">Punch In</p>
+                        <p class="res-activity-time">
+                            <i class="far fa-clock"></i>
+                            10.00 AM.
+                        </p>
+                    </li>
+                    <li>
+                        <p class="mb-0">Break In</p>
+                        <p class="res-activity-time">
+                            <i class="far fa-clock"></i>
+                            11.00 AM.
+                        </p>
+                    </li>
+                    <li>
+                        <p class="mb-0">Break Out</p>
+                        <p class="res-activity-time">
+                            <i class="far fa-clock"></i>
+                            11.15 AM.
+                        </p>
+                    </li>
+                    <li>
+                        <p class="mb-0">Punch Out at</p>
+                        <p class="res-activity-time">
+                            <i class="far fa-clock"></i>
+                            1.30 PM.
+                        </p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 col-lg-12 col-xl-5 d-flex">
+        <div class="card att-card flex-fill">
+            <div class="card-header">
+                <h3><i class="fas fa-calendar-alt"></i> Notice Board</h3>
+
+            </div>
+            <div class="card-body pt-0 pb-0">
+                <div class="tab-content p-0" id="myTabContent">
+                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <ul class="leave-list">
+                            <li>
+                                <img src="~/HRMS/new/assets/img/profiles/avatar-02.jpg" alt="User">
+                                <p>Richard Miles is off sick today</p>
+                            </li>
+                            <li>
+                                <img src="~/HRMS/new/assets/img/profiles/avatar-02.jpg" alt="User">
+                                <p>You are away today</p>
+                            </li>
+                            <li>
+                                <img src="~/HRMS/new/assets/img/profiles/avatar-02.jpg" alt="User">
+                                <p>You are working from home today</p>
+                            </li>
+                            <li>
+                                <img src="~/HRMS/new/assets/img/profiles/avatar-02.jpg" alt="User">
+                                <p>Richard Miles is off sick today</p>
+                            </li>
+                            <li>
+                                <img src="~/HRMS/new/assets/img/profiles/avatar-02.jpg" alt="User">
+                                <p>You are away today</p>
+                            </li>
+                            <li>
+                                <img src="~/HRMS/new/assets/img/profiles/avatar-02.jpg" alt="User">
+                                <p>You are working from home today</p>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-lg-6 col-xl-3 d-flex">
+        <div class="card att-card flex-fill">
+            <div class="card-header">
+                <h3><i class="fas fa-birthday-cake"></i> Birthdays</h3>
+            </div>
+            <div class="card-body pt-0 pb-0">
+                <ul class="leave-list bday-list">
+                    <li>
+                        <div class="wish-info">
+                            <img src="~/HRMS/new/assets/img/profiles/avatar-04.jpg" alt="User">
+                            <p>Joh Doe</p>
+                        </div>
+                        <a href="#" class="wish-btn">Wish Now</a>
+                    </li>
+                    <li>
+                        <div class="wish-info">
+                            <img src="~/HRMS/new/assets/img/profiles/avatar-04.jpg" alt="User">
+                            <p>Nick Harry</p>
+                        </div>
+                        <a href="#">Jan 20</a>
+                    </li>
+                    <li>
+                        <div class="wish-info">
+                            <img src="~/HRMS/new/assets/img/profiles/avatar-04.jpg" alt="User">
+                            <p>Juliene</p>
+                        </div>
+                        <a href="#">Jan 20</a>
+                    </li>
+                    <li>
+                        <div class="wish-info">
+                            <img src="~/HRMS/new/assets/img/profiles/avatar-04.jpg" alt="User">
+                            <p>Richard</p>
+                        </div>
+                        <a href="#">Jan 20</a>
+                    </li>
+                    <li>
+                        <div class="wish-info">
+                            <img src="~/HRMS/new/assets/img/profiles/avatar-04.jpg" alt="User">
+                            <p>Harry Len</p>
+                        </div>
+                        <a href="#">Jan 20</a>
+                    </li>
+                    <li>
+                        <div class="wish-info">
+                            <img src="~/HRMS/new/assets/img/profiles/avatar-04.jpg" alt="User">
+                            <p>Ken Druv</p>
+                        </div>
+                        <a href="#">Jan 20</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-lg-6 col-xl-4 d-flex">
+        <div class="card uh-card flex-fill">
+            <div class="card att-card h-set-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-home"></i> Upcoming Holidays</h3>
+                </div>
+                <div class="card-body pt-0 pb-0">
+                    <ul class="leave-list upcoming-list">
+                        <li>
+                            <div class="d-flex align-items-center">
+                                <div class="circle">
+                                    <i class="far fa-image"></i>
+                                </div>
+                                <h3>DreamsHRMS</h3>
+                            </div>
+                            <h6>Jan 20</h6>
+                        </li>
+                        <li>
+                            <div class="d-flex align-items-center">
+                                <div class="circle">
+                                    <i class="far fa-image"></i>
+                                </div>
+                                <h3>DreamsHRMS</h3>
+                            </div>
+                            <h6>Jan 20</h6>
+                        </li>
+                        <li>
+                            <div class="d-flex align-items-center">
+                                <div class="circle">
+                                    <i class="far fa-image"></i>
+                                </div>
+                                <h3>DreamsHRMS</h3>
+                            </div>
+                            <h6>Jan 20</h6>
+                        </li>
+                        <li>
+                            <div class="d-flex align-items-center">
+                                <div class="circle">
+                                    <i class="far fa-image"></i>
+                                </div>
+                                <h3>DreamsHRMS</h3>
+                            </div>
+                            <h6>Jan 20</h6>
+                        </li>
+                        <li>
+                            <div class="d-flex align-items-center">
+                                <div class="circle">
+                                    <i class="far fa-image"></i>
+                                </div>
+                                <h3>DreamsHRMS</h3>
+                            </div>
+                            <h6>Jan 20</h6>
+                        </li>
+                        <li>
+                            <div class="d-flex align-items-center">
+                                <div class="circle">
+                                    <i class="far fa-image"></i>
+                                </div>
+                                <h3>DreamsHRMS</h3>
+                            </div>
+                            <h6>Jan 20</h6>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

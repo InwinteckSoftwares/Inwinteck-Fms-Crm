@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Inwinteck FMS | Ticket Schedule</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Pacifico&display=swap');
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #e8f0f2;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 600px;
+            margin: 0 auto;
+            background: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            border-top: 8px solid #0f709a;
+        }
+
+        .header {
+            background: linear-gradient(90deg, #0f709a, #3a9ebc);
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 3px solid #fff;
+        }
+
+            .header h3 {
+                margin: 0;
+                font-family: 'Pacifico', cursive;
+                font-size: 24px;
+            }
+
+        .content {
+            padding: 25px;
+            text-align: left;
+        }
+
+            .content p {
+                margin: 15px 0;
+                line-height: 1.8;
+                font-size: 16px;
+            }
+
+                .content p b {
+                    color: #0f709a;
+                }
+
+        .footer {
+            background: #f4f4f4;
+            padding: 15px;
+            text-align: center;
+            font-size: 12px;
+            color: #777;
+        }
+
+        .logo {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+            .logo img {
+                max-width: 120px;
+                filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.2));
+            }
+
+        .footer p {
+            margin: 0;
+        }
+
+        .highlight {
+            background-color: #e6f7ff;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 20px 0;
+            border-left: 4px solid #0f709a;
+        }
+
+            .highlight p {
+                margin: 0;
+            }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h3>Hello {name} Team,</h3>
+        </div>
+        <div class="content">
+            <p>In reference to your case no <b>{Case_no}</b>, the FE has checked in. Below are the details:</p>
+            <div class="highlight">
+                <p><b>FE Name:</b> {FE}</p>
+                <!--<p><b>Email:</b> {Email}</p>-->
+                <p><b>Contact No:</b> {Contact}</p>
+                <p><b>Check-In Date:</b> {In_Date}</p>
+                <p><b>Check-In Time:</b> {In_time}</p>
+            </div>
+            <p>Second FE:</p>
+            <div class="highlight">
+                <p><b>FE Name:</b> {FE2}</p>
+                <!--<p><b>Email:</b> {Email2}</p>-->
+                <p><b>Contact No:</b> {Contact2}</p>
+                <p><b>Check-In Date:</b> {In_Date2}  (Local Time)</p>
+                <p><b>Check-In Time:</b> {In_time2}</p>
+            </div>
+            <p>We appreciate the opportunity to serve you!</p>
+        </div>
+        <div class="logo">
+            <img src="https://fms.inwinteck.com/assets/images/logo.png" alt="Inwinteck Logo" />
+        </div>
+        <div class="footer">
+            <p>This is an auto-generated email. Please do not reply.</p>
+        </div>
+    </div>
+</body>
+
+</html>

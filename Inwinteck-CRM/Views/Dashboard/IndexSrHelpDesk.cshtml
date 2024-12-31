@@ -1,0 +1,475 @@
+﻿
+@{
+    ViewBag.Title = "IndexSrHelpDesk";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="page-header">
+    <div class="container-fluid d-sm-flex justify-content-between">
+        <h4>Dashboard</h4>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Index</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<!-- [ breadcrumb ] end -->
+<!-- [ Main Content ] start -->
+<div class="row">
+    <div class="col-xl-6 col-md-6">
+        <div class="card">
+            <div class="card-body">
+
+                <div class="form-row">
+                    <div class="col-md-6">
+                        <h2 class="text-center f-w-400 color-gray">
+                            @ViewBag.countycnt
+                        </h2>
+                        <p class="text-center color-gray">Country Served </p>
+                    </div>
+                    <div class="col-md-6">
+                        <h2 class="text-center f-w-400 color-gray">
+                            @ViewBag.Citycnt
+                        </h2>
+                        <p class="text-center color-gray">City Served </p>
+                    </div>
+                </div>
+
+                <div class="table-responsive dt-responsive">
+
+                    <table id="dom-jqry" class="table table-striped table-bordered nowrap">
+                        <thead>
+                            <tr>
+                                <th>Country Name</th>
+                                <th>Country Number</th>
+                            </tr>
+                        </thead>
+                        @if (ViewBag.county.Count > 0)
+                        {
+                            foreach (var i in ViewBag.county)
+                            {
+                                <tr>
+                                    <td title="@i.City">@i.Country </td>
+                                    <td><a href="@Url.Action("FEReport","Report" , new {Country = i.Country })">@i.Number</a></td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr><td colspan="2" class="text-center"> <code style="font-size:20px;"> <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <br /> No Record Found </code></td></tr>
+                        }
+                    </table>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Master Graph Starts -->
+    <div class="col-md-6">
+        <div class="card ">
+            <div class="card-body ">
+                <a href="@Url.Action("FEMaster","Master")">
+                    <h2 class="text-center f-w-400 color-gray">
+                        @ViewBag.FE
+                    </h2>
+                    <p class="text-center color-gray">FE Registered</p>
+                </a>
+                @*<div id="femaster"></div>*@
+
+                <div id="femaster-chart"></div>
+                <div class="m-t-20">
+                    <div class="row ">
+                        <div class="col-4 text-center ">
+                            <h6 class="f-20 f-w-400 color-gray">@ViewBag.FEToday</h6>
+                            <p class="f-14 m-b-0">Today</p>
+                        </div>
+                        <div class="col-4 text-center ">
+                            <h6 class="f-20 f-w-400 color-gray">@ViewBag.FEMonth</h6>
+                            <p class="f-14 m-b-0">MTD</p>
+                        </div>
+                        <div class="col-4 text-center ">
+                            <h6 class="f-20 f-w-400 color-gray">@ViewBag.FEYear</h6>
+                            <p class="f-14 m-b-0">YTD</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*<div class="card ">
+            <div class="card-body ">
+                <a href="@Url.Action("EUMaster","Master")">
+                    <h2 class="text-center f-w-400 color-gray ">@ViewBag.EU</h2>
+                    <p class="text-center color-gray ">Client Registered</p>
+                </a>
+                <div id="eumaster"></div>
+                <div class="m-t-20">
+                    <div class="row ">
+                        <div class="col-4 text-center ">
+                            <h6 class="f-20 f-w-400 color-gray">@ViewBag.EUToday</h6>
+                            <p class="f-14 m-b-0">Today</p>
+                        </div>
+                        <div class="col-4 text-center ">
+                            <h6 class="f-20 f-w-400 color-gray">@ViewBag.EUMonth</h6>
+                            <p class="f-14 m-b-0">MTD</p>
+                        </div>
+                        <div class="col-4 text-center ">
+                            <h6 class="f-20 f-w-400 color-gray">@ViewBag.EUYear</h6>
+                            <p class="f-14 m-b-0">YTD</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+    </div>
+
+
+    <div class="col-xl-6 col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive dt-responsive">
+                    <h5 class="text-center color-gray ">Ticket Status</h5>
+                    <table id="dom-jqry" class="table table-striped table-bordered nowrap">
+                        <tr class="thead-dark">
+                            <th></th>
+                            <th>YTD</th>
+                            <th>MTD</th>
+                            <th>Today</th>
+                        </tr>
+                        <tr>
+                            <td class="thead-dark">Logged</td>
+                            <td><a href="@Url.Action("Ticket","Transaction" , new {searchtype = "Status-YTD",searchtext=""})">@ViewBag.YTDLogged</a></td>
+                            <td><a href="@Url.Action("Ticket","Transaction" , new {searchtype = "Status-MTD",searchtext=""})">@ViewBag.MTDLogged</a></td>
+                            <td><a href="@Url.Action("Ticket","Transaction" , new {searchtype = "Status-TD",searchtext=""})">@ViewBag.TDLogged</a></td>
+                        </tr>
+                        <tr>
+                            <td class="thead-dark">Open</td>
+                            <td><a href="@Url.Action("Ticket","Transaction" , new {searchtype = "Status-YTD",searchtext="Open"})">@ViewBag.YTDOpen</a></td>
+                            <td><a href="@Url.Action("Ticket","Transaction" , new {searchtype = "Status-MTD",searchtext="Open"})">@ViewBag.MTDOpen</a></td>
+                            <td><a href="@Url.Action("Ticket","Transaction" , new {searchtype = "Status-TD",searchtext="Open"})">@ViewBag.TDOpen</a></td>
+                        </tr>
+                        <tr>
+                            <td class="thead-dark">FE Selected</td>
+                            <td><a href="@Url.Action("Ticket","Transaction" , new {searchtype = "Status-YTD",searchtext="FESelected"})">@ViewBag.YTDFESelected</a></td>
+                            <td><a href="@Url.Action("Ticket","Transaction" , new {searchtype = "Status-MTD",searchtext="FESelected"})">@ViewBag.MTDFESelected</a></td>
+                            <td><a href="@Url.Action("Ticket","Transaction" , new {searchtype = "Status-TD",searchtext="FESelected"})">@ViewBag.TDFESelected</a></td>
+                        </tr>
+                        <tr>
+                            <td class="thead-dark">Scheduled</td>
+                            <td><a href="@Url.Action("Ticket","Transaction" , new {searchtype = "Status-YTD",searchtext="Scheduled"})">@ViewBag.YTDScheduled</a></td>
+                            <td><a href="@Url.Action("Ticket","Transaction" , new {searchtype = "Status-MTD",searchtext="Scheduled"})">@ViewBag.MTDScheduled</a></td>
+                            <td><a href="@Url.Action("Ticket","Transaction" , new {searchtype = "Status-TD",searchtext="Scheduled"})">@ViewBag.TDScheduled</a></td>
+                        </tr>
+                        <tr>
+                            <td class="thead-dark">Checked In</td>
+                            <td><a href="@Url.Action("Ticket","Transaction" , new {searchtype = "Status-YTD",searchtext="CheckedIn"})">@ViewBag.YTDCheckedIn</a></td>
+                            <td><a href="@Url.Action("Ticket","Transaction" , new {searchtype = "Status-MTD",searchtext="CheckedIn"})">@ViewBag.MTDCheckedIn</a></td>
+                            <td><a href="@Url.Action("Ticket","Transaction" , new {searchtype = "Status-TD",searchtext="CheckedIn"})">@ViewBag.TDCheckedIn</a></td>
+                        </tr>
+                        <tr>
+                            <td class="thead-dark">Closed</td>
+                            <td><a href="@Url.Action("Ticket","Transaction" , new {searchtype = "Status-YTD",searchtext="Closed"})">@ViewBag.YTDClosed</a></td>
+                            <td><a href="@Url.Action("Ticket","Transaction" , new {searchtype = "Status-MTD",searchtext="Closed"})">@ViewBag.MTDClosed</a></td>
+                            <td><a href="@Url.Action("Ticket","Transaction" , new {searchtype = "Status-TD",searchtext="Closed"})">@ViewBag.TDClosed</a></td>
+                        </tr>
+                        <tr>
+                            <td class="thead-dark">Cancelled</td>
+                            <td><a href="@Url.Action("Ticket","Transaction" , new {searchtype = "Status-YTD",searchtext="Cancel"})">@ViewBag.YTDCancelled</a></td>
+                            <td><a href="@Url.Action("Ticket","Transaction" , new {searchtype = "Status-MTD",searchtext="Cancel"})">@ViewBag.MTDCancelled</a></td>
+                            <td><a href="@Url.Action("Ticket","Transaction" , new {searchtype = "Status-TD",searchtext="Cancel"})">@ViewBag.TDCancelled</a></td>
+                        </tr>
+                        <tr>
+                            <td class="thead-dark">Declined</td>
+                            <td><a href="@Url.Action("Ticket","Transaction" , new {searchtype = "Status-YTD",searchtext="Decline"})">@ViewBag.YTDDeclined</a></td>
+                            <td><a href="@Url.Action("Ticket","Transaction" , new {searchtype = "Status-MTD",searchtext="Decline"})">@ViewBag.MTDDeclined</a></td>
+                            <td><a href="@Url.Action("Ticket","Transaction" , new {searchtype = "Status-TD",searchtext="Decline"})">@ViewBag.TDDeclined</a></td>
+                        </tr>
+                        <tr>
+                            <td class="thead-dark">Reschdeuled</td>
+                            <td><a href="@Url.Action("Ticket","Transaction" , new {searchtype = "Status-YTD",searchtext="Reschedule"})">@ViewBag.YTDReschdeuled</a></td>
+                            <td><a href="@Url.Action("Ticket","Transaction" , new {searchtype = "Status-MTD",searchtext="Reschedule"})">@ViewBag.MTDReschdeuled</a></td>
+                            <td><a href="@Url.Action("Ticket","Transaction" , new {searchtype = "Status-TD",searchtext="Reschedule"})">@ViewBag.TDReschdeuled</a></td>
+                        </tr>
+                    </table>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    @*<div class="col-xl-6 col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive dt-responsive">
+                    <p class="text-center color-gray ">Ticket Open </p>
+                    <table id="tdo" class="table table-striped table-bordered nowrap">
+                        <thead>
+                            <tr>
+                                <th>Ticket No</th>
+                                <th>Ticket Date</th>
+                                <th>Dispatch</th>
+                                <th>Status</th>
+                                <th>FE Name</th>
+                                <th>Activity Status</th>
+                                <th>Location</th>
+                                <th>City</th>
+                                <th>Country</th>
+                            </tr>
+                        </thead>
+                        @if (ViewBag.TDO.Count > 0)
+                        {
+                            foreach (var i in ViewBag.TDO)
+                            {
+                                <tr>
+                                    <td><a href="@Url.Action("editTicket", "Transaction", new { Id = i.Id })" title="edit">@i.Ticket_No</a></td>
+                                    <td>@i.Ticket_date.ToString("yyyy-MM-dd HH:mm tt")</td>
+                                    <td>@i.Dispatch.ToString("yyyy-MM-dd HH:mm tt")</td>
+                                    <td>@i.Status</td>
+                                    <td>@i.FE_Name</td>
+                                    <td>@i.Activity_Status</td>
+                                    <td>@i.Site_Name</td>
+                                    <td>@i.City</td>
+                                    <td>@i.Country</td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr><td colspan="7" class="text-center"> <code style="font-size:20px;"> <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <br /> No Record Found </code></td></tr>
+                        }
+                    </table>
+
+                </div>
+
+            </div>
+        </div>
+    </div>*@
+
+    <!-- Master Graph Starts -->
+
+</div>
+<!-- [ Main Content ] end -->
+
+@section scripts
+{
+    <!-- Apex Chart -->
+    <script src="~/assets/js/plugins/apexcharts.min.js"></script>
+    <!-- custom-chart js -->
+    <script>
+        $(function () {
+            var options1 = {
+                chart: {
+                    type: 'area',
+                    height: 200,
+                    sparkline: {
+                        enabled: true
+                    }
+                },
+                colors: ["#ff5252"],
+                stroke: {
+                    curve: 'smooth',
+                    width: 2,
+                },
+                series: [{
+                    @ViewBag.Data
+                }],
+                tooltip: {
+                    fixed: {
+                        enabled: false
+                    },
+                    x: {
+                        show: false
+                    },
+                    y: {
+                        title: {
+                            formatter: function (seriesName) {
+                                return 'Ticket '
+                            }
+                        }
+                    },
+                    marker: {
+                        show: false
+                    }
+                }
+            }
+            new ApexCharts(document.querySelector("#support-chart"), options1).render();
+        });
+
+
+        // [ femaster ] start
+        $(function () {
+            var options = {
+                chart: {
+                    type: 'area',
+                    height: 30,
+                    sparkline: {
+                        enabled: true
+                    }
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                colors: ["#9ccc65"],
+                fill: {
+                    type: 'solid',
+                    opacity: 0.3,
+                },
+                markers: {
+                    size: 2,
+                    opacity: 0.9,
+                    colors: "#9ccc65",
+                    strokeColor: "#9ccc65",
+                    strokeWidth: 2,
+                    hover: {
+                        size: 4,
+                    }
+                },
+                stroke: {
+                    curve: 'straight',
+                    width: 3,
+                },
+                series: [{
+                    name: 'series1',
+                    @ViewBag.FEList
+                }],
+                tooltip: {
+                    fixed: {
+                        enabled: false
+                    },
+                    x: {
+                        show: false
+                    },
+                    y: {
+                        title: {
+                            formatter: function (seriesName) {
+                                return 'FE Registered :'
+                            }
+                        }
+                    },
+                    marker: {
+                        show: false
+                    }
+                }
+            };
+
+
+            var opt = {
+                chart: {
+                    type: 'area',
+                    height: 30,
+                    sparkline: {
+                        enabled: true
+                    }
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                colors: ["#536dfe"],
+                fill: {
+                    type: 'solid',
+                    opacity: 0.3,
+                },
+                markers: {
+                    size: 2,
+                    opacity: 0.9,
+                    colors: "#536dfe",
+                    strokeColor: "#536dfe",
+                    strokeWidth: 2,
+                    hover: {
+                        size: 4,
+                    }
+                },
+                stroke: {
+                    curve: 'straight',
+                    width: 3,
+                },
+                series: [{
+                    name: 'series1',
+                   @ViewBag.EUList
+                }],
+                tooltip: {
+                    fixed: {
+                        enabled: false
+                    },
+                    x: {
+                        show: false
+                    },
+                    y: {
+                        title: {
+                            formatter: function (seriesName) {
+                                return 'Customer Registered :'
+                            }
+                        }
+                    },
+                    marker: {
+                        show: false
+                    }
+                }
+            };
+
+            var euchart = new ApexCharts(document.querySelector("#eumaster"), opt);
+            var fechart = new ApexCharts(document.querySelector("#femaster"), options);
+            euchart.render();
+            fechart.render();
+        });
+        // [ femaster ] end
+
+        $(function () {
+            debugger
+            var options = {
+                chart: {
+                    height: 350,
+                    type: 'line',
+                },
+                series: [{
+                    name: 'FE Registration',
+                    type: 'column',
+                     @ViewBag.FEList
+                }],
+                stroke: {
+                    width: [0, 4]
+                },
+                colors: ["#4680ff"],
+                @Html.Raw(ViewBag.FEListDate)
+                xaxis: {
+                    type: 'datetime'
+                },
+                yaxis: [{
+                    title: {
+                        text: '',
+                    },
+
+                }]
+
+            }
+            var chart = new ApexCharts(
+                document.querySelector("#femaster-chart"),
+                options
+            );
+            chart.render();
+        });
+
+        $(document).ready(function () {
+            $('#myHoverTitle').tooltip({ content: $('#myContentHover').html() });
+            $('#dom-jqry').DataTable({
+                "ordering": true // false to disable sorting (or any other option)
+            });
+            $('#tdo').DataTable({
+                "ordering": true // false to disable sorting (or any other option)
+            });
+            $('#tds').DataTable({
+                "ordering": true // false to disable sorting (or any other option)
+            });
+        });
+    </script>
+    <!-- custom-chart js -->
+}
+

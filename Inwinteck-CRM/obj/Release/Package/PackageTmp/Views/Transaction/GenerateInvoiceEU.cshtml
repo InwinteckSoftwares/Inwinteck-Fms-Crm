@@ -1,0 +1,313 @@
+﻿@model Inwinteck_CRM.Models.Invoice_EU
+@{
+    ViewBag.Title = "GenerateInvoiceEU";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="page-header">
+    <div class="container-fluid d-sm-flex justify-content-between">
+        <h4>Invoice</h4>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">Transaction</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Generate Invoice</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+@using (Html.BeginForm("GenerateInvoiceEU", "Transaction", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+    <div hidden>
+        <input type="hidden" value="@Model.EU_ID" name="EU_ID">
+        <input type="hidden" value="@Model.Ticket" name="Ticket_no">
+    </div>
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-md-12">
+                <!-- Basic Forms -->
+                <div class="card">
+
+                    <!-- /.box-header -->
+                    <div class="card-body">
+
+                        <div class="form-row">
+                            <label class="col-sm-12 text-center col-form-label">Invoice Detail</label>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="Ticket_no" class="col-sm-2 col-form-label">Ticket</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" value="INWIN000 @Model.Ticket" name="" id="Ticket_no" readonly>
+                            </div>
+                            <label for="EU_Name" class="col-sm-2 col-form-label">EU Name</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" value="@Model.EU" id="EU_Name" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+
+                <div class="card">
+                    <!-- /.box-header -->
+                    <div class="card-body">
+
+                        <div class="form-row">
+                            <label class="col-sm-12 text-center col-form-label">Site Details</label>
+                        </div>
+
+
+                        <div class="form-row">
+                            <label for="OEM" class="col-sm-2 col-form-label">OEM</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" value="@Model.OEM" id="OEM" readonly>
+                            </div>
+                            <label for="Site_Name" class="col-sm-2 col-form-label">Site Name</label>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" name="Site_Name" value="@Model.Site_Name" id="Site_Name" placeholder="Enter your Site Name" readonly>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="Street_Address" class="col-sm-2 col-form-label">Street Address</label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" name="Street_Address" value="@Model.Street_Address" placeholder="Enter your Street Address" readonly>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="Zip_Pin_Code" class="col-sm-2 col-form-label">ZipCode/Pincode</label>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" name="Zip_Pin_Code" value="@Model.Zip_Pin_Code" id="ZipCode_Pincode" placeholder="Enter your ZipCode/Pincode" readonly>
+                            </div>
+                            <label for="City" class="col-sm-2 col-form-label">City</label>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" name="City" value="@Model.City" id="City" placeholder="Enter your City" readonly>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="State" class="col-sm-2 col-form-label">State</label>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" name="State" value="@Model.State" id="State" placeholder="Enter your State" readonly>
+                            </div>
+                            <label for="Country" class="col-sm-2 col-form-label">Country</label>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" name="Country" value="@Model.Country" id="Country" placeholder="Enter your State" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+
+                <div class="card">
+                    <!-- /.box-header -->
+                    <div class="card-body">
+                        <div class="form-row">
+                            <label class="col-sm-12 text-center col-form-label">Invoice Charges : Currency : USD </label>
+                        </div>
+                        @if (Model.Cancel_Charge > 0)
+                        {
+                            <div hidden>
+                                <input type="hidden" value="0" name="Business_hour_amt" id="Business_hour_amt">
+                                <input type="hidden" value="0" name="Non_Business_hour_amt" id="Non_Business_hour_amt">
+                                <input type="hidden" value="0" name="Travel_Charge" id="Travel_Charge">
+                                <input type="hidden" value="0" name="Reschedule_Charge" id="Reschedule_Charge">
+                                <input type="hidden" value="0" name="Fixed_amt" id="CT_Fixed">
+                            </div>
+
+                            <div class="form-row">
+                                <label class="col-sm-2 col-form-label">EU Cancel Charge</label>
+                                <div class="col-md-4">
+                                    <input type="number" class="form-control" name="Cancel_Charge" value="@Model.Cancel_Charge" id="Cancel_Charge" placeholder="Cancel Charge" onkeyup="sum();">
+                                </div>
+                                <label class="col-sm-2 col-form-label">Other Charge</label>
+                                <div class="col-md-4">
+                                    <input type="number" class="form-control" name="Part_Handling_Charge" value="0" id="Part_Handling_Charge" placeholder="Other Charge" onkeyup="sum();">
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div hidden>
+                                <input type="hidden" value="0" name="Cancel_Charge" id="Cancel_Charge">
+                            </div>
+                            <div class="form-row">
+                                <label class="col-sm-2 col-form-label">In Time</label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" value="@Model.In_Time" placeholder="Business Hours" readonly>
+                                </div>
+                                <label class="col-sm-2 col-form-label">Out Time</label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" value="@Model.Out_Time" placeholder="Non Business Hours" readonly>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <label class="col-sm-2 col-form-label">Business Hours</label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" name="Business_hour" value="@ViewBag.Bussiness" placeholder="Business Hours" readonly>
+                                </div>
+                                <label class="col-sm-2 col-form-label">Non Business Hours</label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" name="Non_Business_hour" value="@ViewBag.Bussinessnon" placeholder="Non Business Hours" readonly>
+                                </div>
+                            </div>
+                            if (Model.CT_Payment_Mode == "F")
+                            {
+                                <input type="hidden" class="form-control" name="Business_hour_amt" value="0" id="Business_hour_amt" placeholder="Business Hours" onkeyup="sum();" readonly>
+                                <input type="hidden" class="form-control" name="Non_Business_hour_amt" value="0" id="Non_Business_hour_amt" placeholder="Non Business Hours" onkeyup="sum();" readonly>
+                                <div class="form-row">
+                                    <label class="col-sm-2 col-form-label">Fixed Amount</label>
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control" name="Fixed_amt" value="@Model.CT_Fixed" id="CT_Fixed" placeholder="Fixed Amount" onkeyup="sum();" readonly>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <input type="hidden" class="form-control" name="Fixed_amt" value="0" id="CT_Fixed" placeholder="Fixed Amount" onkeyup="sum();" readonly>
+                                <div class="form-row">
+                                    <label class="col-sm-2 col-form-label">EU Charge per Business Hours</label>
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control" value="@Model.CT_Buss_Hrs" placeholder="Business Hours" readonly>
+                                    </div>
+                                    <label class="col-sm-2 col-form-label">EU Charge per Non Business Hours</label>
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control" value="@Model.CT_Non_Buss_Hrs" placeholder="Non Business Hours" readonly>
+                                    </div>
+                                </div>
+                                    <div class="form-row">
+                                        <label class="col-sm-2 col-form-label">EU Charged Business Hours</label>
+                                        <div class="col-md-4">
+                                            <input type="number" class="form-control" name="Business_hour_amt" value="@ViewBag.BussinessChg" id="Business_hour_amt" placeholder="Business Hours" onkeyup="sum();" readonly>
+                                        </div>
+                                        <label class="col-sm-2 col-form-label">EU Charged Non Business Hours</label>
+                                        <div class="col-md-4">
+                                            <input type="number" class="form-control" name="Non_Business_hour_amt" value="@ViewBag.BussinessnonChg" id="Non_Business_hour_amt" placeholder="Non Business Hours" onkeyup="sum();" readonly>
+                                        </div>
+                                    </div>
+
+                            }
+                            <div class="form-row">
+                                <label class="col-sm-2 col-form-label">EU Travel Charge</label>
+                                <div class="col-md-4">
+                                    <input type="number" class="form-control" name="Travel_Charge" value="@Model.CT_Allowance" id="Travel_Charge" placeholder="Travel Charge" onkeyup="sum();">
+                                </div>
+                                <label class="col-sm-2 col-form-label">Other Charge</label>
+                                <div class="col-md-4">
+                                    <input type="number" class="form-control" name="Part_Handling_Charge" value="0" id="Part_Handling_Charge" placeholder="Other Charge" onkeyup="sum();">
+                                </div>
+                            </div>
+                                    <div class="form-row">
+                                        <label class="col-sm-2 col-form-label">EU Reschedule Charge</label>
+                                        <div class="col-md-4">
+                                            <input type="number" class="form-control" name="Reschedule_Charge" value="@Model.Reschedule_Charge" id="Reschedule_Charge" placeholder="Reschedule Charge" onkeyup="sum();">
+                                        </div>
+                                    </div>
+                        }
+
+                        <div class="form-row">
+                            <label class="col-sm-2 col-form-label">Total Amount</label>
+                            <div class="col-md-10">
+                                <input type="number" class="form-control" name="" value="@ViewBag.Total" id="Total_Amount" placeholder="Total Amount" readonly>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-12 text-center">
+                                <a href="@Url.Action("viewTicket", "Transaction", new { Id = @Model.Ticket })" class="btn btn-info" target="_blank">View Ticket </a>
+                                <input type="submit" class="btn btn-primary" value="Generate" />
+                                <a href="@Url.Action("EUInvoice","Transaction")" class="btn btn-info">Cancel</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+
+            </div>
+        </div>
+
+    </div>
+}
+
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content  text-center">
+            <div class="modal-header">
+                <h4 class="modal-title text-center "><i class="fa fa-info-circle" aria-hidden="true"></i> Information</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 20px;">@TempData["message"] </p>
+
+            </div>
+            <div class="modal-footer">
+                <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                @if (TempData["link"] != null)
+                {
+                    if (TempData["link"].ToString() == "Yes")
+                    {
+                        <a target="_blank" href="@Url.Action("PrintInvoiceEU","Transaction",new {InvoiceNo = TempData["INV"] })" class="btn btn-primary"><i class="fas fa-print"></i></a>
+                    }
+                }
+
+                <a href="#" data-dismiss="modal" aria-label="Close" class="btn btn-secondary">OK</a>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+@section scripts
+{
+    @if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+
+            window.onload = function () {
+                $('#myModal').modal('show');
+            };
+        </script>
+    }
+
+    <script type="text/javascript">
+
+        function sum() {
+            debugger;
+            var txtFirstNumberValue = document.getElementById('Business_hour_amt').value;
+            var txtSecondNumberValue = document.getElementById('Non_Business_hour_amt').value;
+            var txtthreeNumberValue = document.getElementById('Travel_Charge').value;
+            var txtfourNumberValue = document.getElementById('Part_Handling_Charge').value;
+            var txtFiveNumberValue = document.getElementById('Reschedule_Charge').value;
+            var txtSixNumberValue = document.getElementById('Cancel_Charge').value;
+            var txtSevenNumberValue = document.getElementById('CT_Fixed').value;
+
+            var result = parseInt(txtFirstNumberValue) + parseInt(txtSecondNumberValue) +
+                        parseInt(txtthreeNumberValue) + parseInt(txtfourNumberValue) +
+                        parseInt(txtFiveNumberValue) + parseInt(txtSixNumberValue)
+            + parseInt(txtSevenNumberValue);
+            if (!isNaN(result)) {
+                document.getElementById('Total_Amount').value = result;
+            }
+        }
+    </script>
+
+}
+
+
+
+
+
+
+

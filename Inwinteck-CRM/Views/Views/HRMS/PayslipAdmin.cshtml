@@ -1,0 +1,532 @@
+﻿@model List<HRMS.Models.Payslip_View>
+@{
+    ViewBag.Title = "Payslip Admin";
+    Layout = ViewBag.Layout;
+}
+
+
+<!-- Page Header -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="page-head-box">
+            <h3>Payslip</h3>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index","Dashboard")">Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Payroll</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- /Page Header -->
+<!-- Search Filter -->
+<div class="row filter-row">
+    <div class="col-md-8">
+        @*<div class="row">
+                <div class="col-sm-6 col-md-3">
+                    <div class="form-group form-focus mb-0">
+                        <input type="text" class="form-control floating">
+                        <label class="focus-label">Employee ID</label>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="form-group form-focus mb-0">
+                        <input type="text" class="form-control floating">
+                        <label class="focus-label">Employee Name</label>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-4">
+                    <div class="form-group form-focus select-focus mb-0">
+                        <select class="select floating">
+                            <option>Select Designation</option>
+                            @foreach (var d in ViewBag.Designation)
+                            {
+                                <option value="@d.Value">@d.Text</option>
+                            }
+                        </select>
+                        <label class="focus-label">Designation</label>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-2">
+                    <a href="#" class="btn btn-success btn-search"><i class="fas fa-search mr-2"></i> Search </a>
+                </div>
+            </div>*@
+    </div>
+    <div class="col-md-4">
+        <div class="add-emp-section">
+            <a href="#" class="btn btn-success btn-add-emp" data-toggle="modal" data-target="#add_Salary"><i class="fas fa-plus"></i> Add Salary</a>
+        </div>
+    </div>
+</div>
+<!-- /Search Filter -->
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="table-responsive">
+            <table id="AllSlipTable" class="table table-striped custom-table datatable">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Employee ID</th>
+                        <th>Month</th>
+                        <th>Salary</th>
+                        <th>Payslip</th>
+                        <th class="text-right no-sort">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Count > 0)
+                    {
+                        foreach (var i in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @i.Employee_Name
+                                </td>
+                                <td>@i.EMP_Code</td>
+                                <td>
+                                    @i.Month.ToString("MMMM yy")
+                                </td>
+                                <td>
+                                    @i.Salary
+                                </td>
+                                <td>
+                                    <a class="role-info role-bg-two" href="@Url.Action("PayslipView","HRMS",new { id = i.Id})">View Slip</a>
+                                </td>
+
+                                <td class="text-right ico-sec">
+
+                                    <a href="#" data-toggle="modal" data-target="#delete_payslip_@i.Id"><i class="far fa-trash-alt"></i></a>
+
+                                    <!-- Delete Employee Modal -->
+                                    <div class="modal custom-modal fade" id="delete_payslip_@i.Id" role="dialog">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-body">
+                                                    <div class="form-header">
+                                                        <h3>Delete Payslip</h3>
+                                                        <p>Are you sure want to delete?</p>
+                                                    </div>
+                                                    <div class="modal-btn delete-action">
+                                                        <div class="row">
+                                                            <div class="col-6">
+                                                                <a href="@Url.Action("deletePayslip","HRMS", new {Id = i.Id })" class="btn btn-primary continue-btn">Delete</a>
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /Delete Employee Modal -->
+
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- Add Employee Modal -->
+<div id="add_Salary" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Salary</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("addSalary", "HRMS", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary("", new { @class = "text-danger" })
+
+                    <div class="row">
+                        <div class="col-sm-12 text-center">
+                            <code>
+                                <p style="font-size: 20px;" id="txtmsg"> </p>
+                            </code>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Month <span class="text-danger">*</span></label>
+                                <input class="form-control" name="Month" type="month" id="month" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Employee</label>
+                                <select class="select" name="Emp_Id" id="Emp_Id">
+                                    <option value="">Select Employee</option>
+                                    @foreach (var d in ViewBag.Employee)
+                                    {
+                                        <option value="@d.Value">@d.Text</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+                    <h3 class="card-title"> Quaterly Leave  Information</h3>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-form-label">Availed Leave </label>
+                                <input class="form-control" name="Avl_Leave" type="number" id="Avl_Leave" step=any>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="col-form-label">Balance Leave <span class="text-danger">*</span></label>
+                                <input class="form-control" name="Bl_Leave" type="number" id="Bl_Leave" step=any>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <hr>
+                    <h3 class="card-title"> Salary Information</h3>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-form-label">Salary <span class="text-danger">*</span></label>
+                                <input class="form-control" name="Salary" type="number" id="Salary" step=any readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="col-form-label">Day's Paid <span class="text-danger">*</span></label>
+                                <input class="form-control" name="Day_Paid" type="number" id="Day_Paid" step=any required>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-form-label">LOP/Absent <span class="text-danger">*</span></label>
+                                <input class="form-control" name="LOP_Absent" type="number" id="LOP_Absent" step=any required>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <h3 class="card-title"> Earning</h3>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-form-label">Basic <span class="text-danger">*</span></label>
+                                <input class="form-control" name="Basic" type="number" id="Basic" readonly>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-form-label">HRA  <span class="text-danger">*</span></label>
+                                <input class="form-control" name="HRA" type="number" id="HRA" readonly>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-form-label">Conveyance Allowance  <span class="text-danger">*</span></label>
+                                <input class="form-control" name="Conveyance_Allowance" type="number" id="Conveyance_Allowance" readonly>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-form-label">Special Allowance  <span class="text-danger">*</span></label>
+                                <input class="form-control" name="Special_Allowance" type="number" id="Special_Allowance" readonly>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-form-label">Other  </label>
+                                <input class="form-control" name="Other_Earning" min="0" value="0" type="number" step=any id="Other_Earning">
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+                    <h3 class="card-title"> Deduction & Recoveries</h3>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-form-label">Provident. Fund  </label>
+                                <input class="form-control" name="PF" type="number" id="PF" readonly>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-form-label">E.S.I.C </label>
+                                <input class="form-control" name="ESIC" type="number" id="ESIC" readonly>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-form-label">Professional Tax </label>
+                                <input class="form-control" name="PT" type="number" id="PT" readonly>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-form-label">Other </label>
+                                <input class="form-control" name="Other_Deduction" min="0" value="0" type="number" step=any id="Other_Deduction">
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <hr>
+                    <h3 class="card-title"> Total</h3>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-form-label">Total Earnings <span class="text-danger">*</span></label>
+                                <input class="form-control" name="Total_Earnings" type="number" id="Total_Earnings" readonly required>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-form-label">Total Deduction  <span class="text-danger">*</span></label>
+                                <input class="form-control" name="Total_Deduction" type="number" id="Total_Deduction" readonly required>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-form-label">Net Payable <span class="text-danger">*</span></label>
+                                <input class="form-control" name="Net_Pay" type="number" id="Net_Pay" readonly required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="submit-section">
+                        <button class="btn btn-primary cancel-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                        <button class="btn btn-primary submit-btn">Create</button>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Add Employee Modal -->
+
+
+<div class="modal custom-modal fade" id="msgBox">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-header">
+                    <h3 style="font-size: 20px;">@TempData["message"] </h3>
+                </div>
+                <div class="modal-btn">
+                    <div class="submit-section col-sm-4 offset-sm-4">
+                        <a href="#" data-dismiss="modal" aria-label="Close" class="btn btn-primary cancel-btn">OK</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
+@section scripts
+{
+    @if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+
+            window.onload = function () {
+                $('#msgBox').modal('show');
+            };
+        </script>
+    }
+
+
+    <script type="text/javascript">
+        $("#Emp_Id").change(function () {
+
+            var code = $(this).val();
+
+            $.get(baseurl + "/HRMS/GetEmpSalary", { Id: code, Mnt: $("#month").val() }, function (data) {
+
+                if (data.res == "Slip") {
+
+                    $('#txtmsg').text('Salary generated for this month');
+
+
+                    $("#Emp_Id").val('');
+                    $('#Salary').val('');
+                    $('#Total_Earnings').val('');
+                    $('#Basic').val('');
+                    $('#HRA').val('');
+                    $('#Conveyance_Allowance').val('');
+                    $('#Special_Allowance').val('');
+                    $('#PF').val('');
+                    $('#ESIC').val('');
+                    $('#PT').val('');
+                    $('#Total_Deduction').val('');
+                    $('#Net_Pay').val('');
+                    $('#Day_Paid').val('');
+                    $('#LOP_Absent').val('');
+
+                }
+                else if (data.res == "success") {
+
+                    $('#txtmsg').text('');
+
+                    $('#Salary').val(data.ps['Salary']);
+                    $('#Total_Earnings').val(data.ps['Total_Earnings']);
+                    $('#Basic').val(data.ps['Basic']);
+                    $('#HRA').val(data.ps['HRA']);
+                    $('#Conveyance_Allowance').val(data.ps['Conveyance_Allowance']);
+                    $('#Special_Allowance').val(data.ps['Special_Allowance']);
+                    $('#PF').val(data.ps['PF']);
+                    $('#ESIC').val(data.ps['ESIC']);
+                    $('#PT').val(data.ps['PT']);
+                    $('#Total_Deduction').val(data.ps['Total_Deduction']);
+                    $('#Net_Pay').val(data.ps['Net_Pay']);
+                    $('#Day_Paid').val(data.ps['Day_Paid']);
+                    $('#LOP_Absent').val(data.ps['LOP_Absent']);
+                }
+                else {
+
+                    $('#txtmsg').text('No Data Found');
+                    $('#msgBox').modal('show');
+
+                }
+            });
+
+        });
+
+    $("#month").change(function () {
+
+        var code = $("#Emp_Id").val();
+
+        $.get(baseurl + "/HRMS/GetEmpSalary", { Id: code, Mnt: $("#month").val() }, function (data) {
+
+            if (data.res == "Slip") {
+
+                $('#txtmsg').text('Salary generated for this month');
+
+
+                $("#Emp_Id").val('');
+                $('#Salary').val('');
+                $('#Total_Earnings').val('');
+                $('#Basic').val('');
+                $('#HRA').val('');
+                $('#Conveyance_Allowance').val('');
+                $('#Special_Allowance').val('');
+                $('#PF').val('');
+                $('#ESIC').val('');
+                $('#PT').val('');
+                $('#Total_Deduction').val('');
+                $('#Net_Pay').val('');
+                $('#Day_Paid').val('');
+                $('#LOP_Absent').val('');
+
+            }
+            else if (data.res == "success") {
+
+                $('#txtmsg').text('');
+
+                $('#Salary').val(data.ps['Salary']);
+                $('#Total_Earnings').val(data.ps['Total_Earnings']);
+                $('#Basic').val(data.ps['Basic']);
+                $('#HRA').val(data.ps['HRA']);
+                $('#Conveyance_Allowance').val(data.ps['Conveyance_Allowance']);
+                $('#Special_Allowance').val(data.ps['Special_Allowance']);
+                $('#PF').val(data.ps['PF']);
+                $('#ESIC').val(data.ps['ESIC']);
+                $('#PT').val(data.ps['PT']);
+                $('#Total_Deduction').val(data.ps['Total_Deduction']);
+                $('#Net_Pay').val(data.ps['Net_Pay']);
+                $('#Day_Paid').val(data.ps['Day_Paid']);
+                $('#LOP_Absent').val(data.ps['LOP_Absent']);
+            }
+            else {
+
+                $('#txtmsg').text('No Data Found');
+                $('#msgBox').modal('show');
+
+            }
+        });
+
+    });
+        function daysInMonth(month, year) {
+            return new Date(year, month, 0).getDate();
+        }
+
+        $("#Day_Paid").blur(function () {
+
+            var input = $("#month").val();
+            var d = new Date(input);
+            var year = d.getFullYear();
+            var month = d.getMonth() + 1;
+
+            var days = daysInMonth(month, year);
+            var basic = @ViewBag.Basic;
+            var hra = @ViewBag.hra;
+            var perday = 0;
+            //if (days < 30) {
+            //    perday = $("#Salary").val() / 30;
+            //}
+            //else
+            //{
+                perday = $("#Salary").val() / days;
+           /* }*/
+
+            $("#Total_Earnings").val(perday * $(this).val());
+
+
+            $("#Basic").val($("#Total_Earnings").val() * basic / 100);
+
+            $("#HRA").val($("#Basic").val() * hra / 100);
+
+            $("#Special_Allowance").val($("#Total_Earnings").val() - $("#HRA").val() - $("#Basic").val() - $("#Conveyance_Allowance").val());
+
+            $("#Net_Pay").val($("#Total_Earnings").val() - $("#Total_Deduction").val());
+
+        });
+
+
+
+        $("#Other_Earning").blur(function () {
+
+            var a = parseInt($("#Total_Earnings").val());
+            var b = parseInt($(this).val());
+            var c = a + b;
+            $("#Total_Earnings").val(c);
+            $("#Net_Pay").val($("#Total_Earnings").val() - $("#Total_Deduction").val());
+
+        });
+
+        $("#Other_Deduction").blur(function () {
+            var a = parseInt($("#Total_Deduction").val());
+            var b = parseInt($(this).val());
+            var c = a + b;
+            $("#Total_Deduction").val(c);
+            $("#Net_Pay").val($("#Total_Earnings").val() - $("#Total_Deduction").val());
+
+        });
+    </script>
+    <script>
+
+        $(document).ready(function () {
+            var table = $('#AllSlipTable').DataTable();
+            table.destroy();
+
+            $('#AllSlipTable').DataTable({
+                ordering: false
+            });
+        });
+    </script>
+
+}
+

@@ -1,0 +1,155 @@
+﻿@model List<HRMS.Models.Kra_Master>
+@{
+    ViewBag.Title = "KRA";
+    Layout = ViewBag.Layout;
+}
+
+
+<!-- Page Header -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="page-head-box">
+            <h3>Kra</h3>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index","Dashboard")">Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Add Kra</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <section class="review-section professional-excellence">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                @using (Html.BeginForm("add_Kra", "HRMS", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    @Html.ValidationSummary("", new { @class = "text-danger" })
+                                <table class="table table-bordered review-table mb-0">
+          
+                                        <thead>
+                                            <tr>
+                                                <th>Focused area (Organization Goals)</th>
+                                                <th>Weightage</th>
+                                                <th>Self Rating : Below 50% / 75% / 100%</th>
+                                                <th>Key Improvement Area</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (Model.Count > 0)
+                                            {
+                                                foreach (var i in Model)
+                                                {
+                                                    <tr>
+
+                                                        <td>
+                                                            @i.Focused_Area
+                                                            <input type="hidden" value="@i.Id" name="km[@Model.IndexOf(i)].Master_Id">
+                                                        </td>
+                                                        <td><input type="text" class="form-control" readonly value="@i.Weightage"></td>
+                                                        <td><input type="number" id="sl_rating_@i.Id" min="0" max="@i.Weightage" class="form-control total_self" name="km[@Model.IndexOf(i)].Self_Score" required></td>
+                                                        <td><input type="text" class="form-control" name="km[@Model.IndexOf(i)].Key_Improvement_Area"></td>
+                                                    </tr>
+                                                }
+                                            }
+                                            <tr>
+                                                <td class="text-center">Total </td>
+                                                <td><input type="text" class="form-control" readonly value="@ViewBag.wht"></td>
+                                                <td colspan="2"><input type="text" class="form-control" id="Total_self" name="Total_self" readonly value="0"></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="5" class="text-center">
+                                                    <div class="grade-span">
+                                                        <h4>Grade</h4>
+                                                        <span class="badge bg-inverse-danger">Below 50 % Not satisfactory</span>
+                                                        <span class="badge bg-inverse-warning"> >50 to 80% Average performance</span>
+                                                        <span class="badge bg-inverse-info"> >80 to 100% Met Expectation</span>
+                                                        <span class="badge bg-inverse-success"> >100%  Exceeded Expectation</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="5" class="text-center">
+                                                    <div class="grade-span">
+                                                        <input type="submit" class="btn btn-primary submit-btn" value="Add">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+
+                           
+
+                                </table>
+
+                                }
+                                </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal custom-modal fade" id="msgBox">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-header">
+                    <h3 style="font-size: 20px;">@TempData["message"] </h3>
+                </div>
+                <div class="modal-btn">
+                    <div class="submit-section col-sm-4 offset-sm-4">
+                        <a href="#" data-dismiss="modal" aria-label="Close" class="btn btn-primary cancel-btn">OK</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+@section scripts
+{
+    @if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+
+            window.onload = function () {
+                $('#msgBox').modal('show');
+            };
+        </script>
+    }
+
+    <script>
+        $(".total_self").blur(function () {
+          
+            var a = 0;
+
+            var inputs = $(".total_self");
+
+
+
+            for (var i = 0; i < inputs.length; i++) {
+
+                if ($(inputs[i]).val() == "") {
+                }
+                else {
+                    a = parseInt($(inputs[i]).val()) + parseInt(a);
+                }
+               
+            }
+
+            $("#Total_self").val(a);
+        });
+    </script>
+
+}

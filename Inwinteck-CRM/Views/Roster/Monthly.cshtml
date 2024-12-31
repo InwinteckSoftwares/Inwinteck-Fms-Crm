@@ -1,0 +1,69 @@
+﻿@model IEnumerable<HRMS.Models.Shift>
+
+@{
+    ViewBag.Title = "Monthly";
+    Layout = "~/Views/Shared/_LayoutHRMS.cshtml";
+}
+
+
+<h2>Roster for @ViewBag.FirstDayOfMonth.ToString("MMMM yyyy")</h2>
+
+<div class="month-navigation">
+    <a href="@Url.Action("Monthly", new { monthOffset = ViewBag.MonthOffset - 1 })" class="btn btn-primary">Previous Month</a>
+    <a href="@Url.Action("Monthly", new { monthOffset = ViewBag.MonthOffset + 1 })" class="btn btn-primary">Next Month</a>
+</div>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Sunday</th>
+            <th>Monday</th>
+            <th>Tuesday</th>
+            <th>Wednesday</th>
+            <th>Thursday</th>
+            <th>Friday</th>
+            <th>Saturday</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            // Calculate the number of days in the month and the first day of the month
+            int daysInMonth = DateTime.DaysInMonth(ViewBag.FirstDayOfMonth.Year, ViewBag.FirstDayOfMonth.Month);
+            DateTime firstDayOfMonth = ViewBag.FirstDayOfMonth;
+            int currentDay = 1;
+
+            // Start from the first day of the month and fill in the calendar
+            for (int week = 0; week < 6 && currentDay <= daysInMonth; week++) // Max 6 weeks in a month
+            {
+                <tr>
+                    @for (int dayOfWeek = 0; dayOfWeek < 7; dayOfWeek++)
+                    {
+                        if (week == 0 && dayOfWeek < (int)firstDayOfMonth.DayOfWeek || currentDay > daysInMonth)
+                        {
+                            // Empty cell before the first day of the month or after the last day
+                            <td></td>
+                        }
+                        else
+                        {
+                            var date = new DateTime(firstDayOfMonth.Year, firstDayOfMonth.Month, currentDay);
+                            var shiftsForDay = Model.Where(s => s.Date == date).ToList();
+
+                            <td>
+                                <strong>@date.ToString("dd-MMM")</strong>
+                                <br />
+                                @foreach (var shift in shiftsForDay)
+                                {
+                                    <div>@shift.EmployeeName: @(shift.IsWeekOff ? "WO" : shift.ShiftTime)</div>
+                                }
+                            </td>
+
+                            currentDay++;
+                        }
+                    }
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+

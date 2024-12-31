@@ -1,0 +1,302 @@
+﻿@model Inwinteck_CRM.Models.Invoice_FE_Print
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Inwinteck FMS :: Invoice</title>
+   
+    <!-- Favicon icon -->
+    <link rel="icon" href="~/assets/images/favicon.ico" type="image/x-icon">
+
+    <!-- vendor css -->
+    <link rel="stylesheet" href="~/assets/css/style.css">
+
+
+
+</head>
+<style>
+    h6 {
+        color:#000000;
+    }
+</style>
+<body>
+    @Html.Action("_Menu", "Partial")
+    <!-- [ Header ] end -->
+    <!-- [ Main Content ] start -->
+    <div class="pcoded-main-container">
+        <div class="pcoded-wrapper container">
+            <div class="pcoded-content">
+                <div class="pcoded-inner-content">
+                    <div class="main-body">
+                        <!-- [ breadcrumb ] start -->
+                        <div class="page-header">
+                            <div class="container-fluid d-sm-flex justify-content-between">
+                                <h4>FE Invoice</h4>
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item">
+                                            <a href="#">Invoice</a>
+                                        </li>
+                                        <li class="breadcrumb-item active" aria-current="page">FE Invoice Payment</li>
+                                    </ol>
+                                </nav>
+                            </div>
+                        </div>
+                        <!-- [ breadcrumb ] end -->
+                        <!-- [ Main Content ] start -->
+                        <div class="row">
+                            <!-- [ Invoice ] start -->
+                            <div class="container" id="printTable">
+                                <div>
+                                    <div class="card" style="background-color:#fff;">
+                                        <div class="row invoice-contact">
+                                            <div class="col-md-8">
+                                                <div class="invoice-box row">
+                                                    <div class="col-sm-12">
+                                                        <table class="table table-responsive invoice-table table-borderless p-l-20">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>
+                                                                        <a href="index.html" class="b-brand">
+                                                                            <img class="img-fluid" src="~/assets/images/logo.png" alt="Inwinteck Logo">
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td> </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>23 Kelantan Lane,#04-01 Kim Hoe Centre,Singapore - 208642</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><a class="text-secondary" href="mailto:sales@inwinteck.com" target="_top">sales@inwinteck.com</a></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>USA:(+1) 971-248-6969 | UK :(+44) 151-528-6969 | India :(+91) 773-806-6969 </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4"></div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row invoive-info">
+                                                <div class="col-md-4 col-xs-12 invoice-client-info">
+                                                    <h6>Field Engineer Information :</h6>
+                                                    <h6 class="m-0">@Model.FE_Name</h6>
+                                                    <p class="m-0 m-t-10">@Model.FE_Address</p>
+                                                    <p class="m-0">@Model.FE_Phone</p>
+                                                    <p><a class="text-secondary" href="@Model.FE_Email" target="_top">@Model.FE_Email</a></p>
+                                                </div>
+                                                <div class="col-md-4 col-sm-6">
+                                                    <h6>Ticket Information :</h6>
+                                                    <table class="table table-responsive invoice-table invoice-order table-borderless">
+                                                        <tbody>
+                                                            <tr>
+                                                                <th>Ticket :</th>
+                                                                <td>INWIN000 @Model.Ticket_No</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>IN Time :</th>
+                                                                <td>
+                                                                    @Model.In_Time
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>OUT Time :</th>
+                                                                <td>
+                                                                    @Model.Out_Time
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div class="col-md-4 col-sm-6">
+                                                    <h6 class="m-b-20">Invoice Number : <span>FE#@Model.Inv_No</span></h6>
+                                                    <h6 class="m-b-20">Invoice Date : <span>@Model.Invoice_Date.ToString("dd-MM-yyyy")</span></h6>
+                                                    <h6 class="text-uppercase text-primary">
+                                                        Total :
+                                                        <span>USD @Model.Total_Amt</span>
+                                                    </h6>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div class="table-responsive">
+                                                        <table class="table invoice-detail-table">
+                                                            <thead>
+                                                                <tr class="thead-default">
+                                                                    <th>#No</th>
+                                                                    <th>Description</th>
+                                                                    <th>Hour</th>
+                                                                    <th>Amount</th>
+                                                                    <th>Total</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @if (Model.Fixed_amt > 0)
+                                                                {
+                                                                    <tr>
+                                                                        <td>
+                                                                            #1
+                                                                        </td>
+                                                                        <td>
+                                                                            <h6>Fixed Amount</h6>
+                                                                        </td>
+                                                                        <td>0</td>
+                                                                        <td>USD  @Model.Fixed_amt</td>
+                                                                        <td>USD @Model.Fixed_amt</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            #2
+                                                                        </td>
+                                                                        <td>
+                                                                            <h6>Travel Charges</h6>
+                                                                        </td>
+                                                                        <td>0</td>
+                                                                        <td>USD @Model.FE_Travel</td>
+                                                                        <td>USD @Model.Inv_Travel</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            #3
+                                                                        </td>
+                                                                        <td>
+                                                                            <h6>Other Charges</h6>
+                                                                        </td>
+                                                                        <td>0</td>
+                                                                        <td>USD @Model.Part_Handling_Charge</td>
+                                                                        <td>USD @Model.Part_Handling_Charge</td>
+                                                                    </tr>
+
+                                                                }
+                                                                else
+                                                                {
+                                                                    <tr>
+                                                                        <td>
+                                                                            #1
+                                                                        </td>
+                                                                        <td>
+                                                                            <h6>Business Hours</h6>
+                                                                        </td>
+                                                                        <td>@Model.Business_hour</td>
+                                                                        <td>USD  @Model.Charges_Business_Hour</td>
+                                                                        <td>USD @Model.Business_hour_amt</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            #2
+                                                                        </td>
+                                                                        <td>
+                                                                            <h6>Non Business Hours</h6>
+                                                                        </td>
+                                                                        <td>@Model.Non_Business_hour</td>
+                                                                        <td>USD @Model.Charges_Non_Business_Hour</td>
+                                                                        <td>USD @Model.Non_Business_hour_amt</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            #3
+                                                                        </td>
+                                                                        <td>
+                                                                            <h6>Travel Charges</h6>
+                                                                        </td>
+                                                                        <td>0</td>
+                                                                        <td>USD @Model.FE_Travel</td>
+                                                                        <td>USD @Model.Inv_Travel</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            #4
+                                                                        </td>
+                                                                        <td>
+                                                                            <h6>Other Charges</h6>
+                                                                        </td>
+                                                                        <td>0</td>
+                                                                        <td>USD @Model.Part_Handling_Charge</td>
+                                                                        <td>USD @Model.Part_Handling_Charge</td>
+                                                                    </tr>
+                                                                }
+                                                                
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <table class="table table-responsive invoice-table invoice-total">
+                                                        <tbody>
+                                                            <tr class="text-info">
+                                                                <td>
+                                                                    <hr />
+                                                                    <h5 class="text-primary m-r-10">Total :</h5>
+                                                                </td>
+                                                                <td>
+                                                                    <hr />
+                                                                    <h5 class="text-primary">USD @Model.Total_Amt</h5>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <h6>Terms and Condition :</h6>
+                                                    <p>
+                                                        lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                                                        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="container">
+                                <div class="row text-center">
+                                    <div class="col-sm-12 invoice-btn-group text-center">
+                                        <button type="button" class="btn waves-effect waves-light btn-primary btn-print-invoice m-b-10">Print</button>
+                                        <a href="@Url.Action("AllInvoiceFE","Transaction")" class="btn waves-effect waves-light btn-secondary m-b-10 ">Cancel</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- [ Invoice ] end -->
+                        </div>
+                        <!-- [ Main Content ] end -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <!-- Required Js -->
+        <script src="~/assets/js/vendor-all.min.js"></script>
+        <script src="~/assets/js/plugins/bootstrap.min.js"></script>
+        <script src="~/assets/js/ripple.js"></script>
+        <script src="~/assets/js/pcoded.min.js"></script>
+
+        <script>
+            function printData() {
+                var divToPrint = document.getElementById("printTable");
+                newWin = window.open("");
+                newWin.document.write(divToPrint.outerHTML);
+                newWin.print();
+                newWin.close();
+            }
+            $('.btn-print-invoice').on('click', function () {
+                printData();
+            })
+        </script>
+
+
+</body>
+</html>
+

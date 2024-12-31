@@ -1,0 +1,221 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>@ViewBag.Title</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="~/HRMS/new/assets/css/bootstrap.min.css">
+
+    <!-- Fontawesome CSS -->
+    <link rel="stylesheet" href="~/HRMS/new/assets/plugins/fontawesome/css/fontawesome.min.css">
+    <link rel="stylesheet" href="~/HRMS/new/assets/plugins/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="~/HRMS/new/assets/css/material.css">
+
+    <!-- Lineawesome CSS -->
+    <link rel="stylesheet" href="~/HRMS/new/assets/css/line-awesome.min.css">
+
+    <!-- Select2 CSS -->
+    <link rel="stylesheet" href="~/HRMS/new/assets/css/select2.min.css">
+
+    <!-- Datetimepicker CSS -->
+    <link rel="stylesheet" href="~/HRMS/new/assets/css/bootstrap-datetimepicker.min.css">
+
+    <!-- Tagsinput CSS -->
+    <link rel="stylesheet" href="~/HRMS/new/assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="~/HRMS/new/assets/css/style.css">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="assets/js/html5shiv.min.js"></script>
+        <script src="assets/js/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+
+        <!-- Header -->
+        <div class="header">
+
+            <!-- Logo -->
+            <div class="header-left">
+                <a href="#" class="logo">
+                    @*<img src="~/HRMS/new/assets/img/logo.png" width="40" height="40" alt="">*@
+                </a>
+            </div>
+            <!-- /Logo -->
+
+            <div class="header-center">
+                <h1>HRMS</h1>
+            </div>
+
+            <a id="toggle_btn" href="javascript:void(0);">
+                <span class="bar-icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </span>
+            </a>
+
+            <a id="mobile_btn" class="mobile_btn" href="#sidebar"><i class="fa fa-bars"></i></a>
+
+            <!-- Header Menu -->
+            <ul class="nav user-menu">
+
+                <li class="nav-item dropdown has-arrow main-drop" style="padding:15px;">
+                    <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                        <span class="user-img"><img src="~/HRMS/new/assets/img/profiles/avatar-21.jpg" alt=""></span>
+                        <span>User</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="@Url.Action("Profile","HRMS")">My Profile</a>
+                        <a class="dropdown-item" href="@Url.Action("Login","Account")">Logout</a>
+                    </div>
+                </li>
+            </ul>
+            <!-- /Header Menu -->
+            <!-- Mobile Menu -->
+            <div class="dropdown mobile-user-menu">
+                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" href="@Url.Action("Profile","HRMS")">My Profile</a>
+                    <a class="dropdown-item" href="@Url.Action("Login","Account")">Logout</a>
+                </div>
+            </div>
+            <!-- /Mobile Menu -->
+
+        </div>
+        <!-- /Header -->
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-left slimscroll">
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <a class="nav-link show active" title="Home" id="v-pills-dashboard-tab" data-toggle="pill" href="#v-pills-dashboard" role="tab" aria-controls="v-pills-dashboard" aria-selected="true">
+                        <span class="material-icons-outlined">
+                            home
+                        </span>
+                    </a>
+                    <a class="nav-link" id="v-pills-Attendance-tab" title="Attendance" data-toggle="pill" href="#v-pills-Attendance" role="tab" aria-controls="v-pills-Attendance" aria-selected="false">
+                        <span class="material-icons-outlined">
+                            calendar_today
+                        </span>
+                    </a>
+                    <a class="nav-link" id="v-pills-Leaves-tab" title="Leaves" data-toggle="pill" href="#v-pills-Leaves" role="tab" aria-controls="v-pills-Leaves" aria-selected="false">
+                        <span class="material-icons-outlined">
+                            date_range
+                        </span>
+                    </a>
+                    <a class="nav-link" id="v-pills-Holiday-tab" title="Holiday" data-toggle="pill" href="#v-pills-Holiday" role="tab" aria-controls="v-pills-Holiday" aria-selected="false">
+                        <span class="material-icons-outlined">
+                            event_note
+                        </span>
+                    </a>
+                    <a class="nav-link" id="v-pills-payroll-tab" title="Payroll" data-toggle="pill" href="#v-pills-payroll" role="tab" aria-controls="v-pills-payroll" aria-selected="false">
+                        <span class="material-icons-outlined">
+                            request_quote
+                        </span>
+                    </a>
+                    <a class="nav-link" id="v-pills-documentation-tab" title="Policy" data-toggle="pill" href="#v-pills-documentation" role="tab" aria-controls="v-pills-documentation" aria-selected="false">
+                        <span class="material-icons-outlined">
+                            description
+                        </span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="sidebar-right">
+                <div class="tab-content" id="v-pills-tabContent">
+                    <div class="tab-pane fade show active" id="v-pills-dashboard" role="tabpanel" aria-labelledby="v-pills-dashboard-tab">
+                        <p>Dashboard</p>
+                        <ul>
+                            <li>
+                                <a href="@Url.Action("Employee","HRMS")" class="active">My Dashboard</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tab-pane fade" id="v-pills-Attendance" role="tabpanel" aria-labelledby="v-pills-Attendance-tab">
+                        <p>Attendance</p>
+                        <ul>
+                            <li>
+                                <a href="chat.html">Mark Attendance</a>
+                            </li>
+                            <li>
+                                <a href="calender.html">History</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tab-pane fade" id="v-pills-Leaves" role="tabpanel" aria-labelledby="v-pills-Leaves-tab">
+                        <p>Leaves</p>
+                        <ul>
+                            <li><a href="employees.html">Apply for Leave</a></li>
+                            <li><a href="holidays.html">History</a></li>
+                        </ul>
+                    </div>
+                    <div class="tab-pane fade" id="v-pills-Holiday" role="tabpanel" aria-labelledby="v-pills-Holiday-tab">
+                        <p>Holiday Calendar</p>
+                        <ul>
+                            <li><a href="clients.html">Calendar</a></li>
+                        </ul>
+                    </div>
+                    <div class="tab-pane fade" id="v-pills-payroll" role="tabpanel" aria-labelledby="v-pills-payroll-tab">
+                        <p>Payroll</p>
+                        <ul>
+                            <li><a href="salary-view.html"> Payslip </a></li>
+                        </ul>
+                    </div>
+                    <div class="tab-pane fade" id="v-pills-documentation" role="tabpanel" aria-labelledby="v-pills-documentation-tab">
+                        <p>Policy</p>
+                        <ul>
+                            <li><a href="#">Company Policy </a></li>
+                            <li><a href="#">Leave Policy </a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Sidebar -->
+        <!-- Page Wrapper -->
+        <div class="page-wrapper">
+
+            <!-- Page Content -->
+            <div class="content container-fluid pb-0">
+                @RenderBody()
+            </div>
+            <!-- Page Content -->
+        </div>
+        <!-- Page Wrapper -->
+
+    </div>
+    <!-- /Main Wrapper -->
+    <!-- jQuery -->
+    <script src="~/HRMS/new/assets/js/jquery-3.6.0.min.js"></script>
+
+    <!-- Bootstrap Core JS -->
+    <script src="~/HRMS/new/assets/js/popper.min.js"></script>
+    <script src="~/HRMS/new/assets/js/bootstrap.min.js"></script>
+
+    <!-- Apex Charts -->
+    <script src="~/HRMS/new/assets/plugins/apexcharts/apexcharts.min.js"></script>
+
+    <!-- Slimscroll JS -->
+    <script src="~/HRMS/new/assets/js/jquery.slimscroll.min.js"></script>
+
+    <!-- Select2 JS -->
+    <script src="~/HRMS/new/assets/js/select2.min.js"></script>
+
+    <!-- Datetimepicker JS -->
+    <script src="~/HRMS/new/assets/js/moment.min.js"></script>
+    <script src="~/HRMS/new/assets/js/bootstrap-datetimepicker.min.js"></script>
+
+    <!-- Tagsinput JS -->
+    <script src="~/HRMS/new/assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
+
+    <!-- Custom JS -->
+    <script src="~/HRMS/new/assets/js/app.js"></script>
+    <script src="~/assets/js/axios.min.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

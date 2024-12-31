@@ -1,0 +1,472 @@
+﻿@{
+    ViewBag.Title = "Chat || Index";
+    Layout = null;
+    var displayName = ViewBag.DisplayName;
+    var connectedUsers = ViewBag.ConnectedUsers as List<dynamic>;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat</title>
+    <!-- Link to the favicon -->
+    <link rel="icon" href="~/assets/images/messenger-window-icon-3d-render-illustration-isolated-white-background.jpg" type="image/jpeg" />
+
+    <link href="~/assets/css/chatinwinteckinternal.css" rel="stylesheet" />
+
+    <!-- Only include jQuery once -->
+    <script src="~/HRMS/new/assets/js/jquery-3.6.0.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Include Moment.js -->
+    <script src="~/assets/js/moment.min.js"></script>
+</head>
+<body>
+
+    <div class="connected-users-container card shadow-sm p-3 mb-4 bg-white rounded">
+        <h4 class="mb-3 text-primary">Connected Users</h4>
+
+        <ul id="connectedUsersList" class="list-group list-group-flush">
+            <!-- User names will be appended here -->
+        </ul>
+    </div>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h2>Inwinteck Internal</h2>
+        </div>
+
+        <div class="chat-body chat-list" id="discussion">
+            <!-- Messages will be appended here -->
+        </div>
+        <div class="chat-footer">
+            @using (Html.BeginForm())
+            {
+                <div class="input-group">
+                    <input type="hidden" id="displayname" value="@displayName" />
+                    <input type="hidden" id="iwtTicketNo" value="@ViewBag.iwtTicketNo" />
+
+                    <select id="connectedUsers" class="form-control">
+                        <option value="">Send to All</option>
+                        @if (connectedUsers != null)
+                        {
+                            foreach (var user in connectedUsers)
+                            {
+                                <option value="@user.UserId">@user.DisplayName</option>
+                            }
+                        }
+                    </select>
+
+                    <input type="text" id="message" placeholder="Enter your message" class="chat-input form-control" />
+                    <button type="button" id="send" class="chat-send-btn btn btn-primary">Send</button>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Notification Sound -->
+    <audio id="notificationSound" src="~/assets/audio/mixkit-wrong-answer-fail-notification-946.wav" preload="auto"></audio>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger">
+                    <h5 class="modal-title" id="deleteConfirmModalLabel">Confirm Deletion</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" style="color: white;">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this message?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <!-- Include SignalR JS -->
+    <script src="~/Scripts/jquery.signalR-2.4.3.min.js"></script>
+    <script src="~/signalr/hubs"></script>
+
+    <script>
+        // VAPID Public Key (Embedded from ViewBag)
+        const VAPID_PUBLIC_KEY = '@Html.Raw(ViewBag.VapidPublicKey)';
+
+        // Convert the VAPID key to a UInt8 array
+        function urlBase64ToUint8Array(base64String) {
+            const padding = '='.repeat((4 - base64String.length % 4) % 4);
+            const base64 = (base64String + padding)
+                .replace(/-/g, '+')
+                .replace(/_/g, '/');
+
+            const rawData = window.atob(base64);
+            const outputArray = new Uint8Array(rawData.length);
+
+            for (let i = 0; i < rawData.length; ++i) {
+                outputArray[i] = rawData.charCodeAt(i);
+            }
+            return outputArray;
+        }
+
+        // Register Service Worker and Subscribe to Push Notifications
+        async function registerServiceWorkerAndSubscribe() {
+            if ('serviceWorker' in navigator && 'PushManager' in window) {
+                try {
+                    // Register the service worker
+                    const registration = await navigator.serviceWorker.register('/service-worker.js');
+                    console.log('Service Worker registered:', registration);
+
+                    // Request Notification permission
+                    const permission = await Notification.requestPermission();
+                    if (permission !== 'granted') {
+                        console.log('Notification permission not granted.');
+                        return;
+                    }
+
+                    // Subscribe to push notifications
+                    const subscription = await registration.pushManager.subscribe({
+                        userVisibleOnly: true,
+                        applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
+                    });
+
+                    console.log('Push Subscription:', JSON.stringify(subscription));
+
+                  // Send the subscription to the server
+                    const response = await fetch('/Chat/Subscribe', {  
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(subscription)
+                    });
+
+                    console.log('Push subscription sent to server.');
+                } catch (error) {
+                    console.error('Service Worker or Push subscription error:', error);
+                }
+            } else {
+                console.warn('Push messaging is not supported in this browser.');
+            }
+        }
+
+        // Call the function to register the service worker and subscribe
+        registerServiceWorkerAndSubscribe();
+    </script>
+
+    <script>
+                $(document).ready(function () {
+                    var chat = $.connection.bossMessageHub;
+                    var currentUserId = $('#userId').val();
+                    var currentUserName = $('#displayname').val();
+                    var notificationSound = document.getElementById('notificationSound');
+                    var messageIdToDelete = null;
+
+                    $('#send').prop('disabled', true);
+                    let lastMessageDate = null;
+
+                    // Request Notification Permission
+                    if (Notification.permission !== "granted" && Notification.permission !== "denied") {
+                        Notification.requestPermission().then(function (permission) {
+                            if (permission === "granted") {
+                                console.log("Notification permission granted.");
+                            }
+                        });
+                    }
+
+                    // Show Browser Notification
+                    function showBrowserNotification(title, body) {
+                        if (Notification.permission === "granted") {
+                            var notification = new Notification(title, { body: body });
+                            notification.onclick = function () {
+                                window.focus();
+                                notification.close();
+                            };
+                        }
+                    }
+
+                    // Update Connected Users
+                    chat.client.updateConnectedUsers = function (users) {
+                        // Update the dropdown menu
+                        var $dropdown = $('#connectedUsers').empty().append('<option value="">Send to All</option>');
+                        var $userList = $('#connectedUsersList').empty(); // Clear the user list
+
+                        // Loop through each user and update both dropdown and user list
+                        users.forEach(user => {
+                            $dropdown.append(`<option value="${user.UserId}">${user.DisplayName}</option>`);
+                            $userList.append(`<li class="list-group-item d-flex align-items-center">
+                                            <i class="bi bi-person-circle me-2 text-secondary"></i>
+                                            <span>${user.DisplayName}</span>
+                                          </li>`);
+                        });
+                    };
+
+                    // Load Messages
+                    chat.client.loadMessages = function (messages) {
+                        messages.forEach(msg => displayMessage(msg.Id, msg.UserName, msg.Message, msg.Timestamp, msg.RecipientUserId, msg.IsPrivate));
+                        attachDeleteHandlers();
+                        setInterval(checkMessageAges, 60000); // Check every minute
+                    };
+
+                    // Handle Incoming Broadcast Messages
+                    chat.client.broadcastMessage = function (messageId, name, message, timestamp, recipientUserId) {
+                        var isPrivate = recipientUserId !== null && recipientUserId !== undefined;
+                        displayMessage(messageId, name, message, timestamp, recipientUserId, isPrivate);
+
+                        if (name !== currentUserName) playNotificationSound();
+                        if (isPrivate && recipientUserId === currentUserName) {
+                            showBrowserNotification(`New Private Message from ${name}`, message);
+                        }
+                    };
+
+                    // Handle Broadcast Delete Message
+                    chat.client.broadcastDeleteMessage = function (messageId) {
+                        $(`#message-${messageId}`).fadeOut(300, function () { $(this).remove(); });
+                    };
+
+                    // Handle Delete Message Failure
+                    chat.client.onDeleteMessageFailed = function (errorMessage) {
+                        alert(errorMessage);
+                    };
+
+                    // Configure keep-alive and disconnect timeout settings
+                    $.connection.hub.keepAliveTimeout = 30 * 1000; // 30 seconds
+                    $.connection.hub.disconnectTimeout = 60 * 1000; // 60 seconds
+
+                    // Start SignalR Connection
+                    function startConnection() {
+                        console.log("startConnection Method");
+                        $.connection.hub.start().done(function () {
+                            console.log("BossMessaging Hub Connected");
+                            $('#send').prop('disabled', false);
+                            chat.server.loadMessages(currentUserName);
+
+                            $('#send').click(sendMessage);
+
+                        }).fail(function (error) {
+                            console.error('Error connecting to SignalR:', error);
+                            setTimeout(startConnection, 5000); // Retry connection every 5 seconds if failed
+                        });
+                    }
+
+                    // Handle disconnection
+                    $.connection.hub.disconnected(function () {
+                        console.warn("Disconnected from SignalR. Attempting to reconnect...");
+                        setTimeout(startConnection, 5000); // Retry connection after 5 seconds
+                    });
+
+                    // Handle reconnecting
+                    $.connection.hub.reconnecting(function () {
+                        console.warn("Reconnecting to SignalR...");
+                    });
+
+                    // Handle reconnected
+                    $.connection.hub.reconnected(function () {
+                        console.log("Successfully reconnected to SignalR.");
+                    });
+
+                    startConnection(); // Initiate connection
+
+                    // Send Message Function
+                    function sendMessage() {
+                        var message = $('#message').val().trim();
+                        var selectedUserId = $('#connectedUsers').val();
+
+                        if (message !== "") {
+                            chat.server.send(message, currentUserName, selectedUserId || null)
+                                .done(function () {
+                                    $('#message').val('').focus();
+                                })
+                                .fail(function (error) {
+                                    console.error('Failed to send message:', error);
+                                    alert('Could not send your message. Please try again.');
+                                    location.reload();
+                                });
+                        }
+                    }
+
+                    // Display a Message
+                    function displayMessage(messageId, displayName, message, timestamp, recipientUserId, isPrivate) {
+                        var isCurrentUserSender = displayName === currentUserName;
+                        var isCurrentUserRecipient = recipientUserId === currentUserName;
+                        var dateObj = new Date(timestamp) || new Date();
+                        var currentDate = dateObj.toDateString();
+
+                        if (lastMessageDate !== currentDate) {
+                            insertDateDivider(currentDate);
+                            lastMessageDate = currentDate;
+                        }
+
+                        var formattedTime = dateObj.toTimeString().slice(0, 5);
+                        var displayMessageText = formatDisplayMessage(displayName, message, isPrivate, isCurrentUserSender, recipientUserId);
+                        var messageClass = isCurrentUserSender ? 'chat-message sent' : 'chat-message received';
+                        var isDeletable = isCurrentUserSender && (Date.now() - dateObj.getTime() <= 60000);
+
+                        var messageHtml = `
+                                <div class="${messageClass}" id="message-${messageId}" data-timestamp="${dateObj.toISOString()}">
+                                    <div class="message-content">
+                                        <strong>${displayMessageText}</strong>
+                                        ${isDeletable ? '<i class="fas fa-trash delete-icon" title="Delete message" aria-label="Delete message" tabindex="0"></i>' : ''}
+                                    </div>
+                                    <div class="message-time">${formattedTime}</div>
+                                </div>
+                            `;
+
+                        $('#discussion').append(messageHtml).scrollTop($('#discussion')[0].scrollHeight);
+
+                        if (isDeletable) attachDeleteHandler(`#message-${messageId} .delete-icon`, messageId);
+                    }
+
+                    function attachDeleteHandlers() {
+                        $('.delete-icon').off('click').on('click', function (e) {
+                            e.stopPropagation();
+                            var messageId = $(this).closest('.chat-message').attr('id').replace('message-', '');
+                            messageIdToDelete = messageId;
+                            $('#deleteConfirmModal').modal('show');
+                        });
+
+                        // Handle keyboard accessibility for delete icon
+                        $('.delete-icon').off('keypress').on('keypress', function (e) {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault();
+                                var messageId = $(this).closest('.chat-message').attr('id').replace('message-', '');
+                                messageIdToDelete = messageId; // Store the message ID
+                                $('#deleteConfirmModal').modal('show'); // Show the confirmation modal
+                            }
+                        });
+                    }
+
+                    //-------------------------Colors to Different User Functions--------------------------//
+                    const colors = [
+                        '#0056b3', // Blue
+                        '#28a745', // Green
+                        '#6f42c1', // Purple
+                        '#ffc107', // Yellow
+                        '#dc3545', // Red
+                        '#17a2b8', // Teal
+                        '#ff5722', // Orange
+                        '#42a7f5'  // Brown
+                    ];
+
+                    const userColors = {}; // Object to store colors for each user
+
+                    // Consistent hashing function for color assignment
+                    function hashCode(str) {
+                        var hash = 0;
+                        for (var i = 0; i < str.length; i++) {
+                            hash = str.charCodeAt(i) + ((hash << 5) - hash);
+                        }
+                        return Math.abs(hash);
+                    }
+
+                    function getUserColor(userName) {
+                        // Check if the user already has a color assigned
+                        if (userColors[userName]) {
+                            return userColors[userName]; // Return the assigned color
+                        }
+
+                        // Assign a new color based on the hash of the user's name
+                        const colorIndex = hashCode(userName) % colors.length;
+                        const assignedColor = colors[colorIndex];
+                        userColors[userName] = assignedColor; // Map the color to the user
+                        return assignedColor;
+                    }
+
+                    //------------------------------------------------------------------------------//
+
+                    // Format Display Message based on privacy and sender/recipient
+                    function formatDisplayMessage(displayName, message, isPrivate, isCurrentUserSender, recipientUserId) {
+                        let displayNameTrim = displayName.split('@@')[0];
+                        let recipientUserIdTrim = recipientUserId ? recipientUserId.split('@@')[0] : '';
+                        const userColor = getUserColor(displayNameTrim); // Get the color for the user
+
+                        if (isPrivate) {
+                            if (isCurrentUserSender) {
+                                return `<span class="sender-name" style="color: ${userColor};">You</span> to <span class="recipient-name">${recipientUserIdTrim}</span>: ${message}`;
+                            }
+                            if (recipientUserId === currentUserName) {
+                                return `<span class="sender-name" style="color: ${userColor};">${displayNameTrim}</span> to <span class="recipient-name">You</span>: ${message}`;
+                            }
+                            return `<span class="sender-name" style="color: ${userColor};">${displayNameTrim}</span>: ${message}`;
+                        }
+                        return isCurrentUserSender
+                            ? `<span class="sender-name" style="color: ${userColor};">You</span>: ${message}`
+                            : `<span class="sender-name" style="color: ${userColor};">${displayNameTrim}</span>: ${message}`;
+                    }
+
+                    // Insert a Date Divider
+                    function insertDateDivider(dateString) {
+                        var today = new Date().toDateString();
+                        var yesterday = new Date(Date.now() - 86400000).toDateString();
+                        var displayDate = dateString === today ? 'Today' : dateString === yesterday ? 'Yesterday' : new Date(dateString).toLocaleDateString();
+                        $('#discussion').append(`<div class="date-divider"><span>${displayDate}</span></div>`);
+                    }
+
+                    // Attach Delete Handler
+                    function attachDeleteHandler(selector, messageId) {
+                        $(selector).click(function (e) {
+                            e.stopPropagation();
+                            messageIdToDelete = messageId;
+                            $('#deleteConfirmModal').modal('show');
+                        }).on('keypress', function (e) {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault();
+                                messageIdToDelete = messageId;
+                                $('#deleteConfirmModal').modal('show');
+                            }
+                        });
+                    }
+
+                    // Real-time Check and Hide Delete Icons for Messages Older Than 1 Minute
+                    function checkMessageAges() {
+                        $('.chat-message').each(function () {
+                            var messageTimestamp = new Date($(this).data('timestamp'));
+                            if (Date.now() - messageTimestamp.getTime() > 60000) {
+                                $(this).find('.delete-icon').remove();
+                            }
+                        });
+                    }
+
+                    // Confirm Delete Button Click
+                    $('#confirmDeleteBtn').click(function () {
+                        if (messageIdToDelete !== null) {
+                            chat.server.deleteMessage(messageIdToDelete)
+                                .done(function () {
+                                    messageIdToDelete = null;
+                                    $('#deleteConfirmModal').modal('hide');
+                                })
+                                .fail(function (error) {
+                                    console.error('Failed to delete message:', error);
+                                    alert('Could not delete the message. Please try again.');
+                                });
+                        }
+                    });
+
+                    // Play Notification Sound
+                    function playNotificationSound() {
+                        notificationSound.play();
+                    }
+
+                    // Send Message on Enter Key Press
+                    $('#message').on('keydown', function (event) {
+                        if (event.key === 'Enter' && !event.shiftKey) {
+                            event.preventDefault();
+                            $('#send').click();
+                        }
+                    });
+
+                    setInterval(function () {
+                        location.reload();
+                    }, 180000); 
+                   
+                });
+    </script>
+</body>
+</html>

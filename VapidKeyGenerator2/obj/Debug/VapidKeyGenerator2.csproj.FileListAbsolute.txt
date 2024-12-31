@@ -1,0 +1,17 @@
+C:\Users\Prashant\source\repos\Inwinteck-CRM\VapidKeyGenerator2\bin\Debug\VapidKeyGenerator2.exe.config
+C:\Users\Prashant\source\repos\Inwinteck-CRM\VapidKeyGenerator2\bin\Debug\VapidKeyGenerator2.exe.manifest
+C:\Users\Prashant\source\repos\Inwinteck-CRM\VapidKeyGenerator2\bin\Debug\VapidKeyGenerator2.application
+C:\Users\Prashant\source\repos\Inwinteck-CRM\VapidKeyGenerator2\bin\Debug\VapidKeyGenerator2.exe
+C:\Users\Prashant\source\repos\Inwinteck-CRM\VapidKeyGenerator2\bin\Debug\VapidKeyGenerator2.pdb
+C:\Users\Prashant\source\repos\Inwinteck-CRM\VapidKeyGenerator2\bin\Debug\BouncyCastle.Crypto.dll
+C:\Users\Prashant\source\repos\Inwinteck-CRM\VapidKeyGenerator2\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Prashant\source\repos\Inwinteck-CRM\VapidKeyGenerator2\bin\Debug\WebPush.dll
+C:\Users\Prashant\source\repos\Inwinteck-CRM\VapidKeyGenerator2\bin\Debug\BouncyCastle.Crypto.xml
+C:\Users\Prashant\source\repos\Inwinteck-CRM\VapidKeyGenerator2\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Prashant\source\repos\Inwinteck-CRM\VapidKeyGenerator2\obj\Debug\VapidKeyGenerator2.csproj.AssemblyReference.cache
+C:\Users\Prashant\source\repos\Inwinteck-CRM\VapidKeyGenerator2\obj\Debug\VapidKeyGenerator2.csproj.CoreCompileInputs.cache
+C:\Users\Prashant\source\repos\Inwinteck-CRM\VapidKeyGenerator2\obj\Debug\VapidKeyGenerator2.exe.manifest
+C:\Users\Prashant\source\repos\Inwinteck-CRM\VapidKeyGenerator2\obj\Debug\VapidKeyGenerator2.application
+C:\Users\Prashant\source\repos\Inwinteck-CRM\VapidKeyGenerator2\obj\Debug\VapidKey.3238B001.Up2Date
+C:\Users\Prashant\source\repos\Inwinteck-CRM\VapidKeyGenerator2\obj\Debug\VapidKeyGenerator2.exe
+C:\Users\Prashant\source\repos\Inwinteck-CRM\VapidKeyGenerator2\obj\Debug\VapidKeyGenerator2.pdb

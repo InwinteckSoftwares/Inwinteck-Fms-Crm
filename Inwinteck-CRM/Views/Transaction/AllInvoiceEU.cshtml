@@ -1,0 +1,232 @@
+﻿@model List<Inwinteck_CRM.Models.Invoice_EU_Print>
+@{
+    ViewBag.Title = "AllInvoiceEU";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-header">
+    <div class="container-fluid d-sm-flex justify-content-between">
+        <h4>Customer Invoice</h4>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">Transaction</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">All Customer Invoice</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<!-- Main content -->
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="card">
+
+                <!-- /.box-header -->
+                <div class="card-body">
+                    <div class="row">
+
+                       
+                            <div class="col-12">
+
+                                <div class="box-footer text-center">
+
+
+
+                                    <a href="@Url.Action("EUInvoice","Transaction")" class="btn btn-primary" title="Add New Create Invoice">Create Invoice</a>
+
+
+                                </div>
+                            </div>
+                <!-- /.col -->
+                   
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.box-body -->
+
+
+            </div>
+
+
+            <!-- /.box-header -->
+            <div class="card">
+
+                <div class="card-body ">
+
+                    <div class="table-responsive dt-responsive">
+
+                        <table id="dom-jqry" class="table table-striped table-bordered nowrap">
+                            <thead>
+                                <tr>
+                                    <th>Invoice Number</th>
+                                    <th>Customer Name</th>
+                                    <th>Total Amount</th>
+                                    <th>View Invoice</th>
+                                </tr>
+                            </thead>
+                            @if (Model.Count > 0)
+                            {
+                                foreach (var i in Model)
+                                {
+                                    <tr>
+
+                                        <td>@i.Inv_No</td>
+                                        <td>@i.EU_Name</td>
+                                        <td>@i.Total_Amt</td>
+                                        @*@if (i.FE_Payment_Status == "Unpaid")
+                                        {
+                                            <td>
+                                                <a href="#Inv_@i.Inv_No" data-toggle="modal" data-target="#Inv_@i.Inv_No"><span class="badge badge-danger mr-2 d-sm-inline d-none">Unpaid</span></a>
+
+                                                <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="Inv_@i.Inv_No">
+                                                    <div class="modal-dialog modal-lg" role="document">
+                                                        <div class="modal-content  text-center">
+                                                            <div class="modal-header bg-theme">
+                                                                <h4 class="modal-title text-center "><i class="fa fa-info-circle" aria-hidden="true"></i> Update Payment Status</h4>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true" style="color:#fff;">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            @using (Html.BeginForm("FEPayment", "Transaction", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                                                            {   @Html.AntiForgeryToken()
+                                                                @Html.ValidationSummary("", new { @class = "text-danger" })
+
+
+                                                                <div class="modal-body">
+                                                                    <div class="form-group row">
+                                                                        <label for="example-text-input" class="col-sm-2 col-form-label Place">Invoice No:</label>
+                                                                        <div class="col-sm-4">
+                                                                            <input class="form-control" type="text" id="id" value="@i.Inv_No" name="Id" readonly>
+                                                                        </div>
+                                                                        <label for="example-text-input" class="col-sm-2 col-form-label Place">Payment Date:</label>
+                                                                        <div class="col-sm-4">
+                                                                            <input class="form-control" type="date" id="FE_Pay_Date" value="@i.FE_Pay_Date" name="FE_Pay_Date">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group row">
+                                                                        <label for="example-text-input" class="col-sm-2 col-form-label Place">Payment Status:</label>
+                                                                        <div class="col-sm-4">
+                                                                            <select class="form-control" name="FE_Payment_Status" id="FE_Payment_Status">
+                                                                                <option value="">Select Payment Status</option>
+                                                                                <option value="Paid">Paid</option>
+                                                                                <option value="Cancel">Cancel</option>
+                                                                            </select>
+                                                                        </div>
+                                                                        <label for="example-text-input" class="col-sm-2 col-form-label Place">Payment Mode:</label>
+                                                                        <div class="col-sm-4">
+                                                                            <select class="form-control" name="FE_PaymentMode" id="FE_PaymentMode">
+                                                                                <option value="">Select Payment Mode</option>
+                                                                                @foreach (var j in ViewBag.Payment_Mode)
+                                                                                {
+                                                                                    <option value="@j.Value">@j.Text</option>
+                                                                                }
+                                                                            </select>
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                    <div class="form-group row ">
+                                                                        <label for="example-text-input" class="col-sm-4 col-form-label">Payment Refference ID / Comments </label>
+                                                                        <div class="col-sm-8">
+                                                                            <textarea name="FE_Reference_ID" class="form-control" rows="4" required></textarea>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="submit" class="btn btn-info">Submit</button>
+
+                                                                    <a href="#" class="btn btn-info" data-dismiss="modal" aria-label="Close">Cancel</a>
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                        <!-- /.modal-content -->
+                                                    </div>
+                                                    <!-- /.modal-dialog -->
+                                                </div>
+                                            </td>
+                                        }
+                                        else if (i.FE_Payment_Status == "Paid")
+                                        {
+                                            <td><a href="#"><span class="badge badge-success mr-2 d-sm-inline d-none">Paid</span></a></td>
+                                        }
+                                        else
+                                        {
+                                            <td><a href="#"><span class="badge badge-secondary mr-2 d-sm-inline d-none">Cancel</span></a></td>
+                                        }*@
+                                        <td><a href="@Url.Action("PrintInvoiceEU","Transaction",new {InvoiceNo = i.Inv_No})" ) title="View Invoice"><span class="badge badge-warning d-sm-inline d-none"><i class="fas fa-file-invoice"></i> View</span></a></td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr><td colspan="6" class="text-center"> <code style="font-size:20px;"> <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <br /> No Record Found </code></td></tr>
+                            }
+                        </table>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content  text-center">
+            <div class="modal-header">
+                <h4 class="modal-title text-center "><i class="fa fa-info-circle" aria-hidden="true"></i> Information</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 20px;">@TempData["message"] </p>
+
+            </div>
+            <div class="modal-footer">
+                <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                @if (TempData["link"] != null)
+                {
+                    if (TempData["link"].ToString() == "Yes")
+                    {
+                        <a target="_blank" href="@Url.Action("PrintInvoiceEU","Transaction",new {InvoiceNo = TempData["INV"] })" class="btn btn-primary"><i class="fas fa-print"></i></a>
+                    }
+                }
+
+                <a href="#" data-dismiss="modal" aria-label="Close" class="btn btn-secondary">OK</a>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+@section scripts
+{
+    @if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+
+    window.onload = function () {
+        $('#myModal').modal('show');
+    };
+        </script>
+    }
+}
+
+
+
+
+
+
+
+
+

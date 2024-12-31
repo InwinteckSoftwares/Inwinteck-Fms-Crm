@@ -1,0 +1,363 @@
+﻿@model List<Inwinteck_CRM.Models.FE_Master_Personal>
+@{
+    ViewBag.Title = "FEReport";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Content Header (Page header) -->
+<div class="page-header">
+    <div class="container-fluid d-sm-flex justify-content-between">
+        <h4>FE Master</h4>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">Report</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">FE Master</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<!-- Main content -->
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+
+                <!-- /.box-header -->
+                <div class="card-body">
+                    <div class="row">
+
+                        @using (Html.BeginForm("FEReport", "Report", FormMethod.Get, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                        {
+                            <div class="col-12">
+
+                                <div class="form-row">
+                                    <label for="Country" class="col-sm-2 col-form-label">Country</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="Country" id="Country" placeholder="Search Country Wise">
+                                    </div>
+                                    <label for="City" class="col-sm-2 col-form-label">City</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="City" id="City" placeholder="Search City Wise">
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <label for="dorFrom" class="col-sm-2 col-form-label">Registration From </label>
+                                    <div class="col-sm-4">
+                                        <input type="date" class="form-control" name="dorFrom" id="dorFrom">
+                                    </div>
+                                    <label for="dorTo" class="col-sm-2 col-form-label">Registration To </label>
+                                    <div class="col-sm-4">
+                                        <input type="date" class="form-control" name="dorTo" id="dorTo">
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <label for="feFristName" class="col-sm-2 col-form-label">FE Frist Name </label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="feFristName" id="feFristName" placeholder="Search FE Profile Wise">
+                                    </div>
+                                    <label for="feLastName" class="col-sm-2 col-form-label">FE Last Name </label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="feLastName" id="feLastName" placeholder="Search FE Profile Wise">
+                                    </div>
+                                </div>
+
+                                @*<div class="form-row">
+                                        <label for="example-text-input" class="col-sm-2 col-form-label">Search</label>
+                                        <div class="col-sm-5">
+                                            <select class="form-control" name="searchtype" id="searchtype">
+                                                <option>Select Parameter to Search</option>
+                                                <option value="Countrywise">Country wise</option>
+                                                <option value="Citywise">City wise</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-5">
+                                            <input class="form-control" type="search" placeholder="Enter your Keyword for search " name="searchtext" id="searchtext">
+
+                                        </div>
+                                    </div>*@
+
+
+
+
+                            </div>
+
+                            <button type="submit" class="btn btn-primary" style="margin-left: 45%;">Search</button>
+                        }
+                        <!-- /.col -->
+
+                        @using (Html.BeginForm("exportFEReport", "Report", FormMethod.Get, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                        {
+                            <input type="hidden" name="Country" id="expCountry">
+                            <input type="hidden" name="City" id="expCity">
+                            <input type="hidden" name="dorFrom" id="expdorFrom">
+                            <input type="hidden" name="dorTo" id="expdorTo">
+                            <input type="hidden" name="feFristName" id="expfeFristName">
+                            <input type="hidden" name="feLastName" id="expfeLastName">
+
+                            <button type="submit" class="btn btn-secondary" style="margin-top: -5.5%;margin-left: 55%;"><i class="fas fa-file-excel"></i></button>
+                        }
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.box-body -->
+
+
+            </div>
+            <!-- /.box-header -->
+            <div class="card">
+
+                <div class="card-body ">
+
+                    <div class="table-responsive dt-responsive">
+
+                        <table id="dom-jqry" class="table table-striped table-bordered nowrap">
+                            <thead>
+                                <tr>
+                                    <th>Date of Registration</th>
+                                    <th>Date of Activation</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Contact</th>
+                                    <th>Country</th>
+                                    <th>State</th>
+                                    <th>City</th>
+                                    <th>ZipCode/Pincode</th>
+                                    <th>Type</th>
+                                    <th>Name of Company</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            @if (Model.Count > 0)
+                            {
+                                foreach (var i in Model)
+                                {
+                                    <tr>
+
+                                        <td>@i.CreatedOn.ToString("dd-MM-yyyy")</td>
+                                        @if (i.NDA_Acceptance_Date == null)
+                                        {
+
+                                            <td>NA</td>
+                                        }
+                                        else
+                                        {
+                                            <td>@i.NDA_Acceptance_Date.Value.ToString("dd-MM-yyyy")</td>
+                                        }
+                                        <td>@i.First_Name  @i.Last_Name</td>
+                                        <td>@i.Email</td>
+                                        <td>@i.Phone_Number_Code @i.Phone_Number</td>
+                                        <td>@i.Country</td>
+                                        <td>@i.State</td>
+                                        <td>@i.City</td>
+                                        <td>@i.ZipCode_Pincode</td>
+
+                                        @if (i.FE_Type == 345)
+                                        {
+                                            <td>Company</td>
+
+                                            <td>@i.Company_Name</td>
+                                        }
+                                        else
+                                        {
+                                            <td>Freelance</td>
+
+                                            <td>NA</td>
+
+                                        }
+
+
+                                        @if (@i.Status == 1)
+                                        {
+
+                                            <td><span class="badge badge-success mr-2 d-sm-inline d-none">Active</span></td>
+
+                                        }
+                                        else
+                                        {
+
+                                            <td><span class="badge badge-danger mr-2 d-sm-inline d-none">Deactive</span></td>
+
+
+                                        }
+
+
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr><td colspan="6" class="text-center"> <code style="font-size:20px;"> <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <br /> No Record Found </code></td></tr>
+                            }
+                        </table>
+
+                    </div>
+
+                </div>
+                <div class="col-md-12" style="overflow: auto;">
+                    <nav aria-label="...">
+                        <ul class="pagination">
+
+                            @for (int i = 0; i <= ViewBag.pageCount; i++)
+                            {
+                                if (i == ViewBag.pageNo)
+                                {
+                                    <li class="page-item active" aria-current="page"><a class="page-link" href="#">@(i + 1) <span class="sr-only">(current)</span></a></li>
+
+                                }
+                                else
+                                {
+
+                                    <li class="page-item">
+
+                                        @Html.ActionLink((i + 1).ToString(), "FEReport", new
+                                   { pageNo = i }, new { @class = "page-link" })
+
+
+                                    </li>
+
+                                }
+                            }
+
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content  text-center">
+            <div class="modal-header">
+                <h4 class="modal-title text-center "><i class="fa fa-info-circle" aria-hidden="true"></i> Information</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 20px;">@TempData["message"] </p>
+
+            </div>
+            <div class="modal-footer">
+                <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+
+                <a href="#" data-dismiss="modal" aria-label="Close" class="btn btn-primary">OK</a>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+@section scripts
+{
+    @if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+
+            window.onload = function () {
+                $('#myModal').modal('show');
+            };
+        </script>
+    }
+    <script type="text/javascript">
+
+        function getUrlVars() {
+            var vars = [], hash;
+            var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+            for (var i = 0; i < hashes.length; i++) {
+                hash = hashes[i].split('=');
+                vars.push(hash[0]);
+                vars[hash[0]] = hash[1];
+            }
+            return vars;
+        }
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            debugger
+            $("#Country").val('@ViewBag.Country');
+            $("#City").val('@ViewBag.City');
+            $("#dorFrom").val('@ViewBag.dorFrom');
+            $("#dorTo").val('@ViewBag.dorTo');
+            $("#feFristName").val('@ViewBag.feFristName');
+            $("#feLastName").val('@ViewBag.feLastName');
+
+             $("#expCountry").val('@ViewBag.Country');
+            $("#expCity").val('@ViewBag.City');
+            $("#expdorFrom").val('@ViewBag.dorFrom');
+            $("#expdorTo").val('@ViewBag.dorTo');
+            $("#expfeFristName").val('@ViewBag.feFristName');
+            $("#expfeLastName").val('@ViewBag.feLastName');
+
+            var param1 = getUrlVars()["searchtype"];
+            var param2 = getUrlVars()["searchtext"];
+            if (param1 != null && param2 != null) {
+                $("#searchtype").val(param1);
+                $("#searchtext").val('@ViewBag.Search');
+            }
+            if ($("#searchtype option:selected").val() == "Skill") {
+                $("#searchtext").css('display', 'none');
+                $("#searchtext").attr("disabled", true);
+                $("#Skill").css('display', 'block');
+                $("#Skill").attr("disabled", false);
+            }
+
+
+        });
+
+        $("#searchtype").change(function () {
+
+            if ($("#searchtype option:selected").val() == "Skill") {
+                $("#searchtext").css('display', 'none');
+                $("#searchtext").attr("disabled", true);
+                $("#Skill").css('display', 'block');
+                $("#Skill").attr("disabled", false);
+            }
+            else {
+                $("#searchtext").css('display', 'block');
+                $("#searchtext").attr("disabled", false);
+                $("#Skill").css('display', 'none');
+                $("#Skill").attr("disabled", true);
+            }
+        });
+
+        $("#Country").blur(function () {
+
+            $("#expCountry").val($(this).val());
+        });
+        $("#City").blur(function () {
+
+            $("#expCity").val($(this).val());
+        });
+        $("#dorFrom").blur(function () {
+
+            $("#expdorFrom").val($(this).val());
+        });
+        $("#dorTo").blur(function () {
+
+            $("#expdorTo").val($(this).val());
+        });
+        $("#feFristName").blur(function () {
+
+            $("#expfeFristName").val($(this).val());
+        });
+        $("#feLastName").blur(function () {
+
+            $("#expfeLastName").val($(this).val());
+        });
+
+    </script>
+}
+
+
+
+

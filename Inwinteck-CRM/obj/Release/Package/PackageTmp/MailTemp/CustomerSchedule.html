@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Inwinteck FMS | Ticket Schedule</title>
+    <style>
+        body {
+            width: 100%;
+            height: 100%;
+            font-family: 'Open Sans', Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #5f6467;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: #0f709a;
+            background: linear-gradient(to bottom right, #0f709a, #0f85b7);
+            color: #ffffff;
+            text-align: center;
+            padding: 50px 20px;
+            font-family: 'Pacifico', Arial, sans-serif;
+        }
+
+            .header h3 {
+                font-size: 36px;
+                margin-bottom: 10px;
+            }
+
+        .content {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: -50px;
+            position: relative;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+            .content p {
+                margin: 10px 0;
+            }
+
+            .content b {
+                color: #0f709a;
+            }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: #ffffff;
+            color: #5f6467;
+            margin-top: 20px;
+            border-radius: 0 0 8px 8px;
+            font-size: 14px;
+        }
+
+            .footer img {
+                max-width: 150px;
+                margin-top: 10px;
+            }
+
+        .buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+            .buttons a {
+                display: inline-block;
+                margin: 0 10px;
+                padding: 10px 20px;
+                font-size: 16px;
+                color: #ffffff;
+                text-decoration: none;
+                border-radius: 5px;
+            }
+
+        .approve-btn {
+            background-color: #28a745;
+        }
+
+        @media screen and (max-width: 768px) {
+            .header h3 {
+                font-size: 28px;
+            }
+
+            .content {
+                font-size: 14px;
+            }
+
+            .buttons a {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+            <td align="center" style="padding: 20px 0;">
+                <table width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width: 800px;">
+                    <tr>
+                        <td align="center" class="header" style="background: #0f709a; background: linear-gradient(to bottom right, #0f709a, #0f85b7); color: #ffffff; text-align: center; padding: 50px 20px;">
+                            <h3 style="font-family: 'Pacifico', Arial, sans-serif; font-size: 36px; margin-bottom: 10px;">Hello {name} Team,</h3>
+                            <p style="font-family: 'Open Sans', Arial, sans-serif; font-size: 16px; line-height: 1.6; margin: 0;">In reference to your case no <b>{Case_no}</b>, we can have this covered and below are the details of our engineer.</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center" style="padding: 0 20px;">
+                            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                                <tr>
+                                    <td class="content" style="background: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); margin-top: -50px; position: relative; font-family: 'Open Sans', Arial, sans-serif; font-size: 16px; line-height: 1.6; color: #5f6467;">
+                                        <p>FE name: <b>{FE}</b></p>
+                                        <p>Contact no: <b>{Contact}</b></p>
+                                        <p>Kindly review and confirm by replying and updating status.</p>
+                                        <strong> Note: Additional Travel Charges will be shared in the corresponding email.</strong>
+                                        <p>Appreciate the opportunity for service!</p>
+
+                                        <div class="buttons" style="text-align: center; margin-top: 20px;">
+                                            <a href="{Link}" class="approve-btn" style="display: inline-block; margin: 0 10px; padding: 10px 20px; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 5px; background-color: #28a745;">Update Status</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center" class="footer" style="background: #ffffff; color: #5f6467; text-align: center; padding: 20px; margin-top: 20px; border-radius: 0 0 8px 8px;">
+                            <h4 style="font-family: 'Open Sans', Arial, sans-serif; font-size: 16px; margin: 0;">Team</h4>
+                            <img src="https://fms.inwinteck.com/assets/images/logo.png" alt="Inwinteck Logo" style="max-width: 150px; margin-top: 10px;">
+                            <small style="display: block; margin-top: 10px; font-size: 14px;">Inwinteck FMS</small>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>
+    

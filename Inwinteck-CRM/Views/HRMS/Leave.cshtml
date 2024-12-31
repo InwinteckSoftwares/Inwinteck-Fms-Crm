@@ -1,0 +1,279 @@
+﻿@model HRMS.Models.Leave_View
+@{
+    ViewBag.Title = "Leave";
+    Layout = ViewBag.Layout;
+    ViewBag.Manger = ViewBag.Mng;
+}
+
+<!-- Page Header -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="page-head-box">
+            <h3>Leaves</h3>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index","Dashboard")">Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Leaves</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- /Page Header -->
+<!-- Leave Statistics -->
+<div class="row mb-4">
+
+    @*@for (int a = 1; a <= Model.ls.Leave_Type; a++)
+        {
+            <div class="col-md-@Model.ls.Leave_Type">
+                <div class="stats-info" style="background: #3eca70;">
+                    <h4 style="color: #fff;">@Model.ls.Leave_Number</h4>
+                    <h6 style="color: #fff;">Quarter  @a </h6>
+                </div>
+            </div>
+        }*@
+    <div class="col-md-3">
+        <div class="stats-info @ViewBag.Quarter1">
+            <h4>@Model.ls.Leave_Number</h4>
+            <h6>Quarter 01</h6>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stats-info @ViewBag.Quarter2">
+            <h4>@Model.ls.Leave_Number</h4>
+            <h6>Quarter 02</h6>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stats-info @ViewBag.Quarter3">
+            <h4>@Model.ls.Leave_Number</h4>
+            <h6>Quarter 03</h6>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stats-info @ViewBag.Quarter4">
+            <h4>@Model.ls.Leave_Number</h4>
+            <h6>Quarter 04</h6>
+        </div>
+    </div>
+</div>
+<!-- /Leave Statistics -->
+<!-- Search Filter -->
+<div class="row filter-row">
+    <div class="col-md-8">
+        <h3 class="user-name m-t-0 mb-0">Eligible : @ViewBag.eg  Availed : @ViewBag.av </h3>
+    </div>
+    <div class="col-md-4">
+        <div class="add-emp-section">
+            <a href="#" class="btn btn-success btn-add-emp" data-toggle="modal" data-target="#add_leave"><i class="fas fa-plus"></i> Add Leave</a>
+        </div>
+    </div>
+</div>
+<!-- /Search Filter -->
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="table-responsive">
+            <table class="table table-striped custom-table mb-0 datatable">
+                <thead>
+                    <tr>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>No of Days</th>
+                        <th>Reason</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.leave.Count > 0)
+                    {
+                        foreach (var i in Model.leave)
+                        {
+                            <tr>
+                                <td>@i.Leave_From.ToString("dd MMM yyyy")</td>
+                                <td>@i.Leave_To.ToString("dd MMM yyyy")</td>
+                                <td>
+                                    @{
+                                        TimeSpan t = i.Leave_To - i.Leave_From;
+                                        string Half = "Half Day";
+
+                                    }
+                                    @if (t.TotalDays == 0)
+                                    {
+                                        @Half
+                                    }
+                                    else
+                                    {
+
+                                        @t.TotalDays
+                                    }
+                                </td>
+                                <td>@i.Leave_Reason</td>
+                                @if (i.Status == 0)
+                                {
+                                    <td class="text-center">
+                                        <span class="role-info role-bg-three">Pending</span>
+                                    </td>
+                                }
+                                else if (i.Status == 1)
+                                {
+                                    <td class="text-center">
+                                        <span class="role-info role-bg-two">Approved</span>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td class="text-center">
+                                        <span class="role-info role-bg-one">Rejected</span>
+                                    </td>
+                                }
+
+                                <td class="text-right ico-sec">
+                                    <a href="#" data-toggle="modal" data-target="#edit_leave_@i.Id"><i class="fas fa-eye"></i></a>
+                                    <!-- Edit Leave Modal -->
+                                    <div id="edit_leave_@i.Id" class="modal custom-modal fade" role="dialog">
+                                        <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">View Leave</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <i class="fas fa-times"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body text-left">
+                                                    <form class="row">
+
+                                                        <div class="form-group col-md-6">
+                                                            <label>From <span class="text-danger">*</span></label>
+                                                            <input class="form-control" value="@i.Leave_From.ToString("yyyy-MM-dd")" type="date" readonly>
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            <label>To</label>
+                                                            <input class="form-control" value="@i.Leave_To.ToString("yyyy-MM-dd")" type="date" readonly>
+                                                        </div>
+                                                        <div class="form-group col-md-12">
+                                                            <label>Leave Reason <span class="text-danger">*</span></label>
+                                                            <textarea rows="4" class="form-control" readonly>@i.Leave_Reason</textarea>
+                                                        </div>
+                                                        @*<div class="submit-section col-md-12">
+                                                            <button class="btn btn-primary cancel-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                                                            <button class="btn btn-primary submit-btn">Save</button>
+                                                        </div>*@
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /Edit Leave Modal -->
+                                </td>
+                            </tr>
+                        }
+                    }
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="add_leave" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Leave</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("addLeave", "HRMS", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary("", new { @class = "text-danger" })
+                    <div class="form-group col-md-6">
+                        <label>From <span class="text-danger">*</span></label>
+                        <input class="form-control" name="Leave_From" type="date" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>To <span class="text-danger">*</span></label>
+                        <input class="form-control" name="Leave_To" type="date" required>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label>Leave Reason <span class="text-danger">*</span></label>
+                        <textarea rows="4" class="form-control" name="Leave_Reason" required></textarea>
+                    </div>
+                    <div class="submit-section col-md-12">
+                        <button class="btn btn-primary cancel-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                        <button class="btn btn-primary submit-btn">Submit</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Add Leave Modal -->
+<!-- Edit Leave Modal -->
+<div id="edit_leave" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Leave</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="row">
+
+                    <div class="form-group col-md-6">
+                        <label>From <span class="text-danger">*</span></label>
+                        <div class="cal-icon">
+                            <input class="form-control datetimepicker" value="22-11-2021" type="text">
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>To <span class="text-danger">*</span></label>
+                        <div class="cal-icon">
+                            <input class="form-control datetimepicker" value="22-11-2021" type="text">
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label>Leave Reason <span class="text-danger">*</span></label>
+                        <textarea rows="4" class="form-control">Going to hospital</textarea>
+                    </div>
+                    <div class="submit-section col-md-12">
+                        <button class="btn btn-primary cancel-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                        <button class="btn btn-primary submit-btn">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Edit Leave Modal -->
+<!-- Delete Leave Modal -->
+<div class="modal custom-modal fade" id="delete_approve" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-header">
+                    <h3>Delete Leave</h3>
+                    <p>Are you sure want to Cancel this leave?</p>
+                </div>
+                <div class="modal-btn delete-action">
+                    <div class="row">
+                        <div class="col-6">
+                            <a href="javascript:void(0);" class="btn btn-primary continue-btn">Delete</a>
+                        </div>
+                        <div class="col-6">
+                            <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Delete Leave Modal -->

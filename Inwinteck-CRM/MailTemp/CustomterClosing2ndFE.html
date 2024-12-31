@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Inwinteck FMS | Customer Closing</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Pacifico&display=swap');
+        /* General Styles */
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: #5f6467;
+            background-color: #f3f4f6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 30px auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .color-dark {
+            color: #333;
+        }
+
+        .font-pacifico {
+            font-family: 'Pacifico', cursive;
+            font-size: 24px;
+        }
+
+        .font-montserrat {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 16px;
+        }
+
+        .heading {
+            display: block;
+            margin: 0 auto 20px;
+            font-size: 18px;
+            text-transform: capitalize;
+            text-align: center;
+        }
+
+        .heading-solid {
+            border-bottom: 3px solid #0f709a;
+            width: 50px;
+            margin: 10px auto;
+        }
+
+        p {
+            margin: 0 0 15px;
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        .important-info {
+            font-weight: bold;
+            color: #0f709a;
+        }
+
+        .highlight {
+            background-color: #e0f7fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 5px solid #0f709a;
+        }
+
+        a {
+            color: #0f709a;
+            text-decoration: none;
+        }
+
+            a:hover {
+                text-decoration: underline;
+            }
+
+        .footer {
+            background-color: #e9ecef;
+            padding: 15px 0;
+            margin-top: 30px;
+            text-align: center;
+            font-size: 13px;
+            color: #777;
+        }
+
+        img.center-block {
+            display: block;
+            margin: 30px auto;
+            width: 150px;
+            filter: drop-shadow(3px 5px 7px rgba(0, 0, 0, 0.2));
+        }
+
+        .button {
+            background-color: #0f709a;
+            color: #fff;
+            padding: 12px 25px;
+            text-transform: uppercase;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+            .button:hover {
+                background-color: #0c5979;
+            }
+
+        /* Responsive */
+        @media only screen and (max-width: 600px) {
+            .container {
+                width: 100%;
+                padding: 15px;
+            }
+
+            .font-pacifico {
+                font-size: 20px;
+            }
+
+            .button {
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="text-center">
+                <h3 class="font-pacifico color-dark">Hello {Name} Team,</h3>
+                <p>We have successfully closed the case as per the details below:</p>
+                <p>Case No: <span class="important-info">{Case_No}</span></p>
+                <p>Inwinteck Ticket No: <span class="important-info">{Ticket_No}</span></p>
+                <p>OEM: <span class="important-info">{OEM}</span></p>
+                <div class="highlight">{system_info}</div>
+                <p>FE Name: <span class="important-info">{FE}</span></p>
+                <p>Check-In Date: <span class="important-info">{In_Date}</span></p>
+                <p>Check-In Time: <span class="important-info">{In_time} - (Local Time)</span></p>
+                <p>Check-Out Date: <span class="important-info">{Out_Date} </span></p>
+                <p>Check-Out Time: <span class="important-info">{Out_time} -(Local Time)</span></p>
+                <p>Total Resolution Time: <span class="important-info">{TRT}</span></p>
+
+                <br /><h3>Second FE Details</h3>
+                <p>FE Name: <span class="important-info">{FE2}</span></p>
+                <p>Check-In Date: <span class="important-info">{In_Date2}</span></p>
+                <p>Check-In Time: <span class="important-info">{In_time2}- (Local Time)</span></p>
+                <p>Check-Out Date: <span class="important-info">{Out_Date2}</span></p>
+                <p>Check-Out Time: <span class="important-info">{Out_time2} - (Local Time)</span></p>
+                <p>Total Resolution Time: <span class="important-info">{TRT2}</span></p>
+                <br />
+                <p>Action Performed: <span class="important-info">{Job_Description}</span></p>
+                <div class="highlight">{Part_Detail}</div>
+                <p>Thank you for the service opportunity. We appreciate your help and support!</p>
+                <p>Your feedback is important to us for enhanced service and improved quality. Kindly spare a few seconds to rate our service in handling this case.</p>
+                <a href="{link}" class="button">Rate Our Service</a>
+            </div>
+        </header>
+        <div class="text-center">
+            <h4 class="font-montserrat color-dark">
+                Team,<br>
+                <img src="https://fms.inwinteck.com/assets/images/logo.png" alt="Inwinteck Logo" class="img-responsive center-block">
+                <small class="heading heading-solid"></small>
+            </h4>
+        </div>
+    </div>
+    <div class="footer">
+        <p>This is an auto-generated Email. Please do not reply.</p>
+    </div>
+</body>
+
+</html>

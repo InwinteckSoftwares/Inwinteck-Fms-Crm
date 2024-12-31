@@ -1,0 +1,24 @@
+2024-12-11 09:22:25.344 +05:30 [INF] Application Started
+2024-12-11 09:23:40.799 +05:30 [ERR] An Unhandled Exception occured
+System.Web.HttpException (0x80004005): The controller for path '/assets/js/moment.min.js.map' was not found or does not implement IController.
+   at System.Web.Mvc.DefaultControllerFactory.GetControllerInstance(RequestContext requestContext, Type controllerType)
+   at System.Web.Mvc.MvcHandler.ProcessRequestInit(HttpContextBase httpContext, IController& controller, IControllerFactory& factory)
+   at System.Web.Mvc.MvcHandler.BeginProcessRequest(HttpContextBase httpContext, AsyncCallback callback, Object state)
+   at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   at System.Web.HttpApplication.<>c__DisplayClass285_0.<ExecuteStepImpl>b__0()
+   at System.Web.HttpApplication.ExecuteStepImpl(IExecutionStep step)
+   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2024-12-11 09:23:40.922 +05:30 [ERR] An Unhandled Exception occured
+System.Web.HttpException (0x80004005): The controller for path '/assets/js/moment.min.js.map' was not found or does not implement IController.
+   at System.Web.Mvc.DefaultControllerFactory.GetControllerInstance(RequestContext requestContext, Type controllerType)
+   at System.Web.Mvc.MvcHandler.ProcessRequestInit(HttpContextBase httpContext, IController& controller, IControllerFactory& factory)
+   at System.Web.Mvc.MvcHandler.BeginProcessRequest(HttpContextBase httpContext, AsyncCallback callback, Object state)
+   at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   at System.Web.HttpApplication.<>c__DisplayClass285_0.<ExecuteStepImpl>b__0()
+   at System.Web.HttpApplication.ExecuteStepImpl(IExecutionStep step)
+   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2024-12-11 09:23:44.465 +05:30 [INF] Subscribe endpoint hit.
+2024-12-11 09:23:44.471 +05:30 [INF] Received payload: {"endpoint":"https://fcm.googleapis.com/fcm/send/eA0NDadEMCk:APA91bFUn75VPQIxNc94fFgkaAKBmdhnIaDP4NaTvvPY1aH16C6XPKDaOlbnyEwoQlWkU1EZWxz8VhLfdTrz0HwpKM3M-UGQQbzBaNF-mH89l3nEdotxpyfzWlyxz5Bd-6MrIlHxhpve","expirationTime":null,"keys":{"p256dh":"BG3FedOzs_2-KoMw1i7JpeqgJO6AAWQtK7SY9YoPgIGxkgPZG_JnzY6FxOP582n-tMVfN2uFcHorqmrOPYBAj7k","auth":"knurbabcdWSxXRJ3zZw41g"}}
+2024-12-11 09:23:44.645 +05:30 [INF] Deserialized subscription: {"Id":0,"Endpoint":"https://fcm.googleapis.com/fcm/send/eA0NDadEMCk:APA91bFUn75VPQIxNc94fFgkaAKBmdhnIaDP4NaTvvPY1aH16C6XPKDaOlbnyEwoQlWkU1EZWxz8VhLfdTrz0HwpKM3M-UGQQbzBaNF-mH89l3nEdotxpyfzWlyxz5Bd-6MrIlHxhpve","P256DH":"BG3FedOzs_2-KoMw1i7JpeqgJO6AAWQtK7SY9YoPgIGxkgPZG_JnzY6FxOP582n-tMVfN2uFcHorqmrOPYBAj7k","Auth":"knurbabcdWSxXRJ3zZw41g","UserId":"admin@developer.com","$type":"PushSubscription"}
+2024-12-11 09:23:44.744 +05:30 [INF] Saving subscription to database for user: admin@developer.com
+2024-12-11 09:23:44.816 +05:30 [INF] Subscription successfully saved for endpoint: https://fcm.googleapis.com/fcm/send/eA0NDadEMCk:APA91bFUn75VPQIxNc94fFgkaAKBmdhnIaDP4NaTvvPY1aH16C6XPKDaOlbnyEwoQlWkU1EZWxz8VhLfdTrz0HwpKM3M-UGQQbzBaNF-mH89l3nEdotxpyfzWlyxz5Bd-6MrIlHxhpve

@@ -1,0 +1,230 @@
+﻿@model List<HRMS.Models.Policy>
+@{
+    ViewBag.Title = "Policy_Admin";
+    Layout = ViewBag.Layout;
+}
+<!-- Page Header -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="page-head-box">
+            <h3>Policy</h3>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index","Dashboard")">Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Policy Detail</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="row filter-row mt-4">
+    <div class="col-md-8"></div>
+    <div class="col-md-4">
+        <div class="add-emp-section">
+            <a href="#" class="btn btn-success btn-add-emp" data-toggle="modal" data-target="#add_policy"><i class="fas fa-plus"></i> Add Policy</a>
+        </div>
+    </div>
+</div>
+<!-- /Add Button -->
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="table-responsive">
+            <table class="table table-striped custom-table mb-0 datatable">
+                <thead>
+                    <tr>
+                        <th>Policy Name </th>
+                        <th>Description </th>
+                        <th class="text-right">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Count > 0)
+                    {
+                        foreach (var i in Model)
+                        {
+                            <tr>
+                                <td>@i.Policy_Name</td>
+                                <td>@i.Description</td>
+                                <td class="text-right ico-sec">
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#view_policy_@i.Id"><i class="fas fa-eye"></i></a>
+
+                                    <!-- View Policy Modal -->
+                                    <div class="modal custom-modal fade" id="view_policy_@i.Id" role="dialog">
+                                        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">@i.Policy_Name</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <i class="fas fa-times"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                        <embed src="@i.Policy_File" style="height: 500px; width:100%;"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /View Policy Modal -->
+
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_policy_@i.Id"><i class="fas fa-pen"></i></a>
+
+
+                                    <!-- Edit Policy Modal -->
+                                    <div id="edit_policy_@i.Id" class="modal custom-modal fade" role="dialog">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Edit Policy</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <i class="fas fa-times"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    @using (Html.BeginForm("editPolicy", "HRMS", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                                                    {
+                                                        @Html.AntiForgeryToken()
+                                                        @Html.ValidationSummary("", new { @class = "text-danger" })
+                                                        <input type="hidden" value="@i.Id" name="Id" />
+                                                        <input type="hidden" value="@i.Policy_File" name="Policy_File" />
+                                                        <input type="hidden" value="@i.CreatedBy" name="CreatedBy" />
+                                                        <input type="hidden" value="@i.CreatedOn" name="CreatedOn" />
+                                                        <div class="form-group text-left">
+                                                            <label>Policy Name <span class="text-danger">*</span></label>
+                                                            <input class="form-control" type="text" name="Policy_Name" value="@i.Policy_Name" required>
+                                                        </div>
+                                                        <div class="form-group text-left">
+                                                            <label>Description</label>
+                                                            <textarea class="form-control" rows="4" name="Description">@i.Description</textarea>
+                                                        </div>
+                                                        <div class="form-group text-left">
+                                                            <label>Upload Policy <span class="text-danger">*</span></label><br/>
+                                                            <div class="custom-file">
+                                                                <input type="file" class="custom-file-input" name="pht" id="edit_policy_upload">
+                                                                <label class="custom-file-label" for="edit_policy_upload">Choose file</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="submit-section">
+                                                            <button class="btn btn-primary cancel-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                                                            <button class="btn btn-primary submit-btn">Save</button>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /Edit Policy Modal -->
+
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_policy"><i class="far fa-trash-alt"></i></a>
+
+                                    <!-- Delete Policy Modal -->
+                                    <div class="modal custom-modal fade" id="delete_policy" role="dialog">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-body">
+                                                    <div class="form-header">
+                                                        <h3>Delete Policy</h3>
+                                                        <p>Are you sure want to delete?</p>
+                                                    </div>
+                                                    <div class="modal-btn delete-action">
+                                                        <div class="row">
+                                                            <div class="col-6">
+                                                                <a href="@Url.Action("deletePolicy","HRMS", new {Id = i.Id })" class="btn btn-primary continue-btn">Delete</a>
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /Delete Policy Modal -->
+
+                                </td>
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->
+
+<!-- Add Policy Modal -->
+<div id="add_policy" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Policy</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("addPolicy", "HRMS", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary("", new { @class = "text-danger" })
+                    <div class="form-group">
+                        <label>Policy Name <span class="text-danger">*</span></label>
+                        <input class="form-control" name="Policy_Name" type="text" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea class="form-control" name="Description" rows="4"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Upload Policy <span class="text-danger">*</span></label>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" name="pht" id="policy_upload" required>
+                            <label class="custom-file-label"  for="policy_upload">Choose file</label>
+                        </div>
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary cancel-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                        <button class="btn btn-primary submit-btn">Submit</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Add Policy Modal -->
+
+
+<div class="modal custom-modal fade" id="msgBox">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-header">
+                    <h3 style="font-size: 20px;">@TempData["message"] </h3>
+                </div>
+                <div class="modal-btn">
+                    <div class="submit-section col-sm-4 offset-sm-4">
+                        <a href="#" data-dismiss="modal" aria-label="Close" class="btn btn-primary cancel-btn">OK</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+@section scripts
+{
+    @if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+
+            window.onload = function () {
+                $('#msgBox').modal('show');
+            };
+        </script>
+    }
+
+}

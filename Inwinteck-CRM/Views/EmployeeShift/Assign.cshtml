@@ -1,0 +1,59 @@
+﻿@model HRMS.Models.EmployeeShift
+
+@{
+    Layout = "~/Views/Shared/_LayoutHRMS.cshtml";
+}
+
+<h2>Assign Shift to Employee</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <!-- Employee Dropdown -->
+    <div class="form-group">
+        <label for="EmpId">Employee</label>
+        <select id="EmpId" name="EmpId" class="form-control">
+            @foreach (var employee in ViewBag.Employees)
+            {
+                <option value="@employee.Id">@employee.First_Name @employee.Last_Name</option>
+            }
+        </select>
+    </div>
+
+    <!-- Shift Pattern Dropdown -->
+    <div class="form-group">
+        <label for="PatternId">Shift Pattern</label>
+        <select id="PatternId" name="PatternId" class="form-control">
+            @foreach (var pattern in ViewBag.ShiftPatterns)
+            {
+                <option value="@pattern.PatternId">@pattern.PatternName</option>
+            }
+        </select>
+    </div>
+
+    <!-- Start Date Input -->
+    <div class="form-group">
+        <label for="StartDate">Start Date</label>
+        <input type="date" id="StartDate" name="StartDate" class="form-control" />
+    </div>
+
+    <!-- End Date Input -->
+    <div class="form-group">
+        <label for="EndDate">End Date</label>
+        <input type="date" id="EndDate" name="EndDate" class="form-control" />
+    </div>
+
+    <!-- Week-Off Days Multi-Select -->
+    <div class="form-group">
+        <label for="WeekOffDays">Week-Off Days</label>
+        <select id="WeekOffDays" name="WeekOffDays" class="form-control" multiple>
+            @foreach (DayOfWeek day in Enum.GetValues(typeof(DayOfWeek)))
+            {
+                <option value="@day">@day</option>
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Assign</button>
+}

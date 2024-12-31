@@ -1,0 +1,364 @@
+﻿@model List<HRMS.Models.Kra_Score_Self_View>
+@{
+    ViewBag.Title = "KRA";
+    Layout = ViewBag.Layout;
+    ViewBag.Manger = ViewBag.Mng;
+}
+
+
+
+<!-- Page Header -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="page-head-box">
+            <h3>Kra</h3>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index","Dashboard")">Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Edit Kra</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <section class="review-section professional-excellence">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-form-label">NAME</label>
+                                        <input class="form-control" type="text" value="@ViewBag.Employee" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-form-label">EMP ID</label>
+                                        <input class="form-control" type="text" value="@ViewBag.Emp_Code" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-form-label">DESIGNATION</label>
+                                        <input class="form-control" type="text" value="@ViewBag.Designation" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-form-label">REPORTING MANAGER</label>
+                                        <input class="form-control" type="text" value="@ViewBag.Reporting" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                @if (ViewBag.tl == "TL")
+                                {
+                                    using (Html.BeginForm("edit_Kra_Mng", "HRMS", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        @Html.ValidationSummary("", new { @class = "text-danger" })
+                                        <table class="table table-bordered review-table mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Focused area (Organization Goals)</th>
+                                                    <th>Weightage</th>
+                                                    <th>Self Rating :<br /> Below 50% / 75% / 100%</th>
+                                                    <th>Key Improvement Area</th>
+                                                    <th>Team Leader rating</th>
+                                                    <th>Reporting Manager rating</th>
+                                                    <th>Top Management Remarks -<br /> Agree or disagree</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if (Model.Count > 0)
+                                                {
+                                                    foreach (var i in Model)
+                                                    {
+                                                        <tr>
+
+                                                            <td>
+                                                                @i.Ksl_Master_string
+                                                                <input type="hidden" value="@i.Ksl_Master_Id" name="km[@Model.IndexOf(i)].Master_Id">
+                                                                <input type="hidden" value="@i.Ksl_Id" name="km[@Model.IndexOf(i)].Id">
+                                                                <input type="hidden" value="@i.Ksl_CreatedBy" name="km[@Model.IndexOf(i)].CreatedBy">
+                                                                <input type="hidden" value="@i.Ksl_CreatedOn" name="km[@Model.IndexOf(i)].CreatedOn">
+                                                                <input type="hidden" value="@i.Ksl_Kra_Score_Id" name="km[@Model.IndexOf(i)].Kra_Score_Id">
+                                                            </td>
+                                                            <td><input type="text" class="form-control" readonly value="@i.Weightage"></td>
+                                                            <td><input type="number" min="0" max="@i.Weightage" class="form-control" value="@i.Ksl_Self_Score" name="km[@Model.IndexOf(i)].Self_Score" readonly></td>
+                                                            <td><input type="text" class="form-control" value="@i.Ksl_Key_Improvement_Area" name="km[@Model.IndexOf(i)].Key_Improvement_Area" readonly></td>
+                                                            <td><input type="number" min="0" max="@i.Weightage" class="form-control total_tl_self" value="@i.Ksl_Total_TL_Score" name="km[@Model.IndexOf(i)].TL_Score"></td>
+                                                            <td><input type="number" min="0" max="@i.Weightage" class="form-control total_rm_self" value="@i.Ksl_RM_Score" name="km[@Model.IndexOf(i)].RM_Score" readonly></td>
+                                                            <td><input type="text" class="form-control" value="@i.Ksl_RM_Remark" name="km[@Model.IndexOf(i)].RM_Remark" @ViewBag.edit></td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            <tr>
+                                                <td class="text-center">Total </td>
+                                                <td><input type="text" class="form-control" readonly value="@ViewBag.wht"></td>
+                                                <td colspan="2"><input type="text" class="form-control" name="Total_self" readonly value="@ViewBag.total"></td>
+                                                <td><input type="text" class="form-control" id="Total_tl_Score" name="Total_tl_Score" readonly value="@ViewBag.total_TL"></td>
+                                                <td>
+                                                    <input type="text" class="form-control" id="Total_rm_Score" name="Total_rm_Score" readonly value="@ViewBag.total_rm">
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control" id="Total_TP_Score" name="Total_TP_Score" readonly value="0">
+                                                </td>
+
+                                            </tr>
+                                                <tr>
+                                                    <td colspan="7" class="text-center">
+                                                        <div class="grade-span">
+                                                            <h4>Grade</h4>
+                                                            <span class="badge bg-inverse-danger">Below 50 % Not satisfactory</span>
+                                                            <span class="badge bg-inverse-warning"> >50 to 80% Average performance</span>
+                                                            <span class="badge bg-inverse-info"> >80 to 100% Met Expectation</span>
+                                                            <span class="badge bg-inverse-success"> >100%  Exceeded Expectation</span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td colspan="3" class="text-center">
+                                                        Team Leader Remarks
+                                                    </td>
+                                                    <td colspan="4" class="text-center">
+                                                        <input type="text" class="form-control" name="TL_Remark" value="@ViewBag.total_TL_Remark" required>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="3" class="text-center">
+                                                        Reporting Manager Remarks
+                                                    </td>
+                                                    <td colspan="4" class="text-center">
+                                                        <input type="text" class="form-control" name="RM_Remark" value="@ViewBag.RM_Remark" readonly>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="3" class="text-center">
+                                                        Top Management Remarks
+                                                    </td>
+                                                    <td colspan="4" class="text-center">
+                                                        <input type="text" class="form-control" name="Top_Management_Remark" @ViewBag.edit>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td colspan="7" class="text-center">
+                                                        <div class="grade-span">
+                                                            <input type="submit" class="btn btn-primary submit-btn" value="Save">
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    }
+                                }
+                                else
+                                {
+                                    using (Html.BeginForm("edit_Kra_Mng", "HRMS", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        @Html.ValidationSummary("", new { @class = "text-danger" })
+                                        <table class="table table-bordered review-table mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Focused area (Organization Goals)</th>
+                                                    <th>Weightage</th>
+                                                    <th>Self Rating :<br /> Below 50% / 75% / 100%</th>
+                                                    <th>Key Improvement Area</th>
+                                                    <th>Team Leader rating</th>
+                                                    <th>Reporting Manager rating</th>
+                                                    <th>Top Management Remarks -<br /> Agree or disagree</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if (Model.Count > 0)
+                                                {
+                                                    foreach (var i in Model)
+                                                    {
+                                                        <tr>
+
+                                                            <td>
+                                                                @i.Ksl_Master_string
+                                                                <input type="hidden" value="@i.Ksl_Master_Id" name="km[@Model.IndexOf(i)].Master_Id">
+                                                                <input type="hidden" value="@i.Ksl_Id" name="km[@Model.IndexOf(i)].Id">
+                                                                <input type="hidden" value="@i.Ksl_CreatedBy" name="km[@Model.IndexOf(i)].CreatedBy">
+                                                                <input type="hidden" value="@i.Ksl_CreatedOn" name="km[@Model.IndexOf(i)].CreatedOn">
+                                                                <input type="hidden" value="@i.Ksl_Kra_Score_Id" name="km[@Model.IndexOf(i)].Kra_Score_Id">
+                                                            </td>
+                                                            <td><input type="text" class="form-control" readonly value="@i.Weightage"></td>
+                                                            <td><input type="number" min="0" max="@i.Weightage" class="form-control" value="@i.Ksl_Self_Score" name="km[@Model.IndexOf(i)].Self_Score" readonly></td>
+                                                            <td><input type="text" class="form-control" value="@i.Ksl_Key_Improvement_Area" name="km[@Model.IndexOf(i)].Key_Improvement_Area" readonly></td>
+                                                            <td><input type="number" min="0" max="@i.Weightage" class="form-control total_tl_self" value="@i.Ksl_Total_TL_Score" name="km[@Model.IndexOf(i)].TL_Score" readonly></td>
+                                                            <td><input type="number" min="0" max="@i.Weightage" class="form-control total_rm_self" value="@i.Ksl_RM_Score" name="km[@Model.IndexOf(i)].RM_Score"></td>
+                                                            <td><input type="number" min="0" max="@i.Weightage" class="form-control total_tp_self" value="@i.Ksl_RM_Remark" name="km[@Model.IndexOf(i)].RM_Remark" @ViewBag.edit></td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            <tr>
+                                                <td class="text-center">Total </td>
+                                                <td><input type="text" class="form-control" readonly value="@ViewBag.wht"></td>
+                                                <td colspan="2"><input type="text" class="form-control" name="Total_self" readonly value="@ViewBag.total"></td>
+                                                <td><input type="text" class="form-control" id="Total_tl_Score" name="Total_tl_Score" readonly value="@ViewBag.total_TL"></td>
+                                                <td><input type="text" class="form-control" id="Total_rm_Score" name="Total_rm_Score" readonly value="@ViewBag.total_rm"></td>
+                                                <td><input type="text" class="form-control" id="Total_TP_Score" name="Total_TP_Score" readonly value="@ViewBag.Total_TP_Score"></td>
+                                            </tr>
+                                                <tr>
+                                                    <td colspan="7" class="text-center">
+                                                        <div class="grade-span">
+                                                            <h4>Grade</h4>
+                                                            <span class="badge bg-inverse-danger">Below 50 % Not satisfactory</span>
+                                                            <span class="badge bg-inverse-warning"> >50 to 80% Average performance</span>
+                                                            <span class="badge bg-inverse-info"> >80 to 100% Met Expectation</span>
+                                                            <span class="badge bg-inverse-success"> >100%  Exceeded Expectation</span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="3" class="text-center">
+                                                        Team Leader Remarks
+                                                    </td>
+                                                    <td colspan="4" class="text-center">
+                                                        <input type="text" class="form-control" name="TL_Remark" value="@ViewBag.total_TL_Remark" readonly>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="3" class="text-center">
+                                                        Reporting Manager Remarks
+                                                    </td>
+                                                    <td colspan="4" class="text-center">
+                                                        <input type="text" class="form-control" name="RM_Remark" value="@ViewBag.RM_Remark" required>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="3" class="text-center">
+                                                        Top Management Remarks
+                                                    </td>
+                                                    <td colspan="4" class="text-center">
+                                                        <input type="text" class="form-control" name="Top_Management_Remark" @ViewBag.edit>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="7" class="text-center">
+                                                        <div class="grade-span">
+                                                            <input type="submit" class="btn btn-primary submit-btn" value="Save">
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    }
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal custom-modal fade" id="msgBox">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-header">
+                    <h3 style="font-size: 20px;">@TempData["message"] </h3>
+                </div>
+                <div class="modal-btn">
+                    <div class="submit-section col-sm-4 offset-sm-4">
+                        <a href="#" data-dismiss="modal" aria-label="Close" class="btn btn-primary cancel-btn">OK</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+@section scripts
+{
+    @if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+
+            window.onload = function () {
+                $('#msgBox').modal('show');
+            };
+        </script>
+    }
+    <script>
+        $(".total_rm_self").blur(function () {
+          
+            var a = 0;
+
+            var inputs = $(".total_rm_self");
+
+
+
+            for (var i = 0; i < inputs.length; i++) {
+
+                if ($(inputs[i]).val() == "") {
+                }
+                else {
+                    a = parseInt($(inputs[i]).val()) + parseInt(a);
+                }
+
+            }
+
+            $("#Total_rm_Score").val(a);
+        });
+
+        $(".total_tl_self").blur(function () {
+
+            var a = 0;
+
+            var inputs = $(".total_tl_self");
+
+
+
+            for (var i = 0; i < inputs.length; i++) {
+
+                if ($(inputs[i]).val() == "") {
+                }
+                else {
+                    a = parseInt($(inputs[i]).val()) + parseInt(a);
+                }
+
+            }
+
+            $("#Total_tl_Score").val(a);
+        });
+
+        
+
+        $(".total_tp_self").blur(function () {
+
+            var a = 0;
+
+            var inputs = $(".total_tp_self");
+
+
+
+            for (var i = 0; i < inputs.length; i++) {
+
+                if ($(inputs[i]).val() == "") {
+                }
+                else {
+                    a = parseInt($(inputs[i]).val()) + parseInt(a);
+                }
+
+            }
+
+            $("#Total_TP_Score").val(a);
+        });
+    </script>
+}

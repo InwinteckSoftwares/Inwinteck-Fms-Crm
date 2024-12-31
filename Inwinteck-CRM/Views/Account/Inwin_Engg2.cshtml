@@ -1,0 +1,749 @@
+﻿@using CaptchaMvc.HtmlHelpers;
+@using CaptchaMvc;
+@{
+    Layout = null;
+}
+<style>
+    /* ------------------ General Styles ------------------ */
+    body {
+        background-color: #f4f6f9; /* Light background color */
+    }
+
+    /* General wrapper styles for alignment */
+    .auth-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        min-height: 100vh;
+        padding: 20px;
+    }
+
+    /* ------------------ Logo Styles ------------------ */
+    .logo {
+        display: block;
+        margin: 0 auto 30px;
+        max-width: 250px;
+        height: auto;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease-in-out;
+    }
+
+        .logo:hover {
+            transform: scale(1.05); /* Slight zoom on hover for interactivity */
+        }
+
+    /* ------------------ Intro Section Styles ------------------ */
+    .intro-section {
+        background-color: #ffffff;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 900px;
+        margin-bottom: 15px;
+    }
+
+        .intro-section h5 {
+            font-size: 1.3rem;
+            color: #2c3e50;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .intro-section ul {
+            padding-left: 15px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            color: #34495e;
+        }
+
+            .intro-section ul li {
+                margin-bottom: 8px;
+            }
+
+        .intro-section p {
+            font-size: 0.9rem;
+            color: #34495e;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+    .accomplishment {
+        color: #b8860b; /* Gold color */
+        font-size: 1.1rem; /* Slightly larger font */
+        font-weight: bold;
+        text-align: center;
+        margin: 15px 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .accomplishment img.iso-image {
+            height: 50px; /* Adjust height as needed */
+            margin-right: 10px;
+        }
+
+        .accomplishment img.iso-second {
+            margin-left: 10px; /* Adds space between the text and the second image */
+        }
+
+        .accomplishment span {
+            animation: highlight 2s ease-in-out infinite alternate;
+        }
+
+    @@keyframes highlight {
+        0% {
+            color: #b8860b; /* Gold */
+        }
+
+        100% {
+            color: #f39c12; /* Lighter shade of gold */
+        }
+    }
+
+
+    /* ------------------ Form Styles ------------------ */
+    /* Card styles for the form */
+    .card {
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        width: 100%;
+        max-width: 900px;
+        background-color: #ffffff;
+    }
+
+    h4 {
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 1.75rem;
+        color: #2980b9;
+        font-weight: bold;
+    }
+
+    /* Grid layout for paired fields in the same row */
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    .full-width {
+        grid-column: span 2;
+    }
+
+    label {
+        font-weight: 600;
+        margin-top: 10px;
+        display: flex;
+        align-items: center;
+    }
+
+        label i {
+            margin-right: 10px;
+            color: #2980b9;
+        }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="number"],
+    select,
+    textarea {
+        width: 100%;
+        padding: 12px;
+        margin-top: 5px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 1rem;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+        transition: border-color 0.2s ease;
+    }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="number"]:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #2980b9;
+        }
+
+    textarea {
+        resize: vertical;
+    }
+
+    button.btn-primary {
+        width: 100%;
+        padding: 12px;
+        background-color: #3498db;
+        color: #ffffff;
+        border: none;
+        border-radius: 6px;
+        font-size: 1.25rem;
+        cursor: pointer;
+        margin-top: 20px;
+        transition: background-color 0.3s ease;
+    }
+
+        button.btn-primary:hover {
+            background-color: #2980b9;
+        }
+
+    /* Custom checkbox styling */
+    .custom-checkbox {
+        margin-top: 15px;
+        display: flex;
+        align-items: center;
+    }
+
+    .custom-control-label {
+        margin-left: 10px;
+    }
+
+    /* Company fields visibility */
+    #companyFields {
+        margin-top: 20px;
+        background-color: #ecf0f1;
+        padding: 15px;
+        border-radius: 8px;
+        border: 1px solid #dfe6e9;
+    }
+
+        #companyFields h4 {
+            margin-bottom: 15px;
+            font-size: 1.25rem;
+            color: #2980b9;
+            font-weight: 600;
+        }
+
+    /* ------------------ Footer Styles ------------------ */
+    .footer {
+        background-color: #2c3e50;
+        color: #ffffff;
+        padding: 20px;
+        margin-top: 20px;
+        border-top: 2px solid #3498db;
+    }
+
+        .footer h5 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #3498db;
+            text-align: center;
+        }
+
+    .footer-content {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        text-align: center;
+    }
+
+    .location {
+        flex: 1;
+        margin: 10px;
+        min-width: 200px;
+    }
+
+    .country {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .phone {
+        color: #ecf0f1;
+    }
+
+    /* ------------------ Media Queries ------------------ */
+    /* Media query for screens smaller than 525px */
+    @@media (max-width: 525px) {
+        .auth-wrapper {
+            padding: 10px;
+        }
+
+        .logo {
+            max-width: 180px; /* Reduce logo size for smaller screens */
+            margin-bottom: 20px; /* Reduce margin below logo */
+        }
+
+        .intro-section, .card {
+            padding: 15px; /* Reduce padding for smaller screens */
+            width: 100%; /* Full-width for mobile */
+            max-width: none; /* Remove max-width restriction */
+        }
+
+            .intro-section h5 {
+                font-size: 1.2rem; /* Reduce intro title font size */
+            }
+
+            .intro-section p,
+            .intro-section ul li {
+                font-size: 0.9rem; /* Reduce intro text size */
+            }
+
+        h4 {
+            font-size: 1.5rem; /* Slightly smaller font size for titles */
+            margin-bottom: 15px; /* Adjust margin */
+        }
+
+        label {
+            font-size: 0.9rem; /* Reduce label font size */
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="number"],
+        select,
+        textarea {
+            padding: 10px; /* Smaller padding */
+            font-size: 0.9rem; /* Reduce input font size */
+        }
+
+        .form-grid {
+            grid-template-columns: 1fr; /* Stack fields vertically on small screens */
+        }
+
+        .full-width {
+            grid-column: span 1; /* Ensure full-width fields take the entire width */
+        }
+        /* Adjust button size */
+        button.btn-primary {
+            font-size: 1.1rem;
+            padding: 10px;
+        }
+        /* Adjust footer */
+        .footer h5 {
+            font-size: 1.2rem; /* Reduce footer title font size */
+        }
+
+        .footer .phone,
+        .footer .location {
+            font-size: small; /* Reduce footer text size */
+        }
+
+        .location {
+            margin: 10px 0;
+        }
+    }
+</style>
+
+<link href="~/assets/css/plugins/select2.min.css" rel="stylesheet" />
+<div class="auth-wrapper">
+    <!-- Logo -->
+    <img src="~/assets/images/logoHRms.jpg" alt="Logo" class="logo" id="logoImage" />
+
+    <!-- Introduction Section (Above the form) -->
+    <div class="intro-section" id="introSection">
+        <h5>Join Our Global Network of Field Engineers: Support for Flash Array Systems</h5>
+        <p class="intro-description" id="introDescription">
+            We are a global IT company that partners with data centers, providing skilled field engineers. As part of our network, you’ll play a key role in ensuring smooth operations at critical data centers.
+        </p>
+        <div class="accomplishment">
+            <img src="https://inwinteck.com/img/iso-9001%20(1).png" alt="ISO Certified" class="iso-image">
+            <span>ISO Certified | 7+ Years of Experience</span>
+            <img src="https://inwinteck.com/img/iso-27001.png" alt="ISO Certified" class="iso-image iso-second">
+        </div>
+
+        <div id="moreContent" style="display: none;">
+            <ul>
+                <li><strong>Required Skills</strong></li>
+                <li>Expertise in network protocols and Linux OS</li>
+                <li>Strong communication skills for interacting with data center teams</li>
+                <li>Professional demeanor in dynamic environments</li>
+                <li>Willingness to travel up to 40 miles for assignments</li>
+            </ul>
+            <ul>
+                <li><strong>Certification Requirements</strong></li>
+                <li>Self-paced eLearning course to enhance your technical proficiency</li>
+                <li>Additional onsite requirements may apply, such as facility access badges</li>
+            </ul>
+            <p>Ready to join our team? Fill out the registration form below, and we’ll be in touch with you shortly!</p>
+        </div>
+        <a href="javascript:void(0)" id="toggleContentLink">Read More</a>
+    </div>
+
+
+
+    @if (ViewBag.Message == "Yes")
+    {
+
+        <!-- Form Card -->
+        <div class="card">
+            <h4><strong>Field Engineer Registration</strong></h4>
+            @using (Html.BeginForm("Inwin_Engg2", "Account", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @id = "Reg-form" }))
+            {
+                @Html.ValidationSummary("", new { @class = "text-danger" })
+
+                <input type="hidden" id="latitude" name="latitude" />
+                <input type="hidden" id="longitude" name="longitude" />
+                <input type="hidden" id="createdByField" name="CreatedBy" value="" />
+
+                <!-- FE Type -->
+                <label for="FE_Type"><i class="fas fa-user-cog"></i> FE Type</label>
+                <select class="form-control" id="FE_Type" name="FE_Type" disabled>
+                    <option value="">Select FE Type</option>
+                    @foreach (var i in ViewBag.FE_Type)
+                    {
+                        <option value="@i.Value">@i.Text</option>
+                    }
+                </select>
+                <input type="hidden" id="HiddenFEType" name="FE_Type" />
+                <div class="form-grid">
+                    <!-- First Name and Last Name -->
+                    <div>
+                        <label for="First_Name"><i class="fas fa-user"></i> First Name</label>
+                        <input type="text" class="form-control" name="First_Name" id="First_Name" placeholder="First Name" required>
+                    </div>
+                    <div>
+                        <label for="Last_Name"><i class="fas fa-user"></i> Last Name</label>
+                        <input type="text" class="form-control" name="Last_Name" id="Last_Name" placeholder="Last Name" required>
+                    </div>
+
+                    <!-- Email -->
+                    <div>
+                        <label for="Email"><i class="fas fa-envelope"></i> Email</label>
+                        <input type="email" class="form-control" name="Email" id="Email" placeholder="Email" required>
+                    </div>
+
+                    <!-- Phone Number Code and Phone Number -->
+                    <div>
+                        <label for="Phone_Number_Code"><i class="fas fa-phone"></i> Phone Code</label>
+                        <select class="form-control" name="Phone_Number_Code" id="Phone_Number_Code" required>
+                            <option value="">Select Code</option>
+                            @foreach (var i in ViewBag.DialCode)
+                            {
+                                <option value="@i.Value">@i.Text</option>
+                            }
+                        </select>
+                    </div>
+                    <div>
+                        <label for="Phone_Number"><i class="fas fa-phone-alt"></i> Phone Number</label>
+                        <input type="number" class="form-control" name="Phone_Number" id="Phone_Number" placeholder="Phone Number" required>
+                    </div>
+
+                    <!-- City and State -->
+                    <div>
+                        <label for="City"><i class="fas fa-city"></i> City</label>
+                        <input type="text" class="form-control" name="City" id="City" placeholder="City" required>
+                    </div>
+                    <div>
+                        <label for="State"><i class="fas fa-map-marker-alt"></i> State/Province</label>
+                        <input type="text" class="form-control" name="State" id="State" placeholder="State/Province" required>
+                    </div>
+
+                    <!-- ZipCode/Pincode and Country -->
+                    <div>
+                        <label for="ZipCode_Pincode"><i class="fas fa-map-pin"></i> ZipCode/Pincode</label>
+                        <input type="text" class="form-control" name="ZipCode_Pincode" id="ZipCode_Pincode" placeholder="ZipCode/Pincode" required>
+                    </div>
+                    <div>
+                        <label for="Country"><i class="fas fa-globe"></i> Country</label>
+                        <select class="form-control" name="Country" id="Country" required>
+                            <option value="">Select Country</option>
+                            @foreach (var i in ViewBag.Country)
+                            {
+                                <option value="@i.Value">@i.Text</option>
+                            }
+                        </select>
+                    </div>
+
+                    <!-- Street Address -->
+                    <div class="full-width">
+                        <label for="Street_Address"><i class="fas fa-road"></i> Street Address</label>
+                        <input type="text" class="form-control" id="Street_Address" name="Street_Address" placeholder="Street Address" required>
+                    </div>
+                </div>
+
+                <!-- Company Information (Initially Hidden) -->
+                <div id="companyFields" style="display:none;">
+                    <h4><i class="fas fa-building"></i> Company Details</h4>
+
+                    <div class="form-grid">
+                        <!-- Company Name and Company Email -->
+                        <div>
+                            <label for="Company_Name"><i class="fas fa-building"></i> Company Name</label>
+                            <input type="text" class="form-control" name="Company_Name" id="Company_Name" placeholder="Company Name">
+                        </div>
+                        <div>
+                            <label for="Company_Email"><i class="fas fa-envelope"></i> Company Email</label>
+                            <input type="email" class="form-control" name="Company_Email" id="Company_Email" placeholder="Company Email">
+                        </div>
+
+                        <!-- Company Phone and Company Website -->
+                        <div>
+                            <label for="Company_Phone"><i class="fas fa-phone"></i> Company Phone</label>
+                            <input type="text" class="form-control" name="Company_Phone" id="Company_Phone" placeholder="Company Phone">
+                        </div>
+                        <div>
+                            <label for="Company_Website"><i class="fas fa-globe"></i> Company Website</label>
+                            <input type="text" class="form-control" name="Company_Website" id="Company_Website" placeholder="Company Website">
+                        </div>
+                    </div>
+
+                    <!-- Company Address Details -->
+                    <div class="form-grid">
+                        <div>
+                            <label for="Company_Street_Address"><i class="fas fa-road"></i> Company Street Address</label>
+                            <input type="text" class="form-control" name="Company_Street_Address" id="Company_Street_Address" placeholder="Street Address">
+                        </div>
+                        <div>
+                            <label for="Company_ZipCode_Pincode"><i class="fas fa-map-pin"></i> Company ZipCode/Pincode</label>
+                            <input type="text" class="form-control" name="Company_ZipCode_Pincode" id="Company_ZipCode_Pincode" placeholder="ZipCode/Pincode">
+                        </div>
+                        <div>
+                            <label for="Company_City"><i class="fas fa-city"></i> Company City</label>
+                            <input type="text" class="form-control" name="Company_City" id="Company_City" placeholder="City">
+                        </div>
+                        <div>
+                            <label for="Company_State"><i class="fas fa-map-marker-alt"></i> Company State</label>
+                            <input type="text" class="form-control" name="Company_State" id="Company_State" placeholder="State/Province">
+                        </div>
+
+                        <div class="full-width">
+                            <label for="Company_Country"><i class="fas fa-globe"></i> Company Country</label>
+                            <select class="form-control" name="Company_Country" id="Company_Country">
+                                <option value="">Select Country</option>
+                                @foreach (var i in ViewBag.Country)
+                                {
+                                    <option value="@i.Value">@i.Text</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Declaration and Captcha -->
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="customCheck1" required>
+                    <label class="custom-control-label" for="customCheck1">
+                        I/We do hereby declare that no legal and/or criminal case is pending against me before any court/investigating agencies.
+                    </label>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn-primary">Register</button>
+            }
+        </div>
+    }
+    <div class="footer" id="footerId">
+        <h5>Our Headquarters</h5>
+
+        <div class="footer-content">
+            <div class="location">
+                <div class="country">United States</div>
+                <div>1445 Woodmont Ln NW #2349<br>Atlanta, GA 30318</div>
+                <div class="phone">+1-973-786-3939</div>
+            </div>
+
+            <div class="location">
+                <div class="country">India</div>
+                <div>412, Omega Business Park,<br>Wagle Estate, Thane (W) - 400604, Maharashtra</div>
+                <div class="phone">022-46059220</div>
+            </div>
+
+            <div class="location">
+                <div class="country">Singapore</div>
+                <div>23 Kelantan Lane, #04-01<br>Kim Hoe Centre, Singapore - 208642</div>
+                <div class="phone">+44-151-528-6969</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/HRMS/new/assets/js/jquery-3.6.0.min.js"></script>
+
+<!-- JavaScript for geocoding and dynamic form fields -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBvhQbrULBXqk9wPb9RjTeacVk3A3g-ci8" async defer></script>
+<!-- Bootstrap JS and Popper.js -->
+<script src="~/HRMS/new/assets/js/popper.min.js"></script>
+<script src="~/assets/js/plugins/select2.full.min.js"></script>
+<script src="~/HRMS/new/assets/js/bootstrap.min.js"></script>
+
+<script>
+    var baseurl = "http://localhost:1957/";
+
+    document.addEventListener('DOMContentLoaded', function () {
+        function toggleContent() {
+            const moreContent = document.getElementById('moreContent');
+            const toggleLink = document.getElementById('toggleContentLink');
+
+            if (moreContent.style.display === "none") {
+                moreContent.style.display = "block";
+                toggleLink.textContent = "Read Less";
+            } else {
+                moreContent.style.display = "none";
+                toggleLink.textContent = "Read More";
+            }
+        }
+
+        document.getElementById('toggleContentLink').onclick = toggleContent;
+    });
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+
+
+        // Async function to handle geocoding and updating latitude/longitude
+        async function geocode() {
+            const street = document.getElementById('Street_Address').value;
+            const zip = document.getElementById('ZipCode_Pincode').value;
+            const city = document.getElementById('City').value;
+            const state = document.getElementById('State').value;
+            const country = document.getElementById('Country').value;
+
+            // Construct the full address
+            const location = `${street},${zip},${city},${state},${country}`;
+
+            try {
+                // Fetch geocode data using axios
+                const response = await axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
+                    params: {
+                        address: location,
+                        key: 'AIzaSyBvhQbrULBXqk9wPb9RjTeacVk3A3g-ci8'
+                    }
+                });
+
+                // Check if the response was successful
+                if (response.data.status === 'OK') {
+                    const result = response.data.results[0];
+                    const lat = result.geometry.location.lat;
+                    const lng = result.geometry.location.lng;
+
+                    // Store the latitude and longitude in hidden fields
+                    document.getElementById('latitude').value = lat;
+                    document.getElementById('longitude').value = lng;
+
+                    // Autofill the address components if they are missing
+                    const addressComponents = result.address_components;
+                    addressComponents.forEach(component => {
+                        if (component.types.includes('locality') && !city) {
+                            document.getElementById('City').value = component.long_name;
+                        }
+                        if (component.types.includes('administrative_area_level_1') && !state) {
+                            document.getElementById('State').value = component.long_name;
+                        }
+                        if (component.types.includes('country') && !country) {
+                            document.getElementById('Country').value = component.long_name;
+                        }
+                    });
+
+                } else {
+                    console.error('Geocode error: ', response.data.status);
+                }
+            } catch (error) {
+                console.error('Geocoding error: ', error);
+            }
+        }
+
+        // Attach event listeners for geocoding
+        document.getElementById('Street_Address').addEventListener('blur', geocode);
+        document.getElementById('ZipCode_Pincode').addEventListener('blur', geocode);
+
+        // Async function to handle location fetching based on ZipCode
+        document.getElementById('ZipCode_Pincode').addEventListener('blur', async function () {
+            const code = this.value;
+
+            try {
+                const response = await axios.get(`${baseurl}/Master/GetLocation`, {
+                    params: { PinCode: code }
+                });
+
+                if (response.data.res === "Success") {
+                    document.getElementById('City').value = response.data.Location.city;
+                    document.getElementById('State').value = response.data.Location.state;
+                    document.getElementById('Country').value = response.data.Location.Country;
+                    document.getElementById('Country').dispatchEvent(new Event('change'));
+                } else {
+                    console.error('Location data not found for the given ZipCode.');
+                }
+            } catch (error) {
+                console.error('Error fetching location for the ZipCode:', error);
+            }
+        });
+
+        function toggleCompanyFields() {
+            var feType = document.getElementById('FE_Type').value;
+            var companyFields = document.getElementById('companyFields');
+
+            if (parseInt(feType) === 345) {
+                companyFields.style.display = 'block';
+            } else {
+                companyFields.style.display = 'none';
+            }
+        }
+
+        document.getElementById('FE_Type').addEventListener('change', toggleCompanyFields);
+    });
+</script>
+
+<script type="text/javascript">
+    function getQueryParameter(name) {
+        let urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var createdBy = getQueryParameter('id'); // Get the 'id' from the URL (which will be used as 'CreatedBy')
+        if (createdBy) {
+            document.getElementById('createdByField').value = createdBy; // Set the value in the hidden field
+        }
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        // Initialize Select2 on Phone Code dropdown
+        $('#Phone_Number_Code').select2({
+            placeholder: "Select Code",
+            allowClear: true,
+            width: '100%'
+        });
+
+        // Initialize Select2 on Country dropdown
+        $('#Country').select2({
+            placeholder: "Select Country",
+            allowClear: true,
+            width: '100%' // Ensure the select2 dropdown spans 100% of its container
+        });
+
+
+
+    });
+
+</script>.
+<script>
+    window.onload = function () {
+        var urlParams = new URLSearchParams(window.location.search);
+        var feType = urlParams.get('feId');
+
+        if (feType) {
+            // Set the dropdown to the corresponding value
+            var selectElement = document.getElementById('FE_Type');
+            var options = selectElement.options;
+            for (var i = 0; i < options.length; i++) {
+                if (options[i].value === feType) {
+                    options[i].selected = true;
+                    break;
+                }
+            }
+            document.getElementById('HiddenFEType').value = feType;
+            toggleCompanyFieldsOnLoad(feType);
+        }
+    };
+
+    function toggleCompanyFieldsOnLoad(feType) {
+        var companyFields = document.getElementById('companyFields');
+        console.log("feType", feType);
+
+        if (parseInt(feType) === 345) {  // Company = 345
+            companyFields.style.display = 'block';
+        } else {
+            companyFields.style.display = 'none';
+        }
+    }
+</script>
+

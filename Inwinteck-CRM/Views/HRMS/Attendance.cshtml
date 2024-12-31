@@ -1,0 +1,169 @@
+﻿@model  HRMS.Models.Attendance
+@{
+    ViewBag.Title = "Attendance";
+    Layout = ViewBag.Layout;
+    ViewBag.Manger = ViewBag.Mng;
+}
+
+<!-- Page Header -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="page-head-box">
+            <h3>Attendance</h3>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index","Dashboard")">Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Attendance</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- /Page Header -->
+@using (Html.BeginForm("Attendance", "HRMS", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+    <!-- Search Filter -->
+    <div class="row filter-row">
+        <div class="col-sm-3">
+            <div class="form-group form-focus mb-0">
+                    <input type="month" class="form-control floating" name="searchDate">
+                    <label class="focus-label">Month</label>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <button class="btn btn-success btn-search"><i class="fas fa-search mr-2"></i> Search </button>
+        </div>
+
+    </div>
+    <!-- /Search Filter -->
+}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="table-responsive">
+            <table class="table table-striped custom-table datatable att-emp-table">
+                <thead>
+                    <tr>
+                        <th>Date </th>
+                        <th>Punch In</th>
+                        <th>Punch Out</th>
+                        <th>Production</th>
+                        <th>Break</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.ts.Count > 0)
+                    {
+                        foreach (var i in Model.ts)
+                        {
+                            <tr>
+                                <td>
+                                    <a href="javascript:void(0);" data-toggle="modal" data-target="#attendance_info_@i.Date.ToString("dd-MM-YYYY")">@i.Date.ToString("dd MMM yyyy")</a>
+
+
+                                    <!-- Attendance Modal -->
+                                    <div class="modal custom-modal fade" id="attendance_info_@i.Date.ToString("dd-MM-YYYY")" role="dialog">
+                                        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Attendance Info</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <i class="fas fa-times"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="card punch-status">
+                                                                <div class="card-body">
+                                                                    <h5 class="card-title">Timesheet <small class="text-muted">@i.Date.ToString("dd MMM yyyy")</small></h5>
+                                                                    <div class="punch-det">
+                                                                        <h6>Punch In at</h6>
+                                                                        <p>@i.Punch_In.Value.ToString("hh:mm tt")</p>
+                                                                    </div>
+                                                                    <div class="punch-info">
+                                                                        <div class="punch-hours">
+                                                                            <span>@i.Working_Hrs</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="punch-det">
+                                                                        <h6>Punch Out at</h6>
+                                                                        @if (i.Punch_Out == null)
+                                                                        {
+                                                                            <p> No Punch Out Data </p>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <p>@i.Punch_Out.Value.ToString("hh:mm tt")</p>
+                                                                        }
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="card recent-activity">
+                                                                <div class="card-body">
+                                                                    <h5 class="card-title">Activity</h5>
+                                                                    <ul class="res-activity-list">
+                                                                        @foreach (var z in Model.tsl)
+                                                                        {
+                                                                            if (z.log.ToString("dd-MM-yyyy") == i.Date.ToString("dd-MM-yyyy"))
+                                                                            {
+                                                                                <li>
+                                                                                    @if (z.Activity == "PI")
+                                                                                    {
+                                                                                        <p class="mb-0">Punch In</p>
+                                                                                    }
+                                                                                    else if (z.Activity == "PO")
+                                                                                    {
+                                                                                        <p class="mb-0">Punch Out</p>
+                                                                                    }
+                                                                                    else if (z.Activity == "BI")
+                                                                                    {
+                                                                                        <p class="mb-0">Break In</p>
+                                                                                    }
+                                                                                    else if (z.Activity == "BO")
+                                                                                    {
+                                                                                        <p class="mb-0">Break Out</p>
+                                                                                    }
+                                                                                    <p class="res-activity-time">
+                                                                                        <i class="far fa-clock"></i>
+                                                                                        @z.log.ToString("hh:mm tt")
+                                                                                    </p>
+                                                                                </li>
+
+                                                                            }
+                                                                        }
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /Attendance Modal -->
+                                </td>
+                                <td>@i.Punch_In.Value.ToString("hh:mm tt")</td>
+                                @if (i.Punch_Out == null)
+                                {
+                                    <td> No Punch Out Data </td>
+                                }
+                                else
+                                {
+                                    <td>@i.Punch_Out.Value.ToString("hh:mm tt")</td>
+                                }
+
+                                <td>@i.Working_Hrs hrs</td>
+                                <td>@TimeSpan.FromMinutes(Convert.ToDouble(i.Total_Break)) hrs</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

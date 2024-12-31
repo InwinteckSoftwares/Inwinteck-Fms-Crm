@@ -1,0 +1,539 @@
+﻿@model Inwinteck_CRM.Models.security_management
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<style>
+    .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+        text-align: left;
+    }
+
+    .userlist {
+        display: none;
+    }
+</style>
+
+<div class="page-header">
+    <div class="container-fluid d-sm-flex justify-content-between">
+        <h4>Permission</h4>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">Security</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Permission</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Basic Forms -->
+            <div class="card">
+
+                <!-- /.box-header -->
+                <div class="card-body">
+                    <div class="row">
+                        @*<form role="form" method="post" action="http://localhost:1957/Security/Index" class="col-12">*@
+                        @*<form role="form" method="post" action="http://localhost:1957/Security/Index" class="col-12">*@
+                             <form role="form" method="post" action="https://fms.inwinteck.com/Security/Index" class="col-12">
+                            @*<form role="form" method="post" action="http://inwinteckcrm.3sptechmind.com/Security/Index" class="col-12">*@
+                            <section class="content">
+
+                                <!-- Basic Forms -->
+                                <div class="card">
+
+                                    <!-- /.box-header -->
+                                    <div class="card-body">
+                                        <div class="row col-12">
+
+                                            <div class="col-12">
+                                                <div class="form-row">
+                                                    <label for="example-text-input" class="col-sm-2 col-form-label">Select</label>
+                                                    <div class="col-sm-4">
+                                                        <div class="radio">
+                                                            <input type="radio" name="user" id="role" value="role" checked />
+                                                            <label for="role">Role</label>
+                                                            <input type="radio" name="user" id="user" value="user" />
+                                                            <label for="user">User</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        @Html.DropDownListFor(m => m.RoleId, ViewBag.Role as IEnumerable<SelectListItem>, "--Select--", new { @class = "form-control rolelist" })
+
+                                                        @Html.DropDownListFor(m => m.UserId, ViewBag.User as IEnumerable<SelectListItem>, "--Select--", new { @class = "form-control userlist" })
+                                                    </div>
+
+
+                                                </div>
+
+                                                <div class="box-footer text-center">
+
+                                                    <button type="submit" class="btn btn-info">Save</button>
+                                                    @*<input type="submit" class="btn btn-success" />*@
+
+
+                                                    @*<button type="submit" class="btn btn-info">Search</button>
+                                <a href="@Url.Action("CreateTicket", "Transaction")" class="btn btn-info" title="Add new Country">Create Ticket</a>
+                                <a href="#" class="btn btn-info" title="Export to Excel"><i class="fa fa-file-excel-o" aria-hidden="true"></i> </a>*@
+                                                </div>
+                                            </div>
+
+                                            <!-- /.col -->
+                                        </div>
+                                        <!-- /.row -->
+                                    </div>
+                                    <!-- /.box-body -->
+
+
+                                </div>
+                                <!-- /.box -->
+                                <!-- /.box-header -->
+                                <div class="card">
+
+                                    <div class="card-body" style="max-height: 500px;overflow: scroll;">
+                                        <div class="table-responsive custom-control custom-checkbox">
+                                            <div class="col-12">
+                                                <table class="table">
+                                                    <tr class="thead-dark">
+                                                        <th>Component</th>
+                                                        @*<th>All</th>*@
+                                                        <th>Insert</th>
+                                                        <th>Update</th>
+                                                        <th>Delete</th>
+                                                        <th>View</th>
+                                                        <th>Export</th>
+                                                        <th>Import</th>
+                                                    </tr>
+                                                    @{ int tst = 0;}
+                                                    @foreach (var i in Model.MenuMaster)
+                                                    {
+
+                                                        <tr>
+                                                            <td colspan="8">
+                                                                @i.display_name
+                                                            </td>
+                                                        </tr>
+                                                        foreach (var j in Model.Submenu)
+                                                        {
+                                                            if (i.menu_id == j.parent_menu_id)
+                                                            {
+                                                                <tr>
+                                                                    <td colspan="8">
+                                                                        @j.display_name
+                                                                    </td>
+                                                                </tr>
+                                                            }
+
+                                                            foreach (var l in Model.ComponentMaster)
+                                                            {
+
+
+                                                                if (j.menu_id == l.menu_id && j.parent_menu_id == i.menu_id)
+                                                                {
+                                                                    if (Model.UserPermission.Count > 0)
+                                                                    {
+                                                                        int cnt = 1;
+                                                                        bool res = true;
+
+                                                                        foreach (var m in Model.UserPermission)
+                                                                        {
+                                                                            if (l.business_object_id == m.business_object_id)
+                                                                            {
+                                                                                cnt = cnt + 1;
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        @l.display_text
+                                                                                        <input type="hidden" name="UP[@tst].business_object_id" value="@l.business_object_id" />
+                                                                                    </td>
+                                                                                    @*<td>
+
+                                                                    <input type="checkbox" name="all" id="@("all"+l.business_object_id)" value="" />
+                                                                    <label for="@("all"+l.business_object_id)" id="@("all"+l.business_object_id)">&nbsp;</label>
+
+                                                                    <div class="user1id">
+                                                                        <input type="hidden" name="UP[@tst].user_id" value="" />
+                                                                    </div>
+                                                                    <div class="role1id">
+                                                                        <input type="hidden" name="UP[@tst].user_role_id" value="" />
+                                                                    </div>
+                                                                </td>*@
+                                                                                    @if (m.record_insert == true)
+                                                                                    {
+                                                                                        <td>
+
+                                                                                            <input type="checkbox" name="UP[@tst].record_insert" id="[@tst].record_insert" class="custom-control-input" value="true" checked />
+
+                                                                                            <label for="[@tst].record_insert" id="[@tst].record_insert" class="custom-control-label">&nbsp;</label>
+                                                                                        </td>
+
+                                                                                    }
+                                                                                    else
+                                                                                    {
+
+                                                                                        <td>
+                                                                                            <input type="checkbox" id="UP[@tst].record_insert" name="UP[@tst].record_insert" class="custom-control-input" value="false" />
+                                                                                            <label for="UP[@tst].record_insert" id="UP[@tst].record_insert" class="custom-control-label">&nbsp;</label>
+                                                                                        </td>
+                                                                                    }
+                                                                                    @if (m.record_update == true)
+                                                                                    {
+                                                                                        <td>
+                                                                                            <input type="checkbox" name="UP[@tst].record_update" id="[@tst].record_update" value="true" class="custom-control-input" checked />
+                                                                                            <label for="[@tst].record_update" id="[@tst].record_update" class="custom-control-label">&nbsp;</label>
+                                                                                        </td>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <td>
+
+                                                                                            <input type="checkbox" name="UP[@tst].record_update" id="UP[@tst].record_update" class="custom-control-input" value="false" />
+                                                                                            <label for="UP[@tst].record_update" id="UP[@tst].record_update">&nbsp;</label>
+                                                                                        </td>
+                                                                                    }
+                                                                                    @if (m.record_delete == true)
+                                                                                    {
+                                                                                        <td>
+                                                                                            <input type="checkbox" name="UP[@tst].record_delete" id="UP[@tst].record_delete" value="true" class="custom-control-input" checked />
+                                                                                            <label for="UP[@tst].record_delete" id="UP[@tst].record_delete" class="custom-control-label">&nbsp;</label>
+
+                                                                                        </td>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <td>
+
+                                                                                            <input type="checkbox" name="UP[@tst].record_delete" id="UP[@tst].record_delete" class="custom-control-input" value="false" />
+
+                                                                                            <label for="UP[@tst].record_delete" id="UP[@tst].record_delete" class="custom-control-label">&nbsp;</label>
+                                                                                        </td>
+                                                                                    }
+                                                                                    @if (m.record_view == true)
+                                                                                    {
+                                                                                        <td>
+                                                                                            <input type="checkbox" name="UP[@tst].record_view" value="true" id="UP[@tst].record_view" class="custom-control-input" checked />
+                                                                                            <label for="UP[@tst].record_view" id="UP[@tst].record_view" class="custom-control-label">&nbsp;</label>
+
+                                                                                        </td>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <td>
+
+                                                                                            <input type="checkbox" name="UP[@tst].record_view" id="UP[@tst].record_view" class="custom-control-input" value="false" />
+
+                                                                                            <label for="UP[@tst].record_view" id="UP[@tst].record_view" class="custom-control-label">&nbsp;</label>
+                                                                                        </td>
+                                                                                    }
+                                                                                    @if (m.record_export == true)
+                                                                                    {
+                                                                                        <td>
+                                                                                            <input type="checkbox" name="UP[@tst].record_export" id="UP[@tst].record_export" value="true" class="custom-control-input" checked />
+
+                                                                                            <label for="UP[@tst].record_export" id="UP[@tst].record_export" class="custom-control-label">&nbsp;</label>
+
+                                                                                        </td>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <td>
+                                                                                            <input type="checkbox" name="UP[@tst].record_export" id="UP[@tst].record_export" value="false" class="custom-control-input" />
+                                                                                            <label for="UP[@tst].record_export" id="UP[@tst].record_export" class="custom-control-label">&nbsp;</label>
+
+                                                                                        </td>
+
+                                                                                    }
+                                                                                    @if (m.record_import == true)
+                                                                                    {
+                                                                                        <td>
+                                                                                            <input type="checkbox" name="UP[@tst].record_import" id="UP[@tst].record_import" value="true" class="custom-control-input" checked />
+
+                                                                                            <label for="UP[@tst].record_import" id="UP[@tst].record_import" class="custom-control-label">&nbsp;</label>
+
+                                                                                        </td>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <td>
+                                                                                            <input type="checkbox" name="UP[@tst].record_import" id="UP[@tst].record_import" value="false" class="custom-control-input" />
+                                                                                            <label for="UP[@tst].record_import" id="UP[@tst].record_import" class="custom-control-label">&nbsp;</label>
+                                                                                        </td>
+                                                                                    }
+                                                                                </tr>
+                                                                                tst = tst + 1;
+                                                                                break;
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                if (cnt == Model.UserPermission.Count)
+                                                                                {
+                                                                                    <tr>
+                                                                                        <td>
+                                                                                            @l.display_text
+                                                                                            <input type="hidden" name="UP[@tst].business_object_id" value="@l.business_object_id" />
+                                                                                        </td>
+                                                                                        @*<td>
+
+                                                                        <div class="user1id">
+                                                                            <input type="hidden" name="UP[@tst].user_id" value="" />
+                                                                        </div>
+                                                                        <div class="role1id">
+                                                                            <input type="hidden" name="UP[@tst].user_role_id" value="" />
+                                                                        </div>
+                                                                        <input type="checkbox" name="all" id="@("all"+l.business_object_id)" value="" />
+                                                                        <label for="@("all"+l.business_object_id)" id="@("all"+l.business_object_id)">&nbsp;</label>
+                                                                    </td>*@
+                                                                                        <td>
+                                                                                            <input type="checkbox" name="UP[@tst].record_insert" value="false" id="UP[@tst].record_insert" class="custom-control-input" />
+                                                                                            <label for="UP[@tst].record_insert" id="UP[@tst].record_insert" class="custom-control-label">&nbsp;</label>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <input type="checkbox" name="UP[@tst].record_update" id="@("upd"+ @l.business_object_id)" class="custom-control-input" />
+                                                                                            <label for="@("upd"+ @l.business_object_id)" id="@("upd"+ @l.business_object_id)" class="custom-control-label">&nbsp;</label>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <input type="checkbox" name="UP[@tst].record_delete" id="@("del"+ @l.business_object_id)" class="custom-control-input" />
+                                                                                            <label for="@("del"+ @l.business_object_id)" id="@("del"+ @l.business_object_id)" class="custom-control-label">&nbsp;</label>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <input type="checkbox" name="UP[@tst].record_view" id="@("viw"+ @l.business_object_id)" class="custom-control-input" />
+                                                                                            <label for="@("viw"+ @l.business_object_id)" id="@("viw"+ @l.business_object_id)" class="custom-control-label">&nbsp;</label>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <input type="checkbox" name="UP[@tst].record_export" id="@("exp"+ @l.business_object_id)" class="custom-control-input" />
+                                                                                            <label for="@("exp"+ @l.business_object_id)" id="@("exp"+ @l.business_object_id)" class="custom-control-label">&nbsp;</label>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <input type="checkbox" name="UP[@tst].record_import" id="@("imp"+ @l.business_object_id)" class="custom-control-input" />
+                                                                                            <label for="@("imp"+ @l.business_object_id)" id="@("imp"+ @l.business_object_id)" class="custom-control-label">&nbsp;</label>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    tst = tst + 1;
+                                                                                }
+
+                                                                                cnt = cnt + 1;
+                                                                                res = false;
+                                                                            }
+                                                                            if (cnt == Model.UserPermission.Count && res == false)
+                                                                            {
+
+                                                                            }
+                                                                        }
+
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <tr>
+                                                                            <td>
+                                                                                @l.display_text
+                                                                                <input type="hidden" name="UP[@tst].business_object_id" value="@l.business_object_id" />
+                                                                            </td>
+
+                                                                            @*<td>
+
+                                                            <div class="user1id">
+                                                                <input type="hidden" name="UP[@tst].user_id" value="" />
+                                                            </div>
+                                                            <div class="role1id">
+                                                                <input type="hidden" name="UP[@tst].user_role_id" value="" />
+                                                            </div>
+                                                            <input type="checkbox" name="all" id="@("all"+l.business_object_id)" value="" />
+                                                            <label for="@("all"+l.business_object_id)" id="@("all"+l.business_object_id)">&nbsp;</label>
+                                                        </td>*@
+                                                                            <td>
+                                                                                <input type="checkbox" id="UP[@tst].record_insert" name="UP[@tst].record_insert" value="false" class="custom-control-input" />
+                                                                                <label for="UP[@tst].record_insert" id="UP[@tst].record_insert" class="custom-control-label">&nbsp;</label>
+                                                                            </td>
+                                                                            <td>
+
+                                                                                <input type="checkbox" name="UP[@tst].record_update" value="false" id="@("upd"+ @l.business_object_id)" class="custom-control-input" />
+                                                                                <label for="@("upd"+ @l.business_object_id)" id="@("upd"+ @l.business_object_id)" class="custom-control-label">&nbsp;</label>
+                                                                            </td>
+                                                                            <td>
+                                                                                <input type="checkbox" value="false" name="UP[@tst].record_delete" id="@("del"+ @l.business_object_id)" class="custom-control-input" />
+                                                                                <label for="@("del"+ @l.business_object_id)" id="@("del"+ @l.business_object_id)" class="custom-control-label">&nbsp;</label>
+                                                                            </td>
+                                                                            <td>
+                                                                                <input type="checkbox" value="false" name="UP[@tst].record_view" id="@("viw"+ @l.business_object_id)" class="custom-control-input" />
+                                                                                <label for="@("viw"+ @l.business_object_id)" id="@("viw"+ @l.business_object_id)" class="custom-control-label">&nbsp;</label>
+                                                                            </td>
+                                                                            <td>
+                                                                                <input type="checkbox" value="false" name="UP[@tst].record_export" id="@("exp"+ @l.business_object_id)" class="custom-control-input" />
+                                                                                <label for="@("exp"+ @l.business_object_id)" id="@("exp"+ @l.business_object_id)" class="custom-control-label">&nbsp;</label>
+                                                                            </td>
+                                                                            <td>
+                                                                                <input type="checkbox" value="false" name="UP[@tst].record_import" id="@("imp"+ @l.business_object_id)" class="custom-control-input" />
+                                                                                <label for="@("imp"+ @l.business_object_id)" id="@("imp"+ @l.business_object_id)" class="custom-control-label">&nbsp;</label>
+                                                                            </td>
+
+                                                                        </tr>
+                                                                        tst = tst + 1;
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                </table>
+
+                                            </div>
+                                            <!-- /.col -->
+                                        </div>
+                                        <!-- /.row -->
+                                    </div>
+
+                                </div>
+
+                                <div class="modal fade" id="myModal">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content  text-center">
+                                            <div class="modal-header bg-theme">
+                                                <h4 class="modal-title text-center "><i class="fa fa-info-circle" aria-hidden="true"></i> Information</h4>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true" style="color:#fff;">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p style="font-size: 20px;">@TempData["message"] </p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+
+                                                <a href="#" data-dismiss="modal" aria-label="Close" class="btn btn-info">OK</a>
+                                            </div>
+                                        </div>
+                                        <!-- /.modal-content -->
+                                    </div>
+                                    <!-- /.modal-dialog -->
+                                </div>
+                                <!-- /.modal -->
+                            </section>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+    @section scripts{
+        @if (TempData["message"] != null)
+        {
+            <script type="text/javascript">
+
+                window.onload = function () {
+                    $('#myModal').modal('show');
+                };
+            </script>
+        }
+        <script type="text/javascript">
+            $(document).ready(function () {
+
+                $('input[type=radio][name=user]').change(function () {
+                    if (this.value == 'user') {
+                        $("#RoleId").css({ "display": "none" });
+                        $("#UserId").css({ "display": "block" });
+                    }
+                    else if (this.value == 'role') {
+                        $("#RoleId").css({ "display": "block" });
+                        $("#UserId").css({ "display": "none" });
+                    }
+                });
+                $("#RoleId").change(function () {
+                    if ($(this).val() != "") {
+                        //alert($(this).val());
+                        $("#rolid").val($(this).val());
+                        var reg = $(this).val();
+                        //reg = reg.replace(" ", "-");
+
+                        var url = baseurl + "Security/Index/?RoleId=" + reg;
+                        window.location.href = url;
+                    }
+                });
+                $("#UserId").change(function () {
+                    if ($(this).val() != "") {
+                        //alert($(this).val());
+                        $("#usrid").val($(this).val());
+                        var reg = $(this).val();
+                        //reg = reg.replace(" ", "-");
+
+                        var url = baseurl + "Security/Index/?UserId=" + reg;
+                        window.location.href = url;
+                    }
+                });
+
+            });
+        </script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('input[type="checkbox"]').click(function () {
+                    if ($(this).prop("checked") == true) {
+                        $(this).val('true');
+                        $(this).attr('checked', true);
+                    }
+                    else if ($(this).prop("checked") == false) {
+                        $(this).attr('checked', false);
+                        $(this).val('false');
+                    }
+                });
+            });
+        </script>
+
+        <script type="text/javascript">
+
+            function getUrlVars() {
+                var vars = [], hash;
+                var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+                for (var i = 0; i < hashes.length; i++) {
+                    hash = hashes[i].split('=');
+                    vars.push(hash[0]);
+                    vars[hash[0]] = hash[1];
+                }
+                return vars;
+            }
+            $(document).ready(function () {
+                debugger;
+                var param1 = getUrlVars()["RoleId"];
+                var param2 = getUrlVars()["UserId"];
+                typeof value === "undefined"
+
+                if (param1 > 0) {
+                    $("#role").prop("checked", true);
+
+                    $("#RoleId").css({ "display": "block" });
+                    $("#UserId").css({ "display": "none" });
+
+                } else if (param2 != "") {
+                    $("#user").prop("checked", true);
+                    $("#RoleId").css({ "display": "none" });
+                    $("#UserId").css({ "display": "block" });
+                }
+                $("#RoleId").val(param1);
+                $("#UserId").val(param2);
+
+
+            });
+        </script>
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

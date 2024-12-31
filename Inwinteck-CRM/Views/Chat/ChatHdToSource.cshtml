@@ -1,0 +1,514 @@
+﻿@{
+    ViewBag.Title = "Chat || Index";
+    Layout = null;
+    var ticketId = ViewBag.TicketId;
+}
+
+<title>Chat</title>
+<link rel="stylesheet" href="~/assets/css/chat.css">
+<!-- Include Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<!-- Include Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<!-- Include Moment.js -->
+<script src="~/assets/js/moment.min.js"></script>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #34ebb4; /* Updated background color */
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .chat-container {
+        display: flex;
+        flex-direction: column;
+        height: 90vh;
+        width: 95vw;
+        max-width: 1000px;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    .chat-header {
+        background-color: #075E54;
+        color: #fff;
+        padding: 15px;
+        text-align: center;
+        font-size: 1.5em;
+    }
+
+    .chat-body {
+        flex: 1;
+        padding: 15px;
+        overflow-y: auto;
+        background-color: #ece5dd;
+    }
+
+    .chat-message {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 10px;
+    }
+
+        .chat-message.sent .message-content {
+            background-color: #d4f0fc;
+        }
+
+        .chat-message.received .message-content {
+            background-color: #f1f1f1;
+        }
+
+        .chat-message.sent .message-time {
+            color: #007bff;
+        }
+
+        .chat-message.received .message-time {
+            color: #555;
+        }
+
+    .date-divider {
+        text-align: center;
+        margin: 10px 0;
+        font-size: 0.9em;
+        color: #888;
+    }
+
+    .message-time {
+        align-self: flex-end;
+        font-size: 0.8em;
+        color: #999;
+        margin-top: 2px;
+    }
+
+    .chat-footer {
+        display: flex;
+        padding: 10px;
+        background-color: #f0f0f0;
+        border-top: 1px solid #e0e0e0;
+        align-items: center;
+    }
+
+        .chat-footer .input-group {
+            display: flex;
+            width: 100%;
+            align-items: center;
+        }
+
+    .chat-input {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 20px;
+        margin-right: 10px;
+        outline: none;
+        transition: all 0.3s ease;
+    }
+
+        .chat-input:focus {
+            border-color: #075E54;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+    .chat-send-btn {
+        padding: 10px 20px;
+        background-color: #075E54;
+        color: #fff;
+        border: none;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        .chat-send-btn:hover {
+            background-color: #128C7E;
+        }
+
+    .image-upload-icon, .video-upload-icon {
+        cursor: pointer;
+        margin-right: 10px;
+        font-size: 1.5em;
+        color: #075E54;
+        transition: color 0.3s ease;
+    }
+
+        .image-upload-icon:hover, .video-upload-icon:hover {
+            color: #128C7E;
+        }
+
+    .chat-footer > * {
+        margin: 0 5px;
+    }
+
+    .chat-list {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .chat-image {
+        max-width: 100%;
+        max-height: 200px;
+        height: auto;
+        border-radius: 8px;
+        margin-top: 10px;
+    }
+
+    .chat-video {
+        max-width: 100%;
+        max-height: 300px;
+        height: auto;
+        border-radius: 8px;
+        margin-top: 10px;
+    }
+
+    #imageInput, #videoInput {
+        display: none;
+    }
+
+    .date-divider {
+        text-align: center;
+        margin: 20px 0;
+        position: relative;
+        width: 100%;
+    }
+
+        .date-divider span {
+            background-color: #ece5dd;
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 0.85em;
+            color: #666;
+        }
+
+        .date-divider::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 10px;
+            right: 10px;
+            border-top: 1px solid #ccc;
+            z-index: -1;
+        }
+
+    /* Custom Scrollbar */
+    .chat-body::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    .chat-body::-webkit-scrollbar-thumb {
+        background-color: #075E54;
+        border-radius: 10px;
+    }
+
+    .chat-body::-webkit-scrollbar-track {
+        background-color: #ece5dd;
+    }
+
+    .message-content {
+        display: inline-block;
+        padding: 5px 10px;
+        background-color: #f1f1f1;
+        border-radius: 5px;
+    }
+
+    .file-name {
+        margin-left: 10px;
+        font-size: 0.9em;
+        color: #555;
+        display: none; /* Initially hidden */
+    }
+</style>
+
+<div class="chat-container">
+    <div class="chat-header">
+        <h2>Inwinteck Chat <b><span id="ticketNumber"></span></b></h2>
+    </div>
+    <div class="chat-body chat-list" id="discussion">
+        <!-- Messages will be appended here -->
+    </div>
+    <div class="chat-footer">
+        @using (Html.BeginForm())
+        {
+            <div class="input-group">
+                <input type="hidden" id="ticketId" name="ticketId" value="@ViewBag.TicketId" />
+                <input type="hidden" id="displayname" value="@ViewBag.DisplayName" />
+                <input type="hidden" id="iwtTicketNo" value="@ViewBag.iwtTicketNo" />
+                <input type="text" id="message" placeholder="Enter your message" class="chat-input" />
+                <i class="fas fa-image image-upload-icon" onclick="document.getElementById('imageInput').click();"></i>
+                <input type="file" id="imageInput" accept="image/*" />
+                <span id="imageFileName" class="file-name"></span>
+                <i class="fas fa-video video-upload-icon" onclick="document.getElementById('videoInput').click();"></i>
+                <input type="file" id="videoInput" accept="video/*" />
+                <span id="videoFileName" class="file-name"></span>
+                <button type="button" id="send" class="chat-send-btn">Send</button>
+            </div>
+        }
+    </div>
+</div>
+
+<audio id="notificationSound" src="~/assets/audio/mixkit-wrong-answer-fail-notification-946.wav" preload="auto"></audio>
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<!-- Include Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<!-- Include SignalR JS -->
+<script src="~/Scripts/jquery.signalR-2.4.3.min.js"></script>
+<script src="~/signalr/hubs"></script>
+
+
+<script>
+$(document).ready(function () {
+    // Set the text of the ticketNumber span to the value of the hidden input
+    $('#ticketNumber').text($('#iwtTicketNo').val());
+
+    // Trigger send button click on Enter key press
+    $('#message').keypress(function (e) {
+        if (e.which == 13) {
+            $('#send').click();
+            return false; 
+        }
+    });
+
+    // Establish the connection to the SignalR hub
+    var chat = $.connection.chatHub;
+
+    var notificationSound = document.getElementById('notificationSound');
+    var currentUserName = $('#displayname').val();
+
+    // Function to handle receiving a text message
+    chat.client.broadcastMessage = function (messageId, name, message, timestamp) {
+        appendMessage(messageId, name, message, 'text', timestamp);
+        if (name !== currentUserName) {
+            playNotificationSound();
+        }
+    };
+
+    // Function to handle receiving an image message
+    chat.client.broadcastImage = function (messageId, name, imageUrl, timestamp) {
+        appendMessage(messageId, name, imageUrl, 'image', timestamp);
+        if (name !== currentUserName) {
+            playNotificationSound();
+        }
+    };
+
+    // Function to handle receiving a video message
+    chat.client.broadcastVideo = function (messageId, name, videoUrl, timestamp) {
+        appendMessage(messageId, name, videoUrl, 'video', timestamp);
+        if (name !== currentUserName) {
+            playNotificationSound();
+        }
+    };
+
+    // Function to handle the deletion of a message
+    chat.client.broadcastDeleteMessage = function (messageId) {
+        $('#message-' + messageId).remove();
+    };
+
+    // Function to append a message to the chat
+  function appendMessage(messageId, name, content, type, timestamp) {
+    var encodedName = $('<div />').text(name).html();
+    var messageClass = (name === currentUserName) ? 'chat-message sent' : 'chat-message received';
+    var messageContent;
+
+    // Parse the timestamp and format the time
+    var dateObj = new Date(timestamp);
+    if (isNaN(dateObj.getTime())) {
+        // If parsing failed, use the current time
+        dateObj = new Date();
+    }
+    var hours = dateObj.getHours().toString().padStart(2, '0');
+    var minutes = dateObj.getMinutes().toString().padStart(2, '0');
+    var formattedTime = hours + ':' + minutes;
+
+    // Create the HTML content based on the message type
+    if (type === 'text') {
+        var encodedMessage = $('<div />').text(content).html();
+        messageContent = '<div class="message-content"><strong>' + encodedName + '</strong>:&nbsp;&nbsp;' + encodedMessage + '</div><div class="message-time">' + formattedTime + '</div>';
+    } else if (type === 'image') {
+        messageContent = '<div class="message-content"><strong>' + encodedName + '</strong>:<br><img src="' + content + '" class="chat-image" /></div><div class="message-time">' + formattedTime + '</div>';
+    } else if (type === 'video') {
+        messageContent = '<div class="message-content"><strong>' + encodedName + '</strong>:<br><video src="' + content + '" class="chat-video" controls></video></div><div class="message-time">' + formattedTime + '</div>';
+    }
+
+    // Check if a date divider is needed and add it if necessary
+    var lastMessageDate = $('#discussion .date-divider').last().find('span').text();
+    var currentDate = dateObj.toLocaleDateString(); // Format the current date as needed
+
+    if (currentDate !== lastMessageDate) {
+        $('#discussion').append('<div class="date-divider"><span>' + currentDate + '</span></div>');
+    }
+
+    // Append the message to the discussion
+    var messageHtml = '<div class="' + messageClass + '" id="message-' + messageId + '">' + messageContent + '</div>';
+    $('#discussion').append(messageHtml);
+
+    // Adding delete option functionality for messages sent by the current user within the last 10 minutes
+    if (name === currentUserName && (new Date() - dateObj < 10 * 60 * 1000)) { // 10 minutes in milliseconds
+        var deleteOption = $('<div class="delete-option">Delete</div>').hide();
+        $('#message-' + messageId).append(deleteOption);
+
+        // Show delete option on message click
+        $('#message-' + messageId).on('click', function () {
+            deleteOption.toggle();
+        });
+
+        // Delete the message on delete option click
+        deleteOption.on('click', function () {
+            $.ajax({
+                url: '@Url.Action("DeleteMessage", "Chat")',
+                type: 'POST',
+                data: { messageId: messageId },
+                success: function (data) {
+                    if (data.success) {
+                        // Notify other clients to delete this message
+                        chat.server.broadcastDeleteMessage(messageId);
+                    } else {
+                        alert(data.message);
+                    }
+                }
+            });
+        });
+
+        // Hide the delete option when clicking outside the message
+        $(document).on('click', function (e) {
+            if (!$(e.target).closest('#message-' + messageId).length) {
+                deleteOption.hide();
+            }
+        });
+    }
+
+    // Scroll to the bottom of the chat after appending a new message
+    $('#discussion').scrollTop($('#discussion')[0].scrollHeight);
+}
+
+
+    // Function to play the notification sound
+    function playNotificationSound() {
+        notificationSound.play();
+    }
+
+    // Function to update the displayed file name when a file is selected
+    function updateFileName(input, fileNameElementId) {
+        var fileName = input.files[0].name;
+        var fileNameElement = document.getElementById(fileNameElementId);
+        fileNameElement.textContent = fileName;
+        fileNameElement.style.display = 'inline';
+    }
+
+    // Event listener for the image input change
+    document.getElementById('imageInput').addEventListener('change', function () {
+        updateFileName(this, 'imageFileName');
+    });
+
+    // Event listener for the video input change
+    document.getElementById('videoInput').addEventListener('change', function () {
+        updateFileName(this, 'videoFileName');
+        var file = this.files[0];
+        if (file) {
+            var video = document.createElement('video');
+            video.preload = 'metadata';
+
+            video.onloadedmetadata = function () {
+                window.URL.revokeObjectURL(video.src);
+                $('#videoFileName').append(' - Loaded and ready to send');
+            };
+
+            video.src = URL.createObjectURL(file);
+        }
+    });
+
+    // Start the SignalR connection
+    $.connection.hub.start().done(function () {
+        // Event listener for the send button click
+        $('#send').click(function () {
+            var message = $('#message').val();
+            var imageInput = document.getElementById('imageInput');
+            var videoInput = document.getElementById('videoInput');
+
+            // Handle image message
+            if (imageInput.files.length > 0) {
+                var formData = new FormData();
+                formData.append('file', imageInput.files[0]);
+
+                $.ajax({
+                    url: '@Url.Action("UploadImage", "Chat")',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        if (data.success) {
+                            chat.server.sendImage(data.Url, $('#ticketId').val(), currentUserName); // ChatHub method called
+                        } else {
+                            console.log('Error uploading image:', data.message);
+                        }
+                    },
+                    error: function (error) {
+                        console.log('Error uploading image:', error);
+                    }
+                });
+
+                $('#message').val('').focus();
+                imageInput.value = ''; // Clear the file input
+                document.getElementById('imageFileName').style.display = 'none';
+            }
+            // Handle video message
+            else if (videoInput.files.length > 0) {
+                var formData = new FormData();
+                formData.append('file', videoInput.files[0]);
+
+                $.ajax({
+                    url: '@Url.Action("UploadVideo", "Chat")',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        if (data.success) {
+                            chat.server.sendVideo(data.Url, $('#ticketId').val(), currentUserName); // ChatHub method called
+                        } else {
+                            console.log('Error uploading video:', data.message);
+                        }
+                    },
+                    error: function (error) {
+                        console.log('Error uploading video:', error);
+                    }
+                });
+
+                $('#message').val('').focus();
+                videoInput.value = ''; // Clear the file input
+                document.getElementById('videoFileName').style.display = 'none';
+            }
+            // Handle text message
+            else if (message.trim() !== "") {
+                chat.server.send(message, $('#ticketId').val(), currentUserName);  // ChatHub method called
+                $('#message').val('').focus();
+            }
+        });
+
+        // Load previous messages without a ticket ID parameter
+        $.getJSON('@Url.Action("GetMessagesAll", "Chat")', function (data) {
+            $.each(data, function (index, message) {
+                var messageId = message.Id; // Get the message ID from the response
+                var userName = message.UserName;
+                var content = message.Message;
+                var messageType = message.MessageType;
+                var timestamp = message.Timestamp; 
+                appendMessage(messageId, userName, content, messageType, timestamp);
+            });
+        }).fail(function (error) {
+            console.log('Error loading messages:', error);
+        });
+
+    }).fail(function (error) {
+        console.log('Could not connect to SignalR hub: ' + error);
+    });
+});
+</script>

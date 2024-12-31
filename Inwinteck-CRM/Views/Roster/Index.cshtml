@@ -1,0 +1,99 @@
+﻿@model IEnumerable<HRMS.Models.Shift>
+@{
+    Layout = "~/Views/Shared/_LayoutHRMS.cshtml";
+    var shiftsList = Model.ToList();
+    var weekStartDate = shiftsList.First().Date;
+}
+
+<div class="container my-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="text-primary">Roster for the Week</h2>
+        <div>
+            <a href="@Url.Action("Index", new { weekOffset = ViewBag.WeekOffset - 1 })" class="btn btn-primary me-2">
+                <i class="bi bi-arrow-left"></i> Previous Week
+            </a>
+            <a href="@Url.Action("Index", new { weekOffset = ViewBag.WeekOffset + 1 })" class="btn btn-primary">
+                Next Week <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle">
+            <!-- Apply bg-warning and text-dark to the thead for yellow background and dark text -->
+            <thead class="bg-warning text-dark">
+                <tr>
+                    <th scope="col">Name / Date</th>
+                    @for (var i = 0; i < 7; i++)
+                    {
+                        var date = weekStartDate.AddDays(i);
+                        <th scope="col" class="text-center">
+                            @date.DayOfWeek<br />
+                            <small>@date.ToString("dd-MMM-yy")</small>
+                        </th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var employeeGroup in shiftsList.GroupBy(s => s.EmpId))
+                {
+                    <tr>
+                        <td>@employeeGroup.First().EmployeeName</td>
+                        @for (var i = 0; i < 7; i++)
+                        {
+                            var currentDate = weekStartDate.AddDays(i);
+                            var shift = employeeGroup.FirstOrDefault(s => s.Date == currentDate);
+                            if (shift != null)
+                            {
+                                string cellClass = "";
+                                if (shift.IsWeekOff)
+                                {
+                                    cellClass = "table-secondary";
+                                }
+                                else
+                                {
+                                    cellClass = GetShiftClass(shift.ShiftTime);
+                                }
+                                string displayText = shift.IsWeekOff ? "WO" : shift.ShiftTime;
+                                <td class="text-center @cellClass" data-bs-toggle="tooltip" data-bs-placement="top" title="Shift Details: @displayText">
+                                    @displayText
+                                </td>
+                            }
+                            else
+                            {
+                                <td class="text-center">-</td>
+                            }
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    </script>
+}
+
+@functions {
+    // Helper method to assign CSS classes based on shift time
+    private string GetShiftClass(string shiftTime)
+    {
+        switch (shiftTime)
+        {
+            case "Morning":
+                return "table-success";
+            case "Afternoon":
+                return "table-warning";
+            case "Night":
+                return "table-danger";
+            default:
+                return "";
+        }
+    }
+}

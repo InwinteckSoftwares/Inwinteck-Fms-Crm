@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Travel Charges Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            color: #333;
+            line-height: 1.6;
+            margin: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #4CAF50;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-uppercase {
+            text-transform: uppercase;
+        }
+
+        .font-montserrat {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .color-dark {
+            color: #333;
+        }
+
+        .img-responsive {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .center-block {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .mt30 {
+            margin-top: 30px;
+        }
+
+        .hover-sink {
+            transition: transform 0.3s;
+        }
+
+        .hover-sink:hover {
+            transform: translateY(5px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Travel Charges Details</h2>
+        <p>Dear Team,</p>
+        <p>Please find below the travel charges for the Field Engineer (FE) With Reference to <b>Case #: </b> {Case_No}:</p>
+
+        <table>
+            <tr>
+                <th>Travel Amount</th>
+                <td>{Travel_Amount1}  USD</td>
+            </tr>
+        </table>
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 text-center">
+                <h4 class="text-uppercase font-montserrat color-dark">
+                    Team,<br>
+                    <img src="https://fms.inwinteck.com/assets/images/logo.png" alt="Logo" class="img-responsive center-block mt30 hover-sink">
+                    <small class="heading heading-solid center-block"></small>
+                </h4>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

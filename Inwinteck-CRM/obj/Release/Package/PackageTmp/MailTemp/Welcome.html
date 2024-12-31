@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Inwinteck FMS | Welcome Aboard</title>
+    <style>
+        body {
+            width: 100%;
+            height: 100%;
+            font-family: 'Open Sans', sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .email-wrapper {
+            max-width: 700px;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin: 20px;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Montserrat', sans-serif;
+            color: #0f709a;
+        }
+
+        h3 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        h4 {
+            font-size: 22px;
+            margin-top: 30px;
+            color: #333;
+        }
+
+        p {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: #5f5f5f;
+        }
+
+        a {
+            color: #0f709a;
+            text-decoration: none;
+        }
+
+            a:hover {
+                text-decoration: underline;
+            }
+
+        .container {
+            margin: 0 auto;
+            padding: 15px;
+        }
+
+        .center-block {
+            display: block;
+            margin: 0 auto;
+        }
+
+        .heading {
+            border-bottom: 3px solid #0f709a;
+            width: 60px;
+            margin: 20px auto;
+        }
+
+        .button {
+            background-color: #0f709a;
+            color: #fff;
+            padding: 12px 25px;
+            text-transform: uppercase;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 5px;
+            display: inline-block;
+            margin-top: 30px;
+            transition: background-color 0.3s ease;
+            box-shadow: 0px 4px 15px rgba(15, 112, 154, 0.4);
+        }
+
+            .button:hover {
+                background-color: #0e567b;
+            }
+
+        .footer {
+            background-color: #0f709a;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            font-size: 13px;
+            border-radius: 0 0 10px 10px;
+        }
+
+            .footer p {
+                margin: 0;
+            }
+
+        header {
+            background: linear-gradient(135deg, #e7f2f8, #d4e9f3);
+            padding: 50px 0;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .logo img {
+            width: 120px;
+        }
+
+        @media screen and (max-width: 768px) {
+            .email-wrapper {
+                padding: 20px;
+            }
+
+            h3 {
+                font-size: 28px;
+            }
+
+            h4 {
+                font-size: 20px;
+            }
+
+            .button {
+                padding: 10px 20px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-wrapper">
+        <!-- Header Section -->
+        <header class="parallax-window-3">
+            <div class="container text-center">
+                <h3 class="font-pacifico">Hello {name},</h3>
+                <p>
+                    <b>Type:</b> {Type}<br />
+                    <b>City:</b> <span class="font-montserrat">{City}</span><br />
+                    <b>Country:</b> <span class="font-montserrat">{Country}</span>
+                </p>
+                <p>Welcome aboard! Thank you for completing the registration process. Please find the attached NDA copy for your reference.</p>
+                <p>We are thrilled to have you as our authorized partner for onsite support in your service location. Now, you are part of the Inwinteck family, with more than 500 partners globally providing 24/7 X 365 support in 130 countries since 2017.</p>
+                <p>Inwinteck is a global IT service provider company offering onsite IT Field Engineer support to clients worldwide, with offices in Singapore and India. With your professional skills and commitment to customer service, we hope to grow our partnership further, just as we have with many other partners.</p>
+                <p>We wish you great success and look forward to a long-term business association!</p>
+                <p>Appreciate your help and support!</p>
+                <a href="#" class="button">Explore Your Dashboard</a>
+            </div>
+        </header>
+
+        <!-- Important Section -->
+        <section>
+            <div class="container text-center">
+                <h4>What's Next</h4>
+                <p>We are committed to making your experience with us smooth and successful. As a next step, please log in to your dashboard to explore and familiarize yourself with the tools and resources available to you. If you encounter any issues or have any questions, feel free to reach out to our support team.</p>
+                <p>You can also check our <a href="https://inwinteck.com/">Website</a> for more details.</p>
+
+                <div class="heading"></div>
+            </div>
+        </section>
+
+        <!-- Team Section -->
+        <section>
+            <div class="container text-center">
+                <h4>Warm regards,</h4>
+                <img src="https://fms.inwinteck.com/assets/images/logo.png" alt="Inwinteck Logo" class="img-responsive center-block mt30">
+                <div class="heading"></div>
+            </div>
+        </section>
+
+        <!-- Footer Section -->
+        <footer class="footer">
+            <p>This is an auto-generated email. Please do not reply.</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,591 @@
+﻿@using CaptchaMvc.HtmlHelpers;
+@using CaptchaMvc;
+@{
+    Layout = null;
+}
+
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Inwinteck - Signup Engg</title>
+
+    <!-- Plugin styles -->
+    <link rel="stylesheet" href="~/assets/css/style.css" type="text/css">
+    <!-- select2 css -->
+    <link rel="stylesheet" href="~/assets/css/plugins/select2.min.css">
+</head>
+<style>
+    .show {
+        display: none;
+    }
+
+    .tf {
+        display: none;
+    }
+
+    .tc {
+        display: none;
+    }
+
+    .tsc {
+        display: none;
+    }
+
+    @@media only screen and (max-width: 767px) {
+        .auth-wrapper .auth-content:not(.container) .card-body {
+            padding: 40px 0px;
+        }
+    }
+</style>
+<body>
+    <script src="~/HRMS/new/assets/js/jquery-3.6.0.min.js"></script>
+    <!-- Loader Starts -->
+    <div id="loader-wrapper" style="display: none;">
+        <div id="loader" style="display: none;">
+            <img src="~/assets/images/Ripple-1s-200px.gif" />
+        </div>
+    </div>
+    <!-- Loader Ends -->
+    <div class="auth-wrapper">
+        <div class="auth-content" style="width:1000px;">
+            <div class="card">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card-body">
+                            <h4 class="mb-3 f-w-400 text-center"><a href="@Url.Action("Login", "Account")"> <img class="img-fluid mb-4" src="~/assets/images/logo-L.png" alt="image" style="color:black"></a><br /><strong>Field Engineer Registration</strong></h4>
+                            @if (ViewBag.Message == "Yes")
+                            {
+                                using (Html.BeginForm("Inwin_Engg", "Account", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12", @autocomplete = "off", @id = "Reg-form" }))
+                                {
+                                    @Html.ValidationSummary("", new { @class = "text-danger" })
+                                    <input type="hidden" name="Status" value="0" />
+                                    <input type="hidden" name="CreatedBy" value="@ViewBag.CreatedBy" />
+                                    <div class="form-row">
+                                        <label for="FE_Type" class="col-sm-2 col-form-label">FE Type</label>
+                                        <div class="col-sm-4">
+                                            <select class="form-control" id="FE_Type" name="FE_Type" required>
+                                                <option value="">Select FE Type</option>
+                                                @foreach (var i in ViewBag.FE_Type)
+                                                {
+                                                    <option value="@i.Value">@i.Text</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <label for="First_Name" class="col-sm-2 col-form-label">First Name</label>
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control" name="First_Name" id="First_Name" placeholder="First Name" autocomplete="nope" required>
+                                        </div>
+                                        <label for="Last_Name" class="col-sm-2 col-form-label">Last Name</label>
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control" name="Last_Name" id="Last_Name" placeholder="Last Name" autocomplete="nope" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <label for="Email" class="col-sm-2 col-form-label">Email</label>
+                                        <div class="col-sm-4">
+                                            <input type="email" class="form-control" name="Email" id="Email" autocomplete="nope" placeholder="Email" required>
+                                        </div>
+
+                                        <label for="City" class="col-sm-2 col-form-label">City</label>
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control" name="City" id="City" autocomplete="nope" placeholder="City" required>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-row">
+                                        <label for="ZipCode_Pincode" class="col-sm-2 col-form-label">ZipCode/Pincode</label>
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control" name="ZipCode_Pincode" id="ZipCode_Pincode" autocomplete="nope" placeholder="ZipCode/Pincode" required>
+                                        </div>
+                                        <label for="State" class="col-sm-2 col-form-label">State/Province</label>
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control" name="State" id="State" placeholder="State/Province" autocomplete="nope" required>
+                                        </div>
+                                    </div>
+                                    @*<div class="form-row">
+
+                                            <label for="Citizenship" class="col-sm-2 col-form-label">Citizenship</label>
+                                            <div class="col-md-4">
+                                                <select class="form-control" name="Citizenship" id="Citizenship">
+                                                    <option value="">Select Citizenship</option>
+                                                    @foreach (var i in ViewBag.Citizen)
+                                                    {
+                                                        <option value="@i.Value">@i.Text</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>*@
+                                    <div class="form-row">
+                                        <label for="Country" class="col-sm-2 col-form-label">Country</label>
+                                        <div class="col-sm-4">
+                                            <select class="js-example-placeholder-multiple form-control" placeholder="select Country" name="Country" id="Country" required>
+                                                <option value="">Select Country</option>
+                                                @foreach (var i in ViewBag.Country)
+                                                {
+                                                    <option value="@i.Value">@i.Text</option>
+                                                }
+                                            </select>
+                                        </div>
+                                        <label for="Street_Address" class="col-sm-2 col-form-label">Street Address</label>
+                                        <div class="col-md-4">
+                                            <input type="text" class="form-control" id="Street_Address" name="Street_Address" placeholder="Enter your Street Address" autocomplete="nope" required>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" class="form-control" id="latitude" name="latitude" placeholder="Latitude" />
+                                    <input type="hidden" class="form-control" id="longitude" name="longitude" placeholder="Longitude" />
+                                    @*<div class="form-row">
+                                            <label for="Chat_Phone_Number" class="col-sm-2 col-form-label">Chat Phone Number</label>
+                                            <div class="col-sm-2">
+                                                <input type="text" class="form-control" name="Chat_Phone_Number_Code" id="Chat_Phone_Number_Code" placeholder="Dial Code" readonly>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <select class="form-control" id="Chat_mode" name="Chat_mode">
+                                                    <option value="">Select Mode of Communication</option>
+                                                    @foreach (var i in ViewBag.Chat_mode)
+                                                    {
+                                                        <option value="@i.Value">@i.Text</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <input type="text" class="form-control" name="Chat_Phone_Number" id="Chat_Phone_Number" title="Faster Communication" placeholder="Chat Phone Number for Faster Communication" required>
+                                            </div>
+                                        </div>*@
+                                    <div class="form-row">
+                                        <label for="Phone_Number" class="col-sm-2 col-form-label">Phone Number</label>
+                                        <div class="col-sm-2">
+                                            <select class="js-example-basic-single form-control" placeholder="select Code" name="Phone_Number_Code" autocomplete="nope" id="Phone_Number_Code" required>
+                                                <option value="">Select Code</option>
+                                                @foreach (var i in ViewBag.DialCode)
+                                                {
+                                                    <option value="@i.Value">@i.Text</option>
+                                                }
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <input type="number" class="form-control" name="Phone_Number" id="Phone_Number" autocomplete="nope" placeholder="Phone No. without country code " required>
+                                        </div>
+
+                                        @*<label for="Freelance_Website" class="col-sm-2 col-form-label tf">Freelance Website</label>
+                                            <div class="col-md-4">
+                                                <input type="text" class="form-control tf" name="Freelance_Website" placeholder="Enter your Freelance Website">
+                                            </div>*@
+                                    </div>
+                                    <div class="form-row tc">
+                                        <label for="Company_Name" class="col-sm-2 col-form-label ">Company Name</label>
+                                        <div class="col-md-4">
+                                            <input type="text" class="form-control " name="Company_Name" autocomplete="nope" placeholder="Enter your Company Name">
+                                        </div>
+                                        <label for="Company_Email" class="col-sm-2 col-form-label">Company Email</label>
+                                        <div class="col-md-4">
+                                            <input type="text" class="form-control" name="Company_Email" autocomplete="nope" placeholder="Enter your Company Email">
+                                        </div>
+                                    </div>
+                                    <div class="form-row tc">
+                                        <label for="Company_Name" class="col-sm-2 col-form-label ">Company Phone</label>
+                                        <div class="col-sm-4 tsc">
+                                            <select class="js-example-basic-single" placeholder="select Code" name="Company_Phone_code" id="Company_Phone_code">
+                                                <option value="">Select Code</option>
+                                                @foreach (var i in ViewBag.DialCode)
+                                                {
+                                                    <option value="@i.Value">@i.Text</option>
+                                                }
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text" class="form-control " name="Company_Phone" autocomplete="nope" placeholder="Enter your Company Phone">
+                                        </div>
+                                    </div>
+                                    <div class="form-row tc">
+                                        <label for="Company_Website" class="col-sm-2 col-form-label ">Company Website</label>
+                                        <div class="col-md-4">
+                                            <input type="text" class="form-control " name="Company_Website" autocomplete="nope" placeholder="Enter your Company Website">
+                                        </div>
+                                    </div>
+                                    <div class="form-row tc">
+                                        <label for="Company_Address" class="col-sm-2 col-form-label ">Company Street Address</label>
+                                        <div class="col-md-10">
+                                            <input type="text" class="form-control " id="Company_Address" autocomplete="nope" name="Company_Address" placeholder="Enter your Company Address">
+                                        </div>
+                                    </div>
+                                    <div class="form-row tc">
+                                        <label for="Company_Zipcode_Pincode" class="col-sm-2 col-form-label ">Company ZipCode/Pincode</label>
+                                        <div class="col-md-4">
+                                            <input type="text" class="form-control " name="Company_Zipcode_Pincode" autocomplete="nope" id="Company_Zipcode_Pincode" placeholder="Enter your Company_Zipcode_Pincode">
+                                        </div>
+                                        <label for="Company_City" class="col-sm-2 col-form-label ">Company City</label>
+                                        <div class="col-md-4">
+                                            <input type="text" class="form-control " name="Company_City" autocomplete="nope" id="Company_City" placeholder="Enter your Company City">
+                                        </div>
+                                    </div>
+                                    <div class="form-row tc">
+                                        <label for="Company_State" class="col-sm-2 col-form-label ">Company State</label>
+                                        <div class="col-md-4">
+                                            <input type="text" class="form-control " name="Company_State" autocomplete="nope" id="Company_State" placeholder="Enter your Company State">
+                                        </div>
+                                        <label for="Company_Country" class="col-sm-2 col-form-label ">Company Country</label>
+                                        <div class="col-md-4 tsc">
+                                            <select class="js-example-basic-single form-control" name="Company_Country" id="Company_Country">
+                                                <option value="">Select Country</option>
+                                                @foreach (var i in ViewBag.Country)
+                                                {
+                                                    <option value="@i.Value">@i.Text</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-row tc">
+                                        <label for="Manager_Name" class="col-sm-2 col-form-label ">Manager Name</label>
+                                        <div class="col-md-4">
+                                            <input type="text" class="form-control tc" name="Manager_Name" autocomplete="nope" placeholder="Enter your Manager Name">
+                                        </div>
+                                        <label for="Manager_Phone_Number" class="col-sm-2 col-form-label ">Manager Phone Number</label>
+                                        <div class="col-md-4">
+                                            <input type="text" class="form-control " name="Manager_Phone_Number" autocomplete="nope" placeholder="Enter your Manager Phone Number">
+                                        </div>
+                                    </div>
+                                    <div class="form-row tc">
+                                        <label for="Manager_Email" class="col-sm-2 col-form-label ">Manager Email</label>
+                                        <div class="col-md-4">
+                                            <input type="text" class="form-control " name="Manager_Email" autocomplete="nope" placeholder="Enter your Manager Email">
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-sm-12">
+                                            <div class="custom-control custom-checkbox  text-left mb-4 mt-2">
+                                                <input type="checkbox" class="custom-control-input" id="customCheck1" required>
+                                                <label class="custom-control-label" for="customCheck1">
+                                                    I/We do hereby <b>declare</b> that no legal and/or <b>criminal</b> case is pending against me before any court / investigating agencies. I, further inform that I have never been found guilty / convicted of any legal offense and / or crime by any court of law in the past. If requested I agree to furnish my background check records.
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @Html.MathCaptcha()
+
+                                    <p style="color: red;">  @ViewBag.ErrMessage </p>
+                                    <button type="submit" class="btn btn-primary btn-block mb-4 ">
+                                        Register
+                                    </button>
+
+                                }
+                            }
+                            else
+                            {
+                                if (TempData["error"].ToString() != null)
+                                {
+                                    if (TempData["error"].ToString() == "Yes")
+                                    {
+                                        <p style="font-size: 20px;">@TempData["message"] </p>
+                                    }
+                                    else
+                                    {
+
+                                        <p style="font-size: 20px;">@TempData["message"] </p>
+
+                                        using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            @Html.ValidationSummary("", new { @class = "text-danger" })
+
+                                            <input type="hidden" name="logintype" value="FMS">
+                                            <div class="form-group mb-3 mt-5">
+                                                <label class="floating-label" for="Email">User Name</label>
+                                                <input type="text" class="form-control" name="Email" id="Email" placeholder="" value="@TempData["login"]" autocomplete="nope" required>
+                                            </div>
+                                            <div class="form-group mb-4">
+                                                <label class="floating-label" for="Password">Password</label>
+                                                <input type="password" class="form-control" name="Password" id="Password" placeholder="" autocomplete="nope" required>
+                                            </div>
+                                            <button type="submit" class="btn btn-block btn-primary mb-4">Sign in</button>
+
+                                        }
+                                    }
+                                }
+
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- [ auth-signup ] end -->
+
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content  text-center">
+                <div class="modal-header">
+                    <h4 class="modal-title text-center "><i class="fa fa-info-circle" aria-hidden="true"></i> Information</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @if (TempData["error"] != null)
+                    {
+                        if (TempData["error"].ToString() == "Yes")
+                        {
+                            <p style="font-size: 20px;">@TempData["message"] </p>
+                        }
+                        else
+                        {
+
+                            <p style="font-size: 20px;">@TempData["message"] </p>
+
+                            using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.ValidationSummary("", new { @class = "text-danger" })
+
+
+                                <div class="form-group mb-3 mt-5">
+                                    <label class="floating-label" for="Email">User Name</label>
+                                    <input type="text" class="form-control" name="Email" id="Email" placeholder="" value="@TempData["login"]" required>
+                                </div>
+                                <div class="form-group mb-4">
+                                    <label class="floating-label" for="Password">Password</label>
+                                    <input type="password" class="form-control" name="Password" id="Password" placeholder="" autocomplete="nope" required>
+                                </div>
+                                <button type="submit" class="btn btn-block btn-primary mb-4">Sign in</button>
+
+                            }
+                        }
+                    }
+
+
+
+                </div>
+                @*<div class="modal-footer">
+
+                        <a href="#" data-dismiss="modal" aria-label="Close" class="btn btn-primary">OK</a>
+                    </div>*@
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- Plugin scripts -->
+    <!-- Required Js -->
+    <script src="~/assets/js/vendor-all.min.js"></script>
+    <script src="~/assets/js/plugins/bootstrap.min.js"></script>
+    <script src="~/assets/js/ripple.js"></script>
+    <script src="~/assets/js/pcoded.min.js"></script>
+    <!-- select2 Js -->
+    <script src="~/assets/js/plugins/select2.full.min.js"></script>
+    <!-- form-select-custom Js -->
+    <script src="~/assets/js/pages/form-select-custom.js"></script>
+    <script src="~/assets/js/plugins/jquery.bootstrap.wizard.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBvhQbrULBXqk9wPb9RjTeacVk3A3g-ci8"></script>
+
+
+    @if (TempData["Popup"] != null)
+    {
+        <script type="text/javascript">
+
+            window.onload = function () {
+                $('#myModal').modal('show');
+            };
+        </script>
+    }
+    <script type="text/javascript">
+        // var baseurl = "http://localhost:1957/"
+        // var baseurl = "https://fms.inwinteck.com/"
+        var baseurl = "https://fms.inwinteck.com/"
+        //    var baseurl = "http://inwinteckcrm.3sptechmind.com/"
+
+        function geocode() {
+
+            var location = $('#Street_Address').val() + ',' + $('#ZipCode_Pincode').val() + ',' + $('#City').val() + ',' + $('#State').val() + ',' + $('#Country').val();
+
+            axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
+                params: {
+                    address: location,
+                    key: 'AIzaSyBvhQbrULBXqk9wPb9RjTeacVk3A3g-ci8'
+                }
+            })
+                .then(function (response) {
+                    // Log full response
+                    console.log(response);
+
+                    // Formatted Address
+                    var formattedAddress = response.data.results[0].formatted_address;
+
+
+                    // Address Components
+                    var addressComponents = response.data.results[0].address_components;
+
+
+                    // Geometry
+                    var lat = response.data.results[0].geometry.location.lat;
+                    var lng = response.data.results[0].geometry.location.lng;
+
+
+                    // Output to app
+                    $('#latitude').val(lat);
+                    $('#longitude').val(lng);
+
+                    //map
+                    var myLatlng = new google.maps.LatLng(lat, lng);
+                    var geocoder = new google.maps.Geocoder();
+                    var infowindow = new google.maps.InfoWindow();
+                    var mapOptions = {
+                        zoom: 18,
+                        center: myLatlng,
+                        mapTypeId: google.maps.MapTypeId.ROADMAP
+                    };
+
+                    map = new google.maps.Map(document.getElementById("myMap"), mapOptions);
+
+                    marker = new google.maps.Marker({
+                        map: map,
+                        position: myLatlng,
+                        draggable: true
+                    });
+
+                    geocoder.geocode({ 'latLng': myLatlng }, function (results, status) {
+                        if (status == google.maps.GeocoderStatus.OK) {
+                            if (results[0]) {
+                                $('#latitude,#longitude').show();
+                                //    $('#Street_Address').val(results[0].formatted_address);
+                                $('#latitude').val(marker.getPosition().lat());
+                                $('#longitude').val(marker.getPosition().lng());
+                                var address = results[0].address_components;
+                                //   $('#ZipCode_Pincode').val(address[address.length - 1].long_name);
+                                //   $('#City').val(address[address.length - 4].long_name);
+                                //     $('#State').val(address[address.length - 3].long_name);
+                                //    $('#Country').val(address[address.length - 2].long_name);
+                                infowindow.setContent(results[0].formatted_address);
+                                infowindow.open(map, marker);
+                            }
+                        }
+                    });
+
+                    google.maps.event.addListener(marker, 'dragend', function () {
+
+                        geocoder.geocode({ 'latLng': marker.getPosition() }, function (results, status) {
+                            if (status == google.maps.GeocoderStatus.OK) {
+                                if (results[0]) {
+                                    //    $('#Street_Address').val(results[0].formatted_address);
+                                    $('#latitude').val(marker.getPosition().lat());
+                                    $('#longitude').val(marker.getPosition().lng());
+                                    var address = results[0].address_components;
+                                    //      $('#ZipCode_Pincode').val(address[address.length - 1].long_name);
+                                    //      $('#City').val(address[address.length - 4].long_name);
+                                    //      $('#State').val(address[address.length - 3].long_name);
+                                    //      $('#Country').val(address[address.length - 2].long_name);
+                                    infowindow.setContent(results[0].formatted_address);
+                                    infowindow.open(map, marker);
+                                }
+                            }
+                        });
+                    });
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+
+        $("#Street_Address").blur(function () {
+
+            geocode();
+        });
+
+        $("#ZipCode_Pincode").blur(function () {
+            var code = $(this).val();
+            geocode();
+            $.get(baseurl + "/Master/GetLocation", { PinCode: code }, function (data) {
+
+                if (data.res == "Success") {
+                    $("#City").val(data.Location['city']);
+                    $("#State").val(data.Location['state']);
+                    $("#Country").val(data.Location['Country']);
+                    $("#Country").trigger('change')
+
+                    //$.get(baseurl + "/Master/GetCountryCode", { Cnt: data.Location['Country'] }, function (data) {
+
+                    //    if (data.res == "Success") {
+                    //        $("#Chat_Phone_Number_Code").val(data.CC['Code']);
+                    //        $("#Phone_Number_Code").val(data.CC['Code']);
+
+                    //    } else {
+
+                    //    }
+                    //});
+
+
+                } else {
+
+                }
+            });
+
+
+        });
+
+        $("#Country").change(function () {
+            var code = $(this).val();
+            geocode();
+            //$.get(baseurl + "/Master/GetCountryCode", { Cnt: code }, function (data) {
+
+            //    if (data.res == "Success") {
+            //        $("#Chat_Phone_Number_Code").val(data.CC['Code']);
+            //        $("#Phone_Number_Code").val(data.CC['Code']);
+
+            //    } else {
+
+            //    }
+            //});
+
+
+        });
+
+        $('input[type="checkbox"]').click(function () {
+            if ($(this).prop("checked") == true) {
+                $(this).val('1');
+                $(this).attr('checked', true);
+            }
+            else if ($(this).prop("checked") == false) {
+                $(this).attr('checked', false);
+                $(this).val('0');
+            }
+        });
+        $("#City").blur(function () {
+
+            geocode();
+        });
+        $("#State").blur(function () {
+
+            geocode();
+        });
+        $("#FE_Type").change(function () {
+
+            if ($("#FE_Type option:selected").val() == 345) {
+
+                $(".tsc").css('display', 'grid');
+                $(".tc").css('display', 'flex');
+                $(".tf").css('display', 'none');
+            }
+            else {
+                $(".tsc").css('display', 'none');
+                $(".tc").css('display', 'none');
+                $(".tf").css('display', 'grid');
+            }
+        });
+    </script>
+    <script type="text/javascript">
+        $("form").submit(function (e) {
+            $("#loader-wrapper").show();
+            $("#loader").show();
+        });
+
+    </script>
+</body>
+
+</html>

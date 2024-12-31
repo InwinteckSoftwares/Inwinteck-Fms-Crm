@@ -1,0 +1,103 @@
+﻿@model Inwinteck_CRM.Models.HeaderDescription
+@{
+    ViewBag.Title = "Edit || groupheader";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Content Header (Page header) -->
+<div class="page-header">
+    <div class="container-fluid d-sm-flex justify-content-between">
+        <h4>Header Description</h4>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">Master</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Update Description</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Basic Forms -->
+            <div class="card">
+
+                <!-- /.box-header -->
+                <div class="card-body">
+                    @using (Html.BeginForm("editgroupheader", "Master", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                    {   @Html.AntiForgeryToken()
+                        @Html.ValidationSummary("", new { @class = "text-danger" })
+                        <input type="hidden" name="id" value="@Model.id" />
+                        <input type="hidden" name="CreatedOn" value="@Model.CreatedOn" />
+                        <input type="hidden" name="CreatedBy" value="@Model.CreatedBy" />
+                        <input type="hidden" name="Status" value="@Model.Status" />
+                            <div class="form-row">
+                                <label for="header_id" class="col-sm-2 col-form-label">Group Header</label>
+                                <div class="col-md-4">
+                                    @Html.DropDownListFor(m => m.header_id, ViewBag.drp as IEnumerable<SelectListItem>, "--Select Header --", new { @class = "form-control", required = "required" })
+
+                                </div>
+                                <label for="header_description" class="col-sm-2 col-form-label">Header Description</label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" name="header_description" value="@Model.header_description" placeholder="Enter Header Description" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-12 text-center">
+                                    <input type="submit" class="btn btn-primary" value="Update" /> <a href="@Url.Action("groupheader","Master")" class="btn btn-info">Cancel</a>
+                                </div>
+                            </div>
+
+                    }
+                </div>
+                <!-- /.box-body -->
+
+
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+
+</div>
+
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content  text-center">
+            <div class="modal-header bg-theme">
+                <h4 class="modal-title text-center "><i class="fa fa-info-circle" aria-hidden="true"></i> Information</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" >&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 20px;">@TempData["message"] </p>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-primary" data-dismiss="modal">OK</a>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+@section scripts
+{
+@if (TempData["message"] != null)
+    {
+    <script type="text/javascript">
+
+            window.onload = function () {
+                $('#myModal').modal('show');
+            };
+    </script>
+}
+}
+
+
+
+

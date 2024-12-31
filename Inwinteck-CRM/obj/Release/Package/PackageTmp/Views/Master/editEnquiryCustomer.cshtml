@@ -1,0 +1,456 @@
+﻿@model Inwinteck_CRM.Models.Enq_EU
+@{
+    ViewBag.Title = "editEnquiryCustomer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style type="text/css">
+    /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+
+
+    #office_add {
+        display: none;
+    }
+
+    #Contact_add {
+        display: none;
+    }
+
+    #loadermodel {
+        display: none;
+    }
+</style>
+<div class="page-header">
+    <div class="container-fluid d-sm-flex justify-content-between">
+        <h4>Enquiry Master</h4>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">Client</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Edit Enquiry</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Basic Forms -->
+            <div class="card">
+
+                <!-- /.box-header -->
+                <div class="card-body">
+                    @using (Html.BeginForm("editEnquiryCustomer", "Master", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary("", new { @class = "text-danger" })
+                        <input type="hidden" name="EU_ID" value="@Model.EU_ID" />
+                        <input type="hidden" name="EU_Office" value="@Model.EU_Office" />
+                        <input type="hidden" name="CreatedBy" value="@Model.CreatedBy" />
+                        <input type="hidden" name="CreatedOn" value="@Model.CreatedOn" />
+                        <input type="hidden" name="Id" value="@Model.Id" />
+
+                        <input type="hidden" name="Attach" value="@Model.Attach" />
+
+                        <div class="form-row">
+                            <label for="Customer_Name" class="col-sm-2 col-form-label">Customer</label>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" value="@ViewBag.EU" placeholder="Enter Contact Person" readonly>
+                            </div>
+                            <label for="EU_ID" class="col-sm-2 col-form-label">Office</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control" value="@ViewBag.EU_Office" placeholder="Enter Contact Person" readonly>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="Requirement_Date" class="col-sm-2 col-form-label">Enquiry Date</label>
+                            <div class="col-md-4">
+                                <input type="date" class="form-control" name="Enq_Date" placeholder="Enter Enquiry Date" value="@Model.Enq_Date.ToString("yyyy-MM-dd")" required>
+                            </div>
+                            <label for="Reff_No" class="col-sm-2 col-form-label">Enquiry Reference</label>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" name="Enq_Reference" placeholder="Enter Reference" value="@Model.Enq_Reference" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <label for="Customer_Name" class="col-sm-2 col-form-label">Project Type</label>
+                            <div class="col-md-4">
+                                <select class="js-example-basic-single form-control" placeholder="select Code" name="Project_Type" id="Project_Type" required>
+                                    <option value="">Select Project Type</option>
+                                    @foreach (var i in ViewBag.Project_Type)
+                                    {
+                                        <option value="@i.Value">@i.Text</option>
+                                    }
+                                </select>
+                            </div>
+                            <label for="Job_Title" class="col-sm-2 col-form-label">Project Details</label>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" name="Project_Details" placeholder="Enter Project Details" value="@Model.Project_Details" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="Job_Location" class="col-sm-2 col-form-label">Our Action</label>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" name="Our_Action" value="@Model.Our_Action" placeholder="Enter Our Action">
+                            </div>
+                            <label for="Offer_Date" class="col-sm-2 col-form-label">Offer Date</label>
+                            <div class="col-md-4">
+                                <input type="date" class="form-control" name="Offer_Date" value="@Model.Offer_Date.Value.ToString("yyyy-MM-dd")" placeholder="Enter Offer Date">
+                            </div>
+
+
+                        </div>
+
+                        <div class="form-row">
+                            <label for="Status" class="col-sm-2 col-form-label">Status</label>
+                            <div class="col-md-4">
+                                <select class="form-control sc" name="Status" id="Status">
+                                    <option value="">Select Status</option>
+                                    <option value="1">Open</option>
+                                    <option value="2">Progress</option>
+                                    <option value="3">Close</option>
+                                </select>
+                            </div>
+                            <label for="Feedback" class="col-sm-2 col-form-label">Customer's Feedback</label>
+                            <div class="col-md-4">
+                                <textarea class="form-control" rows="3" placeholder="Add your Description about Feedback" name="EU_Feedback">@Model.EU_Feedback</textarea>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <label for="ath" class="col-sm-2 col-form-label">Attach</label>
+                            <div class="col-md-4">
+                                <input type="file" class="dropify attach" data-default-file="@Model.Attach" name="ath" data-max-file-size="2000K">
+                            </div>
+
+                            <label for="Remark" class="col-sm-2 col-form-label">Remark</label>
+                            <div class="col-md-4">
+                                <textarea class="form-control" rows="3" placeholder="Add Remark" name="Remark"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-12 text-center">
+                                <input type="submit" class="btn btn-primary" value="Update" />
+                                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#TicketHistory">View History</button>
+                                <a href="@Url.Action("EnquiryCustomer","Master")" class="btn btn-info">Cancel</a>
+                            </div>
+                        </div>
+
+                    }
+                </div>
+                <!-- /.box-body -->
+
+
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+
+</div>
+
+
+
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content  text-center">
+            <div class="modal-header">
+                <h4 class="modal-title text-center "><i class="fa fa-info-circle" aria-hidden="true"></i> Information</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 20px;">@TempData["message"] </p>
+
+
+            </div>
+            <div class="modal-footer">
+                <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+
+                <a href="#" data-dismiss="modal" aria-label="Close" class="btn btn-primary">OK</a>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<div class="modal fade bs-example-modal-lg" id="TicketHistory" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">Ticket History </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="col-sm-12">
+                    <div class="form-row">
+                        <label for="example-text-input" class="col-sm-2 col-form-label Place">Ticket No:</label>
+                        <div class="col-sm-3">
+                            <input class="form-control" type="text" id="th_TicketNo" readonly>
+                        </div>
+
+                    </div>
+                    <div class="form-row">
+                        <label for="example-text-input" class="col-sm-2 col-form-label Place">Created By:</label>
+                        <div class="col-sm-5">
+                            <input class="form-control" type="text" id="th_CreatedBy" readonly>
+                        </div>
+                        <label for="example-text-input" class="col-sm-2 col-form-label Place">Created On:</label>
+                        <div class="col-sm-3">
+                            <input class="form-control" type="text" id="th_CreatedOn" readonly>
+                        </div>
+
+                    </div>
+
+                    <div class="form-row">
+                        <label for="example-text-input" class="col-sm-2 col-form-label Place">Comments:</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" type="text" id="th_Comments" style="height:100%;" readonly></textarea>
+                        </div>
+                    </div>
+                </div>
+                <table class="table" id="Show" style="max-height: 500px;overflow: scroll;">
+                    <tbody>
+                        <tr class="thead-dark">
+                            <th>Modified By</th>
+                            <th>Modified On</th>
+                            <th>Comments/Remark</th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer text-center">
+                <button type="button" class="btn btn-info waves-effect " data-dismiss="modal">ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    @if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+
+            window.onload = function () {
+                $('#myModal').modal('show');
+            };
+        </script>
+    }
+
+<script type="text/javascript">
+        $("#Pincode_Zipcode").blur(function () {
+            var code = $(this).val();
+
+            $.get(baseurl + "/Master/GetLocation", { PinCode: code }, function (data) {
+
+                if (data.res == "Success") {
+                    $("#City").val(data.Location['city']);
+                    $("#State").val(data.Location['state']);
+                    $("#Country").val(data.Location['Country']);
+                } else {
+
+                }
+            });
+
+
+        });
+
+        $("#EU_ID").change(function () {
+            var code = $(this).val();
+
+            $.get(baseurl + "/Master/GetOfficeSaless", { Cnt: code }, function (data) {
+
+                if (data.res == "Success") {
+                    $('#Office').empty();
+                    $('#Office').append('<option value ="">--Select Office--</option>');
+
+                    $.each(data.CC, function (i, val) {
+
+                        $('#Office').append('<option value =' + data.CC[i]['Id'] + '>' + data.CC[i]['Office'] + '</option>');
+                    });
+
+                } else {
+                    $('#Office').append('<option value ="">--Select Office--</option>');
+                }
+            });
+
+
+        });
+
+
+        $("#Office").change(function () {
+            var code = $(this).val();
+
+
+
+            $.get(baseurl + "/Master/GetContactSaless", { Cnt: code }, function (data) {
+
+                if (data.res == "Success") {
+                    $('#Office_contact tr').has('td').remove();
+
+                    $.each(data.CC, function (i, val) {
+
+                        $('#Office_contact tr:last').after('<tr><td> <input type="checkbox" name="customCheck_' + data.CC[i]['Id'] + '" class="form-control" id="customCheck_' + data.CC[i]['Id'] + '"  value="' + data.CC[i]['Email'] + '" style="width: 20px; height: 20px;"></td><td><span class="badge" style="font-size:100%;" title = ' +
+                            data.CC[i]['Email'] + " " + data.CC[i]['Number'] + '>'
+                            + data.CC[i]['Person'] + " , " + data.CC[i]['Designation'] + '</span></td><td> <button type="button" title="edit" class="btn btn-link has-ripple" id=' + data.CC[i]['Id'] +
+                            ' onclick="Contactfill(this.id)"><i class="fa fa-edit"></i></button><button type="button" title="delete" class="btn btn-link has-ripple" id=' + data.CC[i]['Id'] +
+                            ' onclick="Contactdelete(this.id)"><i class="fa fa-trash"></i></button></td><tr>');
+                    });
+
+                } else {
+                    $('#Office').append('<option value ="">--Select Office--</option>');
+                }
+            });
+
+
+        });
+
+
+        function Contactfill(id) {
+
+            $.get(baseurl + "/Master/GetContactSaless", { Cnt: id }, function (data) {
+
+                if (data.res == "Success") {
+                    $("#Contact_ID").val(data.CC['Id']);
+                    $("#Person").val(data.CC['Person']);
+                    $("#Designation").val(data.CC['Designation']);
+                    $("#Department").val(data.CC['Department']);
+                    $("#CNumber").val(data.CC['Number']);
+                    $("#CEmail").val(data.CC['Email']);
+                    $("#Contact_btn").val('Update');
+                    $("#Contact_add").css('display', 'unset');
+                }
+                else {
+
+                }
+            });
+        }
+
+        function Contactdelete(id) {
+            debugger
+            var code = $("#Office").val();
+            $("#loadermodel").css('display', 'unset');
+            $.get(baseurl + "/Master/deleteContactSaless", { OC: id }, function (data) { });
+
+
+            $.get(baseurl + "/Master/GetContactSaless", { Cnt: code }, function (data) {
+
+                if (data.res == "Success") {
+                    $('#Office_contact tr').has('td').empty();
+
+                    $.each(data.CC, function (i, val) {
+
+                        $('#Office_contact tr:last').after('<tr><td> <input type="checkbox" name="customCheck_' + data.CC[i]['Id'] + '" class="form-control" id="customCheck_' + data.CC[i]['Id'] + '"  value="' + data.CC[i]['Email'] + '" style="width: 20px; height: 20px;"></td><td><span class="badge" style="font-size:100%;">'
+                            + data.CC[i]['Person'] + " , " + data.CC[i]['Designation'] + '</span></td><td> <button type="button" title="edit" class="btn btn-link has-ripple" id=' + data.CC[i]['Id'] +
+                            ' onclick="Contactfill(this.id)"><i class="fa fa-edit"></i></button> <button type="button" title="delete" class="btn btn-link has-ripple" id=' + data.CC[i]['Id'] +
+                            ' onclick="Contactdelete(this.id)" style="margin-left:10%;"><i class="fa fa-trash"></i></button></td><tr>');
+                    });
+
+                    $("#Contact_ID").val(0);
+                    $("#Person").val('');
+                    $("#Designation").val('');
+                    $("#Department").val('');
+                    $("#CNumber").val('');
+                    $("#CEmail").val('');
+
+                } else {
+
+                }
+            });
+
+
+
+            $("#loadermodel").css('display', 'none');
+        }
+
+
+        $("#Contact_btn").click(function () {
+            $("#loadermodel").css('display', 'unset');
+            var code = $("#Office").val();
+            debugger
+            $.get(baseurl + "/Master/ContactEUMasterSales", {
+                Office_ID: $("#Office").val(), Person: $("#Person").val(),
+                Designation: $("#Designation").val(), Department: $("#Department").val(), Number: $("#CNumber").val(), Email: $("#CEmail").val(),
+                Contact_ID: $("#Contact_ID").val()
+            }, function (data) { });
+
+            $.get(baseurl + "/Master/GetContactSaless", { Cnt: code }, function (data) {
+
+                if (data.res == "Success") {
+                    $('#Office_contact tr').has('td').empty();
+
+                    $.each(data.CC, function (i, val) {
+
+                        $('#Office_contact tr:last').after('<tr><td> <input type="checkbox" name="customCheck_' + data.CC[i]['Id'] + '" class="form-control" id="customCheck_' + data.CC[i]['Id'] + '"  value="' + data.CC[i]['Email'] + '" style="width: 20px; height: 20px;"></td><td><span class="badge" style="font-size:100%;">'
+                            + data.CC[i]['Person'] + " , " + data.CC[i]['Designation'] + '</span></td><td> <button type="button" title="edit" class="btn btn-link has-ripple" id=' + data.CC[i]['Id'] +
+                            ' onclick="Contactfill(this.id)"><i class="fa fa-edit"></i></button> <button type="button" title="delete" class="btn btn-link has-ripple" id=' + data.CC[i]['Id'] +
+                            ' onclick="Contactdelete(this.id)" style="margin-left:10%;"><i class="fa fa-trash"></i></button></td><tr>');
+                    });
+                    $("#Contact_ID").val(0);
+                    $("#Person").val('');
+                    $("#Designation").val('');
+                    $("#Department").val('');
+                    $("#CNumber").val('');
+                    $("#CEmail").val('');
+
+                } else {
+
+                }
+            });
+            $("#loadermodel").css('display', 'none');
+        });
+
+
+        $("#Contact_add").click(function () {
+            $("#Contact_ID").val(0);
+            $("#Person").val('');
+            $("#Designation").val('');
+            $("#Department").val('');
+            $("#CNumber").val('');
+            $("#CEmail").val('');
+            $("#Contact_btn").val('Add');
+            $("#Contact_add").css('display', 'none');
+        });
+
+        $(document).ready(function () {
+
+            $("#Project_Type").val(@Model.Project_Type).trigger("change");
+            $("#Status").val("@Model.Status");
+
+                  $.get(baseurl + "Master/GetEnqClientHistory", { tn: @Model.Id }, function (data) {
+                if (data.tv == "success") {
+                    if (Object.keys(data.hist).length > 0) {
+
+
+                        $.each(data.hist, function (i, val) {
+                            $("#th_TicketNo").val(data.hist[i]['Ticket_No']);
+                            $("#th_CreatedBy").val(data.hist[i]['CreatedBy']);
+                            $("#th_CreatedOn").val(data.hist[i]['Createdon']);
+                            $("#th_Comments").val(data.hist[i]['Remark']);
+                            $('#Show tr:last').after('<tr><td>'+ data.hist[i]['CreatedBy'] + '</td><td>'+ data.hist[i]['Createdon'] + '</td><td>'+ data.hist[i]['Remark'] + '</td></tr>');
+                        });
+                        $('#Show tr:last').remove();
+                    }
+
+                }
+                else {
+                }
+
+            });
+        });
+</script>
+
+}
+
+
+
+
+

@@ -1,0 +1,400 @@
+﻿@model Inwinteck_CRM.Models.ManageFeCharges
+@{
+    ViewBag.Title = "FE || Charges";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Content Header (Page header) -->
+<div class="page-header">
+    <div class="container-fluid d-sm-flex justify-content-between">
+        <h4> FE Charges & Services </h4>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">Master</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page"> FE Charges & Services </li>
+            </ol>
+        </nav>
+    </div>
+</div>
+@*======================================================================= EDIT FE Charges ========================================================================*@
+@if (ViewBag.Edit == "Yes")
+{
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-md-12">
+                <!-- Basic Forms -->
+                <div class="card">
+
+                    <!-- /.box-header -->
+                    <div class="card-body">
+                        @using (Html.BeginForm("EditFECharges", "Master", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary("", new { @class = "text-danger" })
+                            <input type="hidden" name="Id" value="@Model.FE.Id" />
+                            <input type="hidden" name="FE_ID" value="@Model.FE.FE_ID" />
+                            <input type="hidden" name="CreatedBy" value="@Model.FE.CreatedBy" />
+                            <input type="hidden" name="CreatedOn" value="@Model.FE.CreatedOn" />
+
+                            <div class="form-row">
+                                <label for="Charges_Business_Hour" class="col-sm-2 col-form-label">Currency Code</label>
+                                <div class="col-md-4">
+                                    <input type="text" value="@ViewBag.Currency" class="form-control" placeholder="Currency Code" readonly>
+                                </div>
+                               
+                            </div>
+                            <div class="form-row">
+                                <label for="Charges_Business_Hour" class="col-sm-2 col-form-label">Charges per Business Hour</label>
+                                <div class="col-md-4">
+                                    <input type="number" class="form-control" value="@Model.FE.Charges_Business_Hour" name="Charges_Business_Hour" placeholder="Enter Charges per Business Hour">
+                                </div>
+                                <label for="Charges_Non_Business_Hour" class="col-sm-2 col-form-label">Charges per Non Business Hour</label>
+                                <div class="col-md-4">
+                                    <input type="number" class="form-control" value="@Model.FE.Charges_Non_Business_Hour" name="Charges_Non_Business_Hour" placeholder="Enter Charges per Non Business Hour" >
+                                </div>
+                            </div>
+                            @*<div class="form-row">
+                                <label for="Charge_Day"  class="col-sm-2 col-form-label">Charge per Day</label>
+                                <div class="col-md-4">
+                                    <input type="number" class="form-control" value="@Model.Charge_Day" name="Charge_Day" placeholder="Enter Charge per Day" required>
+                                </div>
+                                
+                            </div>*@
+                            <div class="form-row">
+                                <label for="Charge_Job" class="col-sm-2 col-form-label">Charge per Job</label>
+                                <div class="col-md-4">
+                                    <input type="number" class="form-control" value="@Model.FE.Charge_Job" name="Charge_Job" placeholder="Enter Charge per Job" >
+                                </div>
+                                <label for="Charge_Month" class="col-sm-2 col-form-label">Charge Month</label>
+                                <div class="col-md-4">
+                                    <input type="number" class="form-control" value="@Model.FE.Charge_Month" name="Charge_Month" placeholder="Enter Charge Month">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <label for="Travel_Charge" class="col-sm-2 col-form-label">Travel Charge</label>
+                                <div class="col-md-4">
+                                    <input type="number" class="form-control" value="@Model.FE.Travel_Charge" name="Travel_Charge" placeholder="Enter Travel Charge">
+                                </div>
+                                <label for="Minimum_Hrs" class="col-sm-2 col-form-label">Minimum Hrs</label>
+                                <div class="col-md-4">
+                                    <input type="number" class="form-control" value="@Model.FE.Minimum_Hrs" name="Minimum_Hrs" placeholder="Enter Minimum Hrs">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-6">
+                                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#Service_Area">Service Area</button>
+
+                                </div>
+                            </div>
+                            if (Model.IC.Count > 0)
+                            {
+                                <div class="form-row">
+
+                                    <div class="col-md-12 text-center">
+                                        <label for="Signature" class="col-sm-12 col-form-label">All Service Area</label>
+
+                                    </div>
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Country</th>
+
+                                                <th>Zip/Pin Code</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var i in Model.IC)
+                                            {
+                                                <tr class="data-contact-person fePersonalData">
+                                                    <td>
+                                                        @i.Country
+                                                    </td>
+
+                                                    <td>
+                                                        @i.ZipCode_pincode
+                                                    </td>
+                                                    <td>
+                                                        <a href="@Url.Action("DeleteFeCharges","Master", new {FeId=@i.FE_ID,Country = i.Country })" class="btn btn-xs btn-primary  has-ripple"><i class="fas fa-trash"></i><span class="ripple ripple-animate" style="height: 54px; width: 54px; animation-duration: 0.7s; animation-timing-function: linear; background: rgb(255, 255, 255); opacity: 0.4; top: 4px; left: -3.5px;"></span></a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+
+
+                                </div>
+                            }
+
+                            <div class="form-row">
+                                <div class="form-group col-md-12 text-center">
+                                    <input type="submit" class="btn btn-primary" value="Update" />
+                                    <a href="@Url.Action("FEMaster","Master")" class="btn btn-info">Cancel</a>
+                                </div>
+                            </div>
+
+                        }
+                    </div>
+                    <!-- /.box-body -->
+
+
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+
+    </div>
+}
+else
+{
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-md-12">
+                <!-- Basic Forms -->
+                <div class="card">
+
+                    <!-- /.box-header -->
+                    <div class="card-body">
+                        @using (Html.BeginForm("addFECharges", "Master", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary("", new { @class = "text-danger" })
+                            <input type="hidden" name="FE_ID" value="@ViewBag.FE" />
+
+                            <div class="form-row">
+                                <label for="Charges_Business_Hour" class="col-sm-2 col-form-label">Currency Code</label>
+                                <div class="col-md-4">
+                                    <input type="text" value="@ViewBag.Currency" class="form-control"  placeholder="Currency Code" readonly>
+                                </div>
+                                
+                            </div>
+
+                            <div class="form-row">
+                                <label for="Charges_Business_Hour" class="col-sm-2 col-form-label">Charges per Business Hour</label>
+                                <div class="col-md-4">
+                                    <input type="number" class="form-control" name="Charges_Business_Hour" placeholder="Enter Charges per Business Hour">
+                                </div>
+                                <label for="Charges_Non_Business_Hour" class="col-sm-2 col-form-label">Charges per Non Business Hour</label>
+                                <div class="col-md-4">
+                                    <input type="number" class="form-control" name="Charges_Non_Business_Hour" placeholder="Enter Charges per Non Business Hour" >
+                                </div>
+                            </div>
+                            @*<div class="form-row">
+                                <label for="Charge_Day" class="col-sm-2 col-form-label">Charge per Day</label>
+                                <div class="col-md-4">
+                                    <input type="number" class="form-control" name="Charge_Day" placeholder="Enter Charge per Day" required>
+                                </div>
+                              
+                            </div>*@
+                            <div class="form-row">
+                                <label for="Charge_Job" class="col-sm-2 col-form-label">Charge per Job</label>
+                                <div class="col-md-4">
+                                    <input type="number" class="form-control"  name="Charge_Job" placeholder="Enter Charge per Job">
+                                </div>
+                                <label for="Charge_Month" class="col-sm-2 col-form-label">Charge Month</label>
+                                <div class="col-md-4">
+                                    <input type="number" class="form-control"  name="Charge_Month" placeholder="Enter Charge Month">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <label for="Travel_Charge" class="col-sm-2 col-form-label">Travel Charge</label>
+                                <div class="col-md-4">
+                                    <input type="number" class="form-control"  name="Travel_Charge" placeholder="Enter Travel Charge">
+                                </div>
+                                <label for="Minimum_Hrs" class="col-sm-2 col-form-label">Minimum Hrs</label>
+                                <div class="col-md-4">
+                                    <input type="number" class="form-control" name="Minimum_Hrs" placeholder="Enter Minimum Hrs">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-6">
+                                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#Service_Area">Service Area</button>
+
+                                </div>
+                            </div>
+                            if (Model.IC.Count > 0)
+                            {
+                                <div class="form-row">
+
+                                    <div class="col-md-12 text-center">
+                                        <label for="Signature" class="col-sm-12 col-form-label">All Service Area</label>
+
+                                    </div>
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Country</th>
+
+                                                <th>Zip/Pin Code</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var i in Model.IC)
+                                            {
+                                                <tr class="data-contact-person fePersonalData">
+                                                    <td>
+                                                        @i.Country
+                                                    </td>
+
+                                                    <td>
+                                                        @i.ZipCode_pincode
+                                                    </td>
+                                                    <td>
+                                                        <a href="@Url.Action("DeleteFeCharges","Master", new {FeId=@i.FE_ID,Country = i.Country })" class="btn btn-xs btn-primary has-ripple"><i class="fas fa-trash"></i><span class="ripple ripple-animate" style="height: 54px; width: 54px; animation-duration: 0.7s; animation-timing-function: linear; background: rgb(255, 255, 255); opacity: 0.4; top: 4px; left: -3.5px;"></span></a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+
+
+                                </div>
+                            }
+
+                            <div class="form-row">
+                                <div class="form-group col-md-12 text-center">
+                                    <input type="submit" class="btn btn-primary" value="Save" />
+                                    <a href="@Url.Action("FEMaster","Master")" class="btn btn-info">Cancel</a>
+                                </div>
+                            </div>
+
+                        }
+                    </div>
+                    <!-- /.box-body -->
+
+
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+
+    </div>
+}
+
+
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content  text-center">
+            <div class="modal-header">
+                <h4 class="modal-title text-center "><i class="fa fa-info-circle" aria-hidden="true"></i> Information</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 20px;">@TempData["message"] </p>
+                @if (TempData["link"] != null)
+                {
+                    if (TempData["link"].ToString() == "Yes")
+                    {
+                        <p>Add FE Financial <a href="@Url.Action("FEFinancial", "Master" , new { id = Model.Id })"> HERE </a></p>
+                    }
+                }
+
+            </div>
+            <div class="modal-footer">
+                <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+
+                <a href="#" data-dismiss="modal" aria-label="Close" class="btn btn-primary">OK</a>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<div class="modal fade bs-example-modal-lg" id="Service_Area" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">Service Area</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+@using (Html.BeginForm("InsertFeCharges", "Master", FormMethod.Post, new { role = "form", @class = "col-12 " }))
+{
+                <table class="table" id="maintable">
+                    <thead>
+                        <tr>
+                            <th>Country</th>
+                            <th>Zipcode_Pincode</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="data-contact-person">
+                            <td>
+                               
+                                    <input type="hidden" name="IV[0].FE_ID" value="@ViewBag.FE" />
+                             
+                                    <select class="form-control" name="IV[0].Country" id="pt">
+                                        <option value="">Select Country</option>
+                                        @foreach (var i in ViewBag.Country)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+
+                            </td>
+                            <td>
+                                <input type="text" name="IV[0].ZipCode_pincode" class="form-control l-name01" />
+                            </td>
+                            <td>
+                                <button type="button" id="btnAdd" class="btn btn-xs btn-primary classAdd"><i class="fas fa-plus-circle"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="modal-footer text-center">
+
+                    <button type="submit" id="btnSubmit" class="btn btn-primary waves-effect ">Save</button>
+                    <button type="button" class="btn btn-info waves-effect " data-dismiss="modal">Cancel</button>
+                </div>
+}
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    @if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+
+            window.onload = function () {
+                $('#myModal').modal('show');
+            };
+        </script>
+    }
+
+    <script type="text/javascript">
+        $(document).on("click", ".classAdd", function () { //
+            var rowCount = $('.data-contact-person').length + 1;
+            var i = rowCount - 1;
+            var contactdiv = '<tr class="data-contact-person">' +
+                '<td><input type="hidden" name="IV[' + i + '].FE_ID" value="@ViewBag.FE"/> <select name="IV[' + i + '].Country" class="form-control" name="pt' + rowCount + '" id="pt"><option value="">Select Country</option>@foreach (var i in ViewBag.Country){<option value="@i.Value">@i.Text</option>}</select></td>' +
+                '<td><input type="text" name="IV[' + i + '].ZipCode_pincode" class="form-control l-name01" /></td>' +
+                '<td><button type="button" id="btnAdd" class="btn btn-xs btn-primary classAdd"><i class="fas fa-plus-circle"></i></button>' +
+                '<button type="button" id="btnDelete" class="deleteContact btn btn btn-danger btn-xs"><i class="fas fa-minus-circle"></i></button></td>' +
+                '</tr>';
+            $('#maintable').append(contactdiv); // Adding these controls to Main table class
+        });
+
+        $(document).on("click", ".deleteContact", function () {
+            $(this).closest("tr").remove(); // closest used to remove the respective 'tr' in which I have my controls
+        });
+
+
+    </script>
+
+}
+

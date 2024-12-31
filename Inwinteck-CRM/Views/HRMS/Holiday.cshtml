@@ -1,0 +1,193 @@
+﻿@model List<HRMS.Models.Holiday>
+@{
+    ViewBag.Title = "Holiday";
+    Layout = ViewBag.Layout;
+}
+
+<!-- Page Header -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="page-head-box">
+            <h3>Holidays</h3>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index","Dashboard")">Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Holidays</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- /Page Header -->
+<!-- Search Filter -->
+<div class="row filter-row">
+    <div class="col-md-8"></div>
+    <div class="col-md-4">
+        <div class="add-emp-section">
+            <a href="#" class="btn btn-success btn-add-emp" data-toggle="modal" data-target="#add_holiday"><i class="fas fa-plus"></i> Add Holidays</a>
+        </div>
+    </div>
+</div>
+<!-- /Search Filter -->
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-info">
+                            <tr>
+                                <th>Title </th>
+                                <th>Holiday Date</th>
+                                <th>Day</th>
+                                <th>Status</th>
+                                <th class="text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Count > 0)
+                            {
+                                foreach (var i in Model)
+                                {
+                                    <tr>
+                                        <td>@i.Holiday_Name</td>
+                                        <td>@i.Holiday_Date.ToString("dd MMM yyyy")</td>
+                                        <td>
+                                            <span class="role-info role-bg-two">@i.Holiday_Date.DayOfWeek</span>
+                                        </td>
+                                        <td>
+                                            @if (i.Status == 1)
+                                            {
+                                                <a href="@Url.Action("statusHoliday", "HRMS", new { Id = i.Id })"><span class="badge bg-inverse-success">Active</span></a>
+                                            }
+                                            else
+                                            {
+                                                <a href="@Url.Action("statusHoliday", "HRMS", new { Id = i.Id })"><span class="badge bg-inverse-danger">Deactive</span></a>
+                                            }
+                                        </td>
+                                        <td class="text-right ico-sec">
+                                            <a href="#" data-toggle="modal" data-target="#edit_holiday_@i.Id"><i class="fas fa-pen"></i></a>
+
+                                            <!-- Edit Holiday Modal -->
+                                            <div class="modal custom-modal fade" id="edit_holiday_@i.Id" role="dialog">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">Edit Holiday</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <i class="fas fa-times"></i>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            @using (Html.BeginForm("editHoliday", "HRMS", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                                                            {
+                                                                @Html.AntiForgeryToken()
+                                                                @Html.ValidationSummary("", new { @class = "text-danger" })
+                                                                <input type="hidden" value="@i.Id" name="Id">
+                                                                <input type="hidden" value="@i.CreatedOn" name="CreatedOn">
+                                                                <input type="hidden" value="@i.CreatedBy" name="CreatedBy">
+                                                                <input type="hidden" value="@i.Status" name="Status">
+
+                                                                <div class="form-group text-left">
+                                                                    <label>Holiday Name <span class="text-danger">*</span></label>
+                                                                    <input class="form-control" value="@i.Holiday_Name" name="Holiday_Name" type="text">
+                                                                </div>
+                                                                <div class="form-group text-left">
+                                                                    <label>Holiday Date <span class="text-danger">*</span></label>
+                                                                   <input class="form-control" value="@i.Holiday_Date" name="Holiday_Date" type="date">
+                                                                </div>
+                                                                <div class="submit-section">
+                                                                    <button class="btn btn-primary cancel-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                                                                    <button class="btn btn-primary submit-btn">Submit</button>
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- /Edit Holiday Modal -->
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Holiday Modal -->
+<div class="modal custom-modal fade" id="add_holiday" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Holiday</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("addHoliday", "HRMS", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary("", new { @class = "text-danger" })
+                    <input type="hidden" name="Status" value="1">
+                    <div class="form-group">
+                        <label>Holiday Name <span class="text-danger">*</span></label>
+                        <input class="form-control" type="text" name="Holiday_Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Holiday Date <span class="text-danger">*</span></label>
+                       <input class="form-control" name="Holiday_Date" id="Holiday_Date" type="date">
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary cancel-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                        <button class="btn btn-primary submit-btn">Submit</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Add Holiday Modal -->
+
+<div class="modal custom-modal fade" id="msgBox">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-header">
+                    <h3 style="font-size: 20px;">@TempData["message"] </h3>
+                </div>
+                <div class="modal-btn">
+                    <div class="submit-section col-sm-4 offset-sm-4">
+                        <a href="#" data-dismiss="modal" aria-label="Close" class="btn btn-primary cancel-btn">OK</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+@section scripts
+{
+    @if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+
+            window.onload = function () {
+                $('#msgBox').modal('show');
+            };
+        </script>
+    }
+
+    <script type="text/javascript">
+        $("#Holiday_Date").datepicker({ dateFormat: 'dd-mm-yyyyy' });
+    </script>
+
+}

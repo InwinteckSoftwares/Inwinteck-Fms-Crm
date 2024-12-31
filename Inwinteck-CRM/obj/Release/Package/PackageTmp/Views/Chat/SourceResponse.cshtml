@@ -1,0 +1,179 @@
+﻿@model Inwinteck_CRM.viewModel.SourceResponseViewModel
+@{
+    ViewBag.Title = "Chat || Source Response";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Source Response</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px 0;
+            background-color: #0073e6;
+            color: white;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 10px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+            .form-group label {
+                display: block;
+                margin-bottom: 5px;
+            }
+
+            .form-group input,
+            .form-group textarea {
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+            }
+
+            .form-group button {
+                background-color: #0073e6;
+                color: white;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            padding-top: 100px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+            .close:hover,
+            .close:focus {
+                color: black;
+                text-decoration: none;
+                cursor: pointer;
+            }
+    </style>
+</head>
+
+<body onload="showSuccessMessage()">
+    <div class="container">
+        <div class="header">
+            <h1>Send Request To Help Desk</h1>
+        </div>
+        <div class="content">
+            <form asp-action="SourceResponse" method="post">
+                @Html.AntiForgeryToken()
+                <div class="form-group">
+                    <label for="messageText">Your Response:</label>
+                    <textarea id="messageText" name="MessageText" rows="5" required></textarea>
+                </div>
+                <input type="hidden" name="TicketId" value="@Model.TicketId" />
+                <input type="hidden" name="Username" value="@Model.Username" />
+                <input type="hidden"  name="EmailSubject" value="@Model.EmailSubject"/>
+                <input type="hidden"  name="MessageId" value="@Model.MessageId"/>
+
+                <div class="form-group">
+                    <button type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+        <div class="footer">
+            &copy; 2024 Inwinteck. All rights reserved.
+        </div>
+    </div>
+
+    <!-- Modal for Response Received -->
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p>Response Received</p>
+        </div>
+    </div>
+</body>
+
+</html>
+<script>
+    function showSuccessMessage() {
+        var successMessage = '@TempData["SuccessMessage"]';
+        if (successMessage) {
+            var modal = document.getElementById("successModal");
+            modal.style.display = "block";
+
+            // Get the <span> element that closes the modal
+            var span = document.getElementsByClassName("close")[0];
+
+            // When the user clicks on <span> (x), close the modal
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        }
+    }
+</script>

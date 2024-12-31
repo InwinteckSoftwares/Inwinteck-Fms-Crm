@@ -1,0 +1,339 @@
+﻿@model Inwinteck_CRM.Models.IT_Customer_Master
+@{
+    ViewBag.Title = "EditCustomerMaster";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<style type="text/css">
+    #office_add {
+        display: none;
+    }
+
+    #Contact_add {
+        display: none;
+    }
+</style>
+<!-- Content Header (Page header) -->
+<div class="page-header">
+    <div class="container-fluid d-sm-flex justify-content-between">
+        <h4>Customer Master</h4>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">Master</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Edit Customer Master</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Basic Forms -->
+            <div class="card">
+
+                <!-- /.box-header -->
+                <div class="card-body">
+                    @using (Html.BeginForm("EditCustomerMaster", "IT", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary("", new { @class = "text-danger" })
+                        <input type="hidden" name="Status" value="@Model.Status" />
+                        <input type="hidden" name="Id" value="@Model.Id" />
+                        <input type="hidden" name="CreatedBy" value="@Model.CreatedBy" />
+                        <input type="hidden" name="CreatedOn" value="@Model.CreatedOn" />
+
+                        <div class="form-row">
+                            <label for="Customer_Name" class="col-sm-2 col-form-label">Customer Name</label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" name="Customer_Name" value="@Model.Customer_Name" placeholder="Enter Customer Name" required>
+                            </div>
+                            <label for="Customer_Contact" class="col-sm-2 col-form-label">Customer Contact</label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" name="Customer_Contact" value="@Model.Customer_Contact" placeholder="Enter Customer Contact" required>
+                            </div>
+                            <label for="Enq_Abbreviation" class="col-sm-2 col-form-label">Abbreviation</label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" name="Enq_Abbreviation" value="@Model.Enq_Abbreviation" placeholder="Enter Abbreviation" readonly>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <label for="Customer_Email" class="col-sm-2 col-form-label">Customer Email</label>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" name="Customer_Email" value="@Model.Customer_Email" placeholder="Enter Customer Email" required>
+                            </div>
+                            <label for="Customer_Website" class="col-sm-2 col-form-label">Website</label>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" name="Customer_Website" value="@Model.Customer_Website" placeholder="Enter Customer Website">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <label for="Customer_Address" class="col-sm-2 col-form-label">Customer Address</label>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" name="Customer_Address" value="@Model.Customer_Address" placeholder="Enter Customer Address" required>
+                            </div>
+                            <label for="City" class="col-sm-2 col-form-label">City</label>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" name="City" id="City" value="@Model.City" placeholder="Enter your City">
+                            </div>
+                        </div>
+                            <div class="form-row">
+                                <label for="Pincode_Zipcode" class="col-sm-2 col-form-label">ZipCode/Pincode</label>
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control" name="Pincode_Zipcode" id="Pincode_Zipcode" value="@Model.Pincode_Zipcode" placeholder="Enter your ZipCode/Pincode" required>
+                                </div>
+                                <label for="State" class="col-sm-2 col-form-label">State</label>
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control" name="State" id="State" value="@Model.State" placeholder="Enter your State" required>
+                                </div>
+                                <label for="Country" class="col-sm-2 col-form-label">Country</label>
+                                <div class="col-md-2">
+                                    <select class="form-control" name="Country" id="Country" required>
+                                        <option value="">Select Country</option>
+                                        @foreach (var i in ViewBag.Country)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-12 text-center">
+                                        <input type="submit" class="btn btn-primary" value="Update" />
+                                        <a href="@Url.Action("Customer_Master","IT")" class="btn btn-info">Back</a>
+                                    </div>
+                                </div>
+
+                    }
+
+
+                    <label class="col-sm-12 text-center col-form-label">Contact</label>
+                    <div class="row">
+                        @using (Html.BeginForm("ContactCustomerMaster", "IT", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-6" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary("", new { @class = "text-danger" })
+                            <input type="hidden" name="Contact_ID" id="Contact_ID" value="0" />
+                            <input type="hidden" name="IT_Customer_ID" value="@Model.Id" />
+
+
+                            <div class="form-row">
+                                <label for="Website" class="col-sm-4 col-form-label">Person</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" name="Person" id="Person" placeholder="Enter Contact Person" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <label for="Email" class="col-sm-4 col-form-label">Designation</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" name="Designation" id="Designation" placeholder="Enter Contact Designation">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <label for="Email" class="col-sm-4 col-form-label">Department</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" name="Department" id="Department" placeholder="Enter Contact Department">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <label for="Number" class="col-sm-4 col-form-label">Number</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" name="Number" id="CNumber" placeholder="Enter Office Number" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <label for="City" class="col-sm-4 col-form-label">Email</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" name="Email" id="CEmail" placeholder="Enter Office Email" required>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-12 text-center">
+                                    <input type="submit" class="btn btn-primary" value="Add" id="Contact_btn" />
+                                    <a href="@Url.Action("Customer_Master","IT")" class="btn btn-info">Back</a>
+                                    <button type="button" title="Add" class="btn btn-link has-ripple" id="Contact_add"><i class="fa fa-plus"></i></button>
+                                </div>
+                            </div>
+                        }
+
+                        <div class="col-sm-6">
+                            <table class="table" id="contacttable">
+                                <thead>
+                                    <tr>
+                                        <th>Person</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <tr class="data-contact-person">
+                                        @*<td style="padding: 5%;">
+                                                <span class="badge" style="font-size:100%;">@i.Office</span>
+                                            </td>
+                                            <td>
+                                                <button type="button" title="edit" class="btn btn-link has-ripple" id="@i.Id" onclick="Officefill(this.id)"><i class="fa fa-edit"></i></button>
+
+                                                <a href="@Url.Action("deleteOffice", "Master", new { OD = i.Id,ED = i.EU_ID })" title="delete" style="margin-left:10%;"><i class="fa fa-trash"></i></a>
+                                            </td>*@
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.box-body -->
+
+
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+
+</div>
+
+
+
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content  text-center">
+            <div class="modal-header">
+                <h4 class="modal-title text-center "><i class="fa fa-info-circle" aria-hidden="true"></i> Information</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 20px;">@TempData["message"] </p>
+
+            </div>
+            <div class="modal-footer">
+                <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+
+                <a href="#" data-dismiss="modal" aria-label="Close" class="btn btn-primary">OK</a>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+
+
+
+
+
+@section scripts
+{
+    @if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+
+            window.onload = function () {
+                $('#myModal').modal('show');
+            };
+        </script>
+    }
+
+    <script type="text/javascript">
+        $("#Country").val('@Model.Country');
+        $("#Pincode_Zipcode").blur(function () {
+            var code = $(this).val();
+
+            $.get(baseurl + "/Master/GetLocation", { PinCode: code }, function (data) {
+
+                if (data.res == "Success") {
+                    $("#City").val(data.Location['city']);
+                    $("#State").val(data.Location['state']);
+                    $("#Country").val(data.Location['Country']);
+                } else {
+
+                }
+            });
+
+
+        });
+
+
+
+
+
+
+            var code = @Model.Id;
+            $.get(baseurl + "/IT/GetCustomerContact", { Id: code }, function (data) {
+
+                if (data.res == "Success") {
+                    $('#contacttable tr').has('td').remove();
+                    $.each(data.CC, function (i, val) {
+
+                        $('#contacttable tr:last').after('<tr><td> <span class="badge" style="font-size:100%;">' + data.CC[i]['Person'] + " , " + data.CC[i]['Designation'] +
+                            '</span></td> <td> <button type="button" title="edit" class="btn btn-link has-ripple" id='+ data.CC[i]['Id']  +
+                            ' onclick="Contactfill(this.id)"><i class="fa fa-edit"></i></button><a href= "'+baseurl+'IT/deleteContactCustomer?OC='
+                            +data.CC[i]['Id']+'" title="delete" style="margin-left:10%;"><i class="fa fa-trash"></i></a></td><tr>');
+                    });
+                    $("#Contact_ID").val(0);
+                    $("#Person").val('');
+                    $("#Designation").val('');
+                    $("#Department").val('');
+                    $("#CNumber").val('');
+                    $("#CEmail").val('');
+                    $("#Contact_btn").val('Add');
+                    $("#Contact_add").css('display', 'none');
+                }
+                else {
+
+                }
+            });
+
+
+
+
+        function Contactfill(id) {
+
+            $.get(baseurl + "/IT/GetContactCst", { Id: id }, function (data) {
+
+                if (data.res == "Success") {
+                    $("#Contact_ID").val(data.CC['Id']);
+                    $("#Person").val(data.CC['Person']);
+                    $("#Designation").val(data.CC['Designation']);
+                    $("#Department").val(data.CC['Department']);
+                    $("#CNumber").val(data.CC['Number']);
+                    $("#CEmail").val(data.CC['Email']);
+                    $("#Contact_btn").val('Update');
+                    $("#Contact_add").css('display', 'unset');
+                }
+                else {
+
+                }
+            });
+        }
+
+        $("#Contact_add").click(function () {
+            $("#Contact_ID").val(0);
+            $("#Person").val('');
+            $("#Designation").val('');
+            $("#Department").val('');
+            $("#CNumber").val('');
+            $("#CEmail").val('');
+            $("#Contact_btn").val('Add');
+            $("#Contact_add").css('display', 'none');
+        });
+    </script>
+
+}
+
+
+
+
+
+
+
+

@@ -1,0 +1,75 @@
+﻿@model Roster
+@{
+    ViewBag.Title = "Create Roster";
+    Layout = "~/Views/Shared/_LayoutHRMS.cshtml";
+}
+
+<h2 class="text-center my-4">Create Roster</h2>
+
+<!--====================================Form Begins==================================-->
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="card shadow-lg mb-4">
+        <div class="card-body">
+            <h4 class="card-title text-center mb-4">Roster Details</h4>
+            <hr />
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger">
+                    @Html.ValidationSummary()
+                </div>
+            }
+
+            <div class="form-group row">
+                <label for="Emp_Code" class="control-label col-sm-2">Employee</label>
+                <div class="col-sm-6">
+                    @Html.DropDownList("Emp_Code", (SelectList)ViewBag.EmployeeNames, "Select Employee", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Emp_Code, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="Shift_Start" class="control-label col-sm-2">Shift Start</label>
+                <div class="col-sm-6">
+                    <input type="datetime-local" class="form-control" id="Shift_Start" name="Shift_Start" value="@Model.Shift_Start" />
+                    @Html.ValidationMessageFor(m => m.Shift_Start, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="Shift_End" class="control-label col-sm-2">Shift End</label>
+                <div class="col-sm-6">
+                    <input type="datetime-local" class="form-control" id="Shift_End" name="Shift_End" value="@Model.Shift_End" />
+                    @Html.ValidationMessageFor(m => m.Shift_End, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="WeekOffDays" class="control-label col-sm-2">Week Off Days</label>
+                <div class="col-sm-6">
+                    @Html.ListBox("selectedWeekOffDays", new SelectList(new[]
+                    {
+                        new { Value = "Sunday", Text = "Sunday" },
+                        new { Value = "Monday", Text = "Monday" },
+                        new { Value = "Tuesday", Text = "Tuesday" },
+                        new { Value = "Wednesday", Text = "Wednesday" },
+                        new { Value = "Thursday", Text = "Thursday" },
+                        new { Value = "Friday", Text = "Friday" },
+                        new { Value = "Saturday", Text = "Saturday" }
+                    }, "Value", "Text"), new { @class = "form-control", multiple = "multiple" })
+                    @Html.ValidationMessageFor(m => m.WeekOffDays, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-sm-6 offset-sm-2">
+                    <input type="submit" value="Create" class="btn btn-primary btn-lg btn-block" />
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<!--====================================Form Ends==================================-->

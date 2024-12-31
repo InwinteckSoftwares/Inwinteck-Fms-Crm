@@ -1,0 +1,1652 @@
+﻿@model HRMS.Models.Employee_Profile
+@{
+    ViewBag.Title = "EmpProfileAdmin";
+    Layout = ViewBag.Layout;
+}
+
+<style>
+    #Marriage_Date {
+        display: none;
+    }
+</style>
+
+<div class="card mb-0">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="profile-view">
+                    <div class="profile-img-wrap">
+                        <div class="profile-img">
+                            <a href="#" data-target="#profile_info" data-toggle="modal"><img alt="" src="@Model.ED.Photo"></a>
+                        </div>
+                    </div>
+                    <div class="profile-basic">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="profile-info-left">
+                                    <h3 class="user-name m-t-0 mb-0">@Model.ED.First_Name @Model.ED.Last_Name</h3>
+                                    @*<h6 class="text-muted">HR Team</h6>
+                                        <small class="text-muted">HR Manager</small>*@
+                                    <div class="staff-id">Employee ID : @Model.ED.Emp_Code</div>
+                                    <div class="small doj text-muted">Date of Join : @Model.ED.DOJ.Value.ToString("dd-MM-yyyy")</div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-7">
+                                <ul class="personal-info">
+                                    <li>
+                                        <div class="title">Phone:</div>
+                                        @if (Model.ED.Phone == null)
+                                        {
+                                            <div class="text"><a href="#" data-target="#profile_info" data-toggle="modal">Kindly Add your Phone Number</a></div>
+                                        }
+                                        else
+                                        {
+                                            <div class="text"><a href="#" data-target="#profile_info" data-toggle="modal">@Model.ED.Phone</a></div>
+
+                                        }
+                                    </li>
+                                    <li>
+                                        <div class="title">Email:</div>
+                                        <div class="text"><a href="#" data-target="#profile_info" data-toggle="modal">@Model.ED.Email</a></div>
+                                    </li>
+                                    <li>
+                                        <div class="title">Designation:</div>
+                                        <div class="text">@Model.ED.Designation</div>
+                                    </li>
+                                    <li>
+                                        <div class="title">Department:</div>
+                                        <div class="text">@Model.ED.Department</div>
+                                    </li>
+                                    <li>
+                                        <div class="title">Gender:</div>
+                                        <div class="text">@Model.ED.Gender</div>
+                                    </li>
+                                    <li>
+                                        <div class="title">Reports to:</div>
+                                        <div class="text">
+                                            <div class="avatar-box">
+                                                <div class="avatar avatar-xs">
+                                                    <img src="@Model.ED.rmPhoto" alt="">
+                                                </div>
+                                            </div>
+                                            <a href="#" data-target="#profile_info" data-toggle="modal">
+                                                @Model.ED.Reporting_Manager
+                                            </a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pro-edit"><a data-target="#profile_info" data-toggle="modal" class="edit-icon" href="#"><i class="fas fa-pencil-alt"></i></a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="tab-content">
+
+    <div class="card tab-box mt-3">
+        <div class="row user-tabs">
+            <div class="col-lg-12 col-md-12 col-sm-12 line-tabs">
+                <ul class="nav nav-tabs nav-tabs-bottom pt-3 pb-2">
+                    <li class="nav-item"><a href="#emp_profile" data-toggle="tab" class="nav-link active">Profile</a></li>
+                    <li class="nav-item"><a href="#bank_statutory" data-toggle="tab" class="nav-link">Bank & Salary <small class="text-danger">(Admin Only)</small></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- Profile Info Tab -->
+    <div id="emp_profile" class="pro-overview tab-pane fade show active">
+        <div class="row">
+            <div class="col-md-6 d-flex">
+                <div class="card profile-box flex-fill">
+                    <div class="card-body">
+
+                        <h3 class="card-title">Personal Informations <a href="#" class="edit-icon" data-toggle="modal" data-target="#personal_info_modal"><i class="fas fa-pencil-alt"></i></a></h3>
+
+
+                        @if (Model.ep != null)
+                        {
+                            <!-- Personal Info Modal -->
+                            <div id="personal_info_modal" class="modal custom-modal fade" role="dialog">
+                                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Personal Information</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            @using (Html.BeginForm("Emp_Personal", "HRMS", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                                            {
+                                                @Html.AntiForgeryToken()
+                                                @Html.ValidationSummary("", new { @class = "text-danger" })
+
+                                                <input type="hidden" name="Emp_Id" value="@Model.ed.Id">
+                                                <input type="hidden" name="role" value="EmpProfileAdmin">
+                                                <input type="hidden" name="Id" value="@Model.ep.Id">
+                                                <input type="hidden" name="CreatedBy" value="@Model.ep.CreatedBy">
+                                                <input type="hidden" name="CreatedOn" value="@Model.ep.CreatedOn">
+                                                <input type="hidden" name="saveType" value="update">
+                                                <input type="hidden" name="Aadhar_File_Front" value="@Model.ep.Aadhar_File_Front">
+                                                <input type="hidden" name="Aadhar_File_Back" value="@Model.ep.Aadhar_File_Back">
+                                                <input type="hidden" name="Passport_File" value="@Model.ep.Passport_File">
+                                                <input type="hidden" name="Passport_File" value="@Model.ep.Pan_File">
+                                                <div class="row">
+
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Passport No</label>
+                                                            <input type="text" name="Passport_No" value="@Model.ep.Passport_No" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label>Passport file</label>
+                                                            <div class="profile-img-wrap edit-img">
+                                                                <img class="inline-block" src="@Model.ep.Passport_File" alt="Passport">
+                                                                <div class="fileupload btn">
+                                                                    <span class="btn-text">edit</span>
+                                                                    <input class="upload" type="file" name="pan">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label>Pancard file</label>
+                                                            <div class="profile-img-wrap edit-img">
+                                                                <img class="inline-block" src="@Model.ep.Pan_File" alt="Pan">
+                                                                <div class="fileupload btn">
+                                                                    <span class="btn-text">edit</span>
+                                                                    <input class="upload" type="file" name="panc">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Aadhar No</label>
+                                                            <input class="form-control" value="@Model.ep.Aadhar_No" name="Aadhar_No" type="text">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Pan No</label>
+                                                            <input class="form-control" value="@Model.ep.Pan_No" name="Pan_No" type="text">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label>Aadhar File Front</label>
+                                                            <div class="profile-img-wrap edit-img">
+                                                                <img class="inline-block" src="@Model.ep.Aadhar_File_Front" alt="Aadhar_File">
+                                                                <div class="fileupload btn">
+                                                                    <span class="btn-text">edit</span>
+                                                                    <input class="upload" type="file" name="aad">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label>Aadhar File Back</label>
+                                                            <div class="profile-img-wrap edit-img">
+                                                                <img class="inline-block" src="@Model.ep.Aadhar_File_Back" alt="Aadhar_File">
+                                                                <div class="fileupload btn">
+                                                                    <span class="btn-text">edit</span>
+                                                                    <input class="upload" type="file" name="aadb">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Date Of Birth</label>
+                                                            <input class="form-control" value="@Model.ep.Date_Of_Birth.ToString("yyyy-MM-dd")" name="Date_Of_Birth" type="date" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Email</label>
+                                                            <input class="form-control" value="@Model.ep.Email" name="Email" type="email">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Phone</label>
+                                                            <input class="form-control" value="@Model.ep.Phone" name="Phone" type="text">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label>Current Address</label>
+                                                            <input class="form-control" value="@Model.ep.Current_Address" name="Current_Address" type="text" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label>Permanent Address</label>
+                                                            <input class="form-control" value="@Model.ep.Permanent_Address" name="Permanent_Address" type="text">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Marital status </label>
+                                                            <select class="select form-control" name="Marital_Status" id="Marital_Status" required>
+
+                                                                @foreach (var ms in ViewBag.Marital)
+                                                                {
+                                                                    if (Model.ep.Marital_Status.ToString() == ms.Value)
+                                                                    {
+                                                                        <option value="@ms.Value" selected>@ms.Text</option>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <option value="@ms.Value">@ms.Text</option>
+                                                                    }
+                                                                }
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6" id="Marriage_Date">
+                                                        <div class="form-group">
+                                                            <label>Marriage Date</label>
+                                                            <input class="form-control" value="@Model.ep.Marriage_Date.ToString("yyyy-MM-dd")" name="Marriage_Date" type="date">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="submit-section">
+                                                    <button class="btn btn-primary submit-btn">Submit</button>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /Personal Info Modal -->
+                    <ul class="personal-info">
+                        <li>
+                            <div class="title">Aadhar No. (Front)</div>
+                            <div class="text"><a href="@Model.ep.Aadhar_File_Front" target="_blank">@Model.ep.Aadhar_No</a></div>
+                        </li>
+                        <li>
+                            <div class="title">Aadhar No. (Back)</div>
+                            <div class="text"><a href="@Model.ep.Aadhar_File_Back" target="_blank">@Model.ep.Aadhar_No</a></div>
+                        </li>
+                        <li>
+                            <div class="title">Date of Birth</div>
+                            <div class="text">@Model.ep.Date_Of_Birth.ToString("dd MMM yyyy")</div>
+                        </li>
+                        <li>
+                            <div class="title">Email</div>
+                            <div class="text">@Model.ep.Email</div>
+                        </li>
+                        <li>
+                            <div class="title">Phone</div>
+                            <div class="text">@Model.ep.Phone</div>
+                        </li>
+                        <li>
+                            <div class="title">Pan</div>
+                            <div class="text">@Model.ep.Pan_No</div>
+                        </li>
+                    </ul>
+                        }
+                        else
+                        {
+                            <!-- Personal Info Modal -->
+                            <div id="personal_info_modal" class="modal custom-modal fade" role="dialog">
+                                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Personal Information</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            @using (Html.BeginForm("Emp_Personal", "HRMS", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                                            {
+                                                @Html.AntiForgeryToken()
+                                                @Html.ValidationSummary("", new { @class = "text-danger" })
+
+                                                <input type="hidden" name="Emp_Id" value="@Model.ed.Id">
+                                                <input type="hidden" name="role" value="EmpProfileAdmin">
+                                                <input type="hidden" name="saveType" value="Add">
+
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Passport No</label>
+                                                            <input type="text" name="Passport_No" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Pan No</label>
+                                                            <input type="text" name="Pan_No" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Passport file</label>
+                                                            <input class="form-control" name="pan" type="file">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>PanCard file</label>
+                                                            <input class="form-control" name="panc" type="file">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Aadhar No</label>
+                                                            <input class="form-control" name="Aadhar_No" type="text">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label>Aadhar File Front</label>
+                                                            <input class="form-control" name="aad" type="file">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label>Aadhar File Back</label>
+                                                            <input class="form-control" name="aadb" type="file">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Date_Of_Birth</label>
+                                                            <input class="form-control" name="Date_Of_Birth" type="date" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Email</label>
+                                                            <input class="form-control" name="Email" type="email">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Phone</label>
+                                                            <input class="form-control" name="Phone" type="text">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label>Current Address</label>
+                                                            <input class="form-control" name="Current_Address" type="text" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label>Permanent Address</label>
+                                                            <input class="form-control" name="Permanent_Address" type="text">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Marital status </label>
+                                                            <select class="select form-control" name="Marital_Status" id="Marital_Status" required>
+                                                                <option value="">select Status</option>
+                                                                @foreach (var d in ViewBag.Marital)
+                                                                {
+                                                                    <option value="@d.Value">@d.Text</option>
+
+                                                                }
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6" id="Marriage_Date">
+                                                        <div class="form-group">
+                                                            <label>Marriage Date</label>
+                                                            <input class="form-control" name="Marriage_Date" type="date">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="submit-section">
+                                                    <button class="btn btn-primary submit-btn">Submit</button>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /Personal Info Modal -->
+                            <ul class="personal-info">
+                                <li>
+                                    <div class="title"><code>No Data </code></div>
+                                </li>
+                            </ul>
+                        }
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 d-flex">
+                <div class="card profile-box flex-fill">
+                    <div class="card-body">
+                        <h3 class="card-title">Emergency Contact <a href="#" class="edit-icon" data-toggle="modal" data-target="#emergency_contact_modal"><i class="fas fa-pencil-alt"></i></a></h3>
+
+                        @if (Model.eec != null)
+                        {
+                            <h5 class="section-title">Primary</h5>
+                            <ul class="personal-info">
+                                <li>
+                                    <div class="title">Name</div>
+                                    <div class="text">@Model.eec.P_Name</div>
+                                </li>
+                                <li>
+                                    <div class="title">Relationship</div>
+                                    <div class="text">@Model.eec.P_Relationship</div>
+                                </li>
+                                <li>
+                                    <div class="title">Phone </div>
+                                    <div class="text">@Model.eec.P_Phone , @Model.eec.P_Alt_Phone</div>
+                                </li>
+                            </ul>
+                            <hr>
+                            <h5 class="section-title">Secondary</h5>
+                            <ul class="personal-info">
+                                <li>
+                                    <div class="title">Name</div>
+                                    <div class="text">@Model.eec.S_Name</div>
+                                </li>
+                                <li>
+                                    <div class="title">Relationship</div>
+                                    <div class="text">@Model.eec.S_Relationship</div>
+                                </li>
+                                <li>
+                                    <div class="title">Phone </div>
+                                    <div class="text">@Model.eec.S_Phone , @Model.eec.S_Alt_Phone</div>
+                                </li>
+                            </ul>
+
+                            <!-- Emergency Contact Modal -->
+                            <div id="emergency_contact_modal" class="modal custom-modal fade" role="dialog">
+                                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Personal Information</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            @using (Html.BeginForm("Emp_Emergency", "HRMS", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                                            {
+                                                @Html.AntiForgeryToken()
+                                                @Html.ValidationSummary("", new { @class = "text-danger" })
+
+                                                <input type="hidden" name="Emp_Id" value="@Model.ed.Id">
+                                                <input type="hidden" name="Id" value="@Model.eec.Id">
+                                                <input type="hidden" name="CreatedBy" value="@Model.eec.CreatedBy">
+                                                <input type="hidden" name="CreatedOn" value="@Model.eec.CreatedOn">
+                                                <input type="hidden" name="role" value="EmpProfileAdmin">
+                                                <input type="hidden" name="saveType" value="update">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <h3 class="card-title">Primary Contact</h3>
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label>Name</label>
+                                                                    <input type="text" value="@Model.eec.P_Name" name="P_Name" class="form-control">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label>Relationship</label>
+                                                                    <input class="form-control" value="@Model.eec.P_Relationship" name="P_Relationship" type="text">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label>Phone</label>
+                                                                    <input class="form-control" value="@Model.eec.P_Phone" name="P_Phone" type="text">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label>Phone 2</label>
+                                                                    <input class="form-control" value="@Model.eec.P_Alt_Phone" name="P_Alt_Phone" type="text">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <h3 class="card-title">Secondary Contact</h3>
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label>Name</label>
+                                                                    <input type="text" value="@Model.eec.S_Name" name="S_Name" class="form-control">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label>Relationship</label>
+                                                                    <input class="form-control" value="@Model.eec.S_Relationship" name="S_Relationship" type="text">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label>Phone</label>
+                                                                    <input class="form-control" value="@Model.eec.S_Phone" name="S_Phone" type="text">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label>Phone 2</label>
+                                                                    <input class="form-control" value="@Model.eec.S_Alt_Phone" name="S_Alt_Phone" type="text">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="submit-section">
+                                                    <button class="btn btn-primary submit-btn">Submit</button>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /Emergency Contact Modal -->
+
+                        }
+                        else
+                        {
+                            <!-- Emergency Contact Modal -->
+                            <div id="emergency_contact_modal" class="modal custom-modal fade" role="dialog">
+                                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Personal Information</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            @using (Html.BeginForm("Emp_Emergency", "HRMS", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                                            {
+                                                @Html.AntiForgeryToken()
+                                                @Html.ValidationSummary("", new { @class = "text-danger" })
+
+                                                <input type="hidden" name="Emp_Id" value="@Model.ed.Id">
+                                                <input type="hidden" name="role" value="EmpProfileAdmin">
+                                                <input type="hidden" name="saveType" value="Add">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <h3 class="card-title">Primary Contact</h3>
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label>Name</label>
+                                                                    <input type="text" name="P_Name" class="form-control">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label>Relationship</label>
+                                                                    <input class="form-control" name="P_Relationship" type="text">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label>Phone</label>
+                                                                    <input class="form-control" name="P_Phone" type="text">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label>Phone 2</label>
+                                                                    <input class="form-control" name="P_Alt_Phone" type="text">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <h3 class="card-title">Secondary Contact</h3>
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label>Name</label>
+                                                                    <input type="text" name="S_Name" class="form-control">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label>Relationship</label>
+                                                                    <input class="form-control" name="S_Relationship" type="text">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label>Phone</label>
+                                                                    <input class="form-control" name="S_Phone" type="text">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label>Phone 2</label>
+                                                                    <input class="form-control" name="S_Alt_Phone" type="text">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="submit-section">
+                                                    <button class="btn btn-primary submit-btn">Submit</button>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /Emergency Contact Modal -->
+
+                            <div class="title"><code>No Data </code></div>
+
+                        }
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 d-flex">
+                <div class="card profile-box flex-fill">
+                    <div class="card-body">
+                        <h3 class="card-title">Bank information</h3>
+                        <ul class="personal-info">
+                            @if (ViewBag.ebedit > 0)
+                            {
+                                <li>
+                                    <div class="title">Bank name</div>
+                                    <div class="text">@Model.eb.Bank_Name</div>
+                                </li>
+                                <li>
+                                    <div class="title">Bank account No.</div>
+                                    <div class="text">@Model.eb.Account_No</div>
+                                </li>
+                                <li>
+                                    <div class="title">IFSC Code</div>
+                                    <div class="text">@Model.eb.IFSC_Code</div>
+                                </li>
+
+                            }
+                            else
+                            {
+                                <li>
+                                    <div class="title"><code>No Data </code></div>
+                                </li>
+
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 d-flex">
+                <div class="card profile-box flex-fill">
+                    <div class="card-body">
+                        <h3 class="card-title">Family Informations <a href="#" class="edit-icon" data-toggle="modal" data-target="#family_info_modal"><i class="fas fa-pencil-alt"></i></a></h3>
+                        <div class="table-responsive">
+                            <table class="table table-nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Relationship</th>
+                                        <th>Date of Birth</th>
+                                        <th>Phone</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.efi.Count > 0)
+                                    {
+                                        foreach (var fam in Model.efi)
+                                        {
+                                            <tr>
+                                                <td>@fam.Name</td>
+                                                <td>@fam.Relationship</td>
+                                                <td>@fam.DOB.ToString("dd MMM yyyy")</td>
+                                                <td>@fam.Phone</td>
+                                                <td>
+                                                    <a href="#" data-toggle="modal" data-target="#family_edit_modal_@fam.Id"><i class="fas fa-pen" style="font-size: 10px;"></i></a>
+
+                                                    <!-- Family Info Modal -->
+                                                    <div id="family_edit_modal_@fam.Id" class="modal custom-modal fade" role="dialog">
+                                                        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title"> Family Informations</h5>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <i class="fas fa-times"></i>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    @using (Html.BeginForm("updateEmp_Family", "HRMS", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                                                                    {
+                                                                        @Html.AntiForgeryToken()
+                                                                        @Html.ValidationSummary("", new { @class = "text-danger" })
+
+                                                                        <input type="hidden" name="Id" value="@fam.Id">
+                                                                        <input type="hidden" name="Emp_Id" value="@fam.Emp_Id">
+                                                                        <input type="hidden" name="CreatedBy" value="@fam.CreatedBy">
+                                                                        <input type="hidden" name="CreatedOn" value="@fam.CreatedOn">
+                                                                        <input type="hidden" name="role" value="EmpProfileAdmin">
+                                                                        <div class="form-scroll">
+                                                                            <div class="card">
+                                                                                <div class="card-body">
+                                                                                    <h3 class="card-title">Family Member</h3>
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                <label>Name</label>
+                                                                                                <input class="form-control" name="Name" value="@fam.Name" type="text" required>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                <label>Relationship </label>
+                                                                                                <input class="form-control" value="@fam.Relationship" name="Relationship" type="text">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                <label>Date of birth </label>
+                                                                                                <input class="form-control" name="DOB" value="@fam.DOB.ToString("yyyy-MM-dd")" type="date">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                <label>Phone</label>
+                                                                                                <input class="form-control" name="Phone" value="@fam.Phone" type="text" required>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="submit-section">
+                                                                            <button class="btn btn-primary submit-btn">Submit</button>
+                                                                        </div>
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- /Family Info Modal -->
+
+                                                    <a href="#" data-toggle="modal" data-target="#deleteEmp_Family_@fam.Id"><i class="far fa-trash-alt" style="font-size: 10px;"></i></a>
+                                                    <!-- Delete Employee Modal -->
+                                                    <div class="modal custom-modal fade" id="deleteEmp_Family_@fam.Id" role="dialog">
+                                                        <div class="modal-dialog modal-dialog-centered">
+                                                            <div class="modal-content">
+                                                                <div class="modal-body">
+                                                                    <div class="form-header">
+                                                                        <h3>Delete Family Information</h3>
+                                                                        <p>Are you sure want to delete?</p>
+                                                                    </div>
+                                                                    <div class="modal-btn delete-action">
+                                                                        <div class="row">
+                                                                            <div class="col-6">
+                                                                                <a href="@Url.Action("deleteEmp_Family","HRMS", new {Id = fam.Id, role="EmpProfileAdmin" })" class="btn btn-primary continue-btn">Delete</a>
+                                                                            </div>
+                                                                            <div class="col-6">
+                                                                                <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- /Delete Employee Modal -->
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="5" class="text-center">
+                                                <code>No Data </code>
+                                            </td>
+                                        </tr>
+
+                                    }
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 d-flex">
+                <div class="card profile-box flex-fill">
+                    <div class="card-body">
+                        <h3 class="card-title">Education Informations <a href="#" class="edit-icon" data-toggle="modal" data-target="#education_info"><i class="fas fa-pencil-alt"></i></a></h3>
+                        <div class="experience-box">
+                            @if (Model.edi.Count > 0)
+                            {
+                                <ul class="experience-list">
+                                    @foreach (var edu in Model.edi)
+                                    {
+                                        <li>
+                                            <div class="experience-user">
+                                                <div class="before-circle"></div>
+                                            </div>
+                                            <div class="experience-content">
+                                                <div class="timeline-content">
+                                                    <a href="#" class="name" data-toggle="modal" data-target="#edu_edit_modal_@edu.Id">@edu.Name_School_University</a>
+                                                    <div>@edu.Degree_Subject</div>
+                                                    <span class="time">@edu.Year_Of_Passing.ToString("yyyy")</span>
+                                                </div>
+                                            </div>
+
+                                            <!-- Education Modal -->
+                                            <div id="edu_edit_modal_@edu.Id" class="modal custom-modal fade" role="dialog">
+                                                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title"> Education Informations</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <i class="fas fa-times"></i>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            @using (Html.BeginForm("updateEmp_Edu", "HRMS", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                                                            {
+                                                                @Html.AntiForgeryToken()
+                                                                @Html.ValidationSummary("", new { @class = "text-danger" })
+
+                                                                <input type="hidden" name="Id" value="@edu.Id">
+                                                                <input type="hidden" name="Emp_Id" value="@edu.Emp_Id">
+                                                                <input type="hidden" name="Certificates" value="@edu.Certificates">
+                                                                <input type="hidden" name="CreatedBy" value="@edu.CreatedBy">
+                                                                <input type="hidden" name="CreatedOn" value="@edu.CreatedOn">
+                                                                <input type="hidden" name="role" value="EmpProfileAdmin">
+
+                                                                <div class="form-scroll">
+                                                                    <div class="card">
+                                                                        <div class="card-body">
+                                                                            <h3 class="card-title">Education Informations <a href="@Url.Action("deleteEmp_Edu","HRMS", new {Id = edu.Id, role="EmpProfileAdmin" })" class="delete-icon"><i class="far fa-trash-alt"></i></a></h3>
+                                                                            <div class="row">
+                                                                                <div class="col-md-6">
+                                                                                    <div class="form-group">
+                                                                                        <label>School/University Name</label>
+                                                                                        <input class="form-control" value="@edu.Name_School_University" name="Name_School_University" type="text" required>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-md-6">
+                                                                                    <div class="form-group">
+                                                                                        <label>School/University Location</label>
+                                                                                        <input class="form-control" value="@edu.Location_School_Uni" name="Location_School_Uni" type="text">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-md-6">
+                                                                                    <div class="form-group">
+                                                                                        <label>Degree/Subject</label>
+                                                                                        <input class="form-control" value="@edu.Degree_Subject" name="Degree_Subject" type="text">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-md-6">
+                                                                                    <div class="form-group">
+                                                                                        <label>Year of Passing</label>
+                                                                                        <input class="form-control" value="@edu.Year_Of_Passing.ToString("yyyy-MM-dd")" name="Year_Of_Passing" type="date">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-md-6">
+                                                                                    <div class="form-group">
+                                                                                        <label>Marks Obtained</label>
+                                                                                        <input class="form-control" name="Marks_Obtained" value="@edu.Marks_Obtained" type="text">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-md-5">
+                                                                                    <div class="form-group">
+                                                                                        <label>Certificates</label>
+                                                                                        <input class="form-control" name="cert" type="file">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-md-1">
+                                                                                    <a href="@edu.Certificates" target="_blank" class="delete-icon" style="padding: 20px;margin-top: 25px;"><i class="far fa-eye"></i></a>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="submit-section">
+                                                                    <button class="btn btn-primary submit-btn">Submit</button>
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- /Education Modal -->
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                            else
+                            {
+                                <ul class="experience-list">
+                                    <li>
+                                        <div class="title"><code>No Data </code></div>
+                                    </li>
+                                </ul>
+
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 d-flex">
+                <div class="card profile-box flex-fill">
+                    <div class="card-body">
+                        <h3 class="card-title">Experience <a href="#" class="edit-icon" data-toggle="modal" data-target="#experience_info"><i class="fas fa-pencil-alt"></i></a></h3>
+                        <div class="experience-box">
+                            @if (Model.eexp.Count > 0)
+                            {
+                                <ul class="experience-list">
+                                    @foreach (var exp in Model.eexp)
+                                    {
+                                    <li>
+                                        <div class="experience-user">
+                                            <div class="before-circle"></div>
+                                        </div>
+                                        <div class="experience-content">
+                                            <div class="timeline-content">
+                                                <a href="#" class="name" data-toggle="modal" data-target="#exp_edit_modal_@exp.Id">@exp.Designation at @exp.Company_Name</a>
+                                                <span class="time">@exp.Exp_Year_From.ToString("MMM yyyy") - @exp.Exp_Year_To.ToString("MMM yyyy")</span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Experience Modal -->
+                                        <div id="exp_edit_modal_@exp.Id" class="modal custom-modal fade" role="dialog">
+                                            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Experience Informations </h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <i class="fas fa-times"></i>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        @using (Html.BeginForm("updateEmp_Exp", "HRMS", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                                                        {
+                                                            @Html.AntiForgeryToken()
+                                                            @Html.ValidationSummary("", new { @class = "text-danger" })
+
+                                                            <input type="hidden" name="Emp_Id" value="@exp.Emp_Id">
+                                                            <input type="hidden" name="Id" value="@exp.Id">
+                                                            <input type="hidden" name="Company_File" value="@exp.Company_File">
+                                                            <input type="hidden" name="CreatedBy" value="@exp.CreatedBy">
+                                                            <input type="hidden" name="CreatedOn" value="@exp.CreatedOn">
+                                                            <input type="hidden" name="role" value="EmpProfileAdmin">
+                                                            <div class="form-scroll">
+                                                                <div class="card">
+                                                                    <div class="card-body">
+                                                                        <h3 class="card-title">Experience Informations <a href="@Url.Action("deleteEmp_Exp","HRMS", new {Id = exp.Id, role="EmpProfileAdmin" })" class="delete-icon"><i class="far fa-trash-alt"></i></a></h3>
+                                                                        <div class="row">
+                                                                            <div class="col-md-6">
+                                                                                <div class="form-group">
+                                                                                    <label>Company Name</label>
+                                                                                    <input class="form-control" value="@exp.Company_Name" name="Company_Name" type="text" required>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-md-6">
+                                                                                <div class="form-group">
+                                                                                    <label>Company Location</label>
+                                                                                    <input class="form-control" value="@exp.Company_Address" name="Company_Address" type="text">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-md-6">
+                                                                                <div class="form-group">
+                                                                                    <label>Experience Year From</label>
+                                                                                    <input class="form-control" value="@exp.Exp_Year_From.ToString("yyyy-MM-dd")" name="Exp_Year_From" type="date">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-md-6">
+                                                                                <div class="form-group">
+                                                                                    <label>Experience Year To</label>
+                                                                                    <input class="form-control" value="@exp.Exp_Year_To.ToString("yyyy-MM-dd")" name="Exp_Year_To" type="date">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-md-6">
+                                                                                <div class="form-group">
+                                                                                    <label>Designation</label>
+                                                                                    <input class="form-control" value="@exp.Designation" name="Designation" type="text">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-md-5">
+                                                                                <div class="form-group">
+                                                                                    <label>Attachment</label>
+                                                                                    <input class="form-control" name="comp" type="file">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-md-1">
+                                                                                <a href="@exp.Company_File" target="_blank" class="delete-icon" style="padding: 20px;margin-top: 25px;"><i class="far fa-eye"></i></a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="submit-section">
+                                                                <button class="btn btn-primary submit-btn">Submit</button>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /Experience Modal -->
+                                    </li>
+                                    }
+                                </ul>
+                            }
+                            else
+                            {
+                                <ul class="experience-list">
+                                    <li>
+                                        <div class="title"><code>No Data </code></div>
+                                    </li>
+                                </ul>
+
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Profile Info Tab -->
+    <!-- Bank Statutory Tab -->
+    <div class="tab-pane fade" id="bank_statutory">
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title"> Basic Salary Information</h3>
+                @using (Html.BeginForm("Emp_Salary", "HRMS", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary("", new { @class = "text-danger" })
+
+                    <input type="hidden" name="Emp_Id" value="@Model.ed.Id">
+
+                    if (ViewBag.esedit > 0)
+                    {
+
+                        <input type="hidden" name="es.Id" value="@Model.es.Id">
+                        <input type="hidden" name="es.Emp_Id" value="@Model.es.Emp_Id">
+                        <input type="hidden" name="es.CreatedBy" value="@Model.es.CreatedBy">
+                        <input type="hidden" name="es.CreatedOn" value="@Model.es.CreatedOn">
+                        <div class="row">
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-form-label">Salary Amount <small class="text-muted">per month</small></label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">₹</span>
+                                        </div>
+                                        <input type="number" class="form-control" placeholder="Type salary amount" value="@Model.es.Salary" name="es.Salary" step=any required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-form-label">Salary Payment Mode</label>
+                                    <select class="select" name="es.Mode_Pay" required>
+                                        <option value="">Select payment mode</option>
+                                        @foreach (var d in ViewBag.Salary_Mode)
+                                        {
+                                            if (Model.es.Mode_Pay.ToString() == d.Value)
+                                            {
+                                                <option value="@d.Value" selected>@d.Text</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@d.Value">@d.Text</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-form-label">UAN <small class="text-muted">number</small></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Type UAN Number" value="@Model.es.Uan" name="es.Uan">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-form-label">ESIC <small class="text-muted">number</small></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Type ESIC Number" value="@Model.es.ESIC" name="es.ESIC">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="row">
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-form-label">Salary Amount <small class="text-muted">per month</small></label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">₹</span>
+                                        </div>
+                                        <input type="number" class="form-control" placeholder="Type salary amount" value="" name="es.Salary" step=any required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-form-label">Salary Payment Mode</label>
+                                    <select class="select" name="es.Mode_Pay" required>
+                                        <option value="">Select payment mode</option>
+                                        @foreach (var d in ViewBag.Salary_Mode)
+                                        {
+                                            <option value="@d.Value">@d.Text</option>
+
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-form-label">UAN <small class="text-muted">number</small></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Type UAN Number" value="" name="es.Uan">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-form-label">ESIC <small class="text-muted">number</small></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Type ESIC Number" value="" name="es.ESIC">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    }
+
+
+
+
+                    <hr>
+                    <h3 class="card-title"> Bank Information</h3>
+
+                    if (ViewBag.ebedit > 0)
+                    {
+                        <input type="hidden" name="eb.Id" value="@Model.eb.Id">
+                        <input type="hidden" name="eb.Emp_Id" value="@Model.eb.Emp_Id">
+                        <input type="hidden" name="eb.CreatedBy" value="@Model.eb.CreatedBy">
+                        <input type="hidden" name="eb.CreatedOn" value="@Model.eb.CreatedOn">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-form-label">Bank Name</label>
+                                    <input type="text" class="form-control" placeholder="Type Bank Name" value="@Model.eb.Bank_Name" name="eb.Bank_Name">
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-form-label">Account Number</label>
+                                    <input type="text" class="form-control" placeholder="Type Account Number" value="@Model.eb.Account_No" name="eb.Account_No">
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-form-label">IFSC Code</label>
+                                    <input type="text" class="form-control" placeholder="Type IFSC Code" value="@Model.eb.IFSC_Code" name="eb.IFSC_Code">
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-form-label">Bank Name</label>
+                                    <input type="text" class="form-control" placeholder="Type Bank Name" value="" name="eb.Bank_Name">
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-form-label">Account Number</label>
+                                    <input type="text" class="form-control" placeholder="Type Account Number" value="" name="eb.Account_No">
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-form-label">IFSC Code</label>
+                                    <input type="text" class="form-control" placeholder="Type IFSC Code" value="" name="eb.IFSC_Code">
+                                </div>
+                            </div>
+                        </div>
+
+                    }
+
+
+
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn" type="submit">Save</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <!-- /Bank Statutory Tab -->
+
+</div>
+
+<!-- /Page Content -->
+<!-- Profile Modal -->
+<div id="profile_info" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Profile Information</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("editEmpProfile", "HRMS", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary("", new { @class = "text-danger" })
+                    <input type="hidden" value="@Model.ed.Id" name="Id">
+                    <input type="hidden" value="@Model.ed.CreatedOn" name="CreatedOn">
+                    <input type="hidden" value="@Model.ed.CreatedBy" name="CreatedBy">
+                    <input type="hidden" value="@Model.ed.Photo" name="Photo">
+                    <input type="hidden" value="@Model.ed.Designation" name="Designation">
+                    <input type="hidden" value="@Model.ed.Reporting_Manager" name="Reporting_Manager">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="profile-img-wrap edit-img">
+                                <img class="inline-block" src="@Model.ed.Photo" alt="user">
+                                <div class="fileupload btn">
+                                    <span class="btn-text">edit</span>
+                                    <input class="upload" type="file" name="pht">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Emp Code</label>
+                                        <input type="text" class="form-control" value="@Model.ed.Emp_Code" name="Emp_Code" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>First Name</label>
+                                        <input type="text" class="form-control" value="@Model.ed.First_Name" name="First_Name" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Last Name</label>
+                                        <input type="text" class="form-control" value="@Model.ed.Last_Name" name="Last_Name" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Gender</label>
+                                        <input type="text" class="form-control" value="@Model.ed.Gender" name="Gender" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="text" class="form-control" value="@Model.ed.Email" name="Email" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Date of Joining</label>
+                                <input type="text" class="form-control" value="@Model.ed.DOJ.Value.ToString("dd MMM yyyy")" name="DOJ" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Phone</label>
+                                <input type="text" class="form-control" value="@Model.ed.Phone" name="Phone">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Change Password</label>
+                                <input class="form-control" type="text" name="password">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Designation</label>
+                                <input type="text" class="form-control" value="@Model.ED.Designation" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Department </label>
+                                <input type="text" class="form-control" value="@Model.ED.Department" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Reports To </label>
+                                <input type="text" class="form-control" value="@Model.ED.Reporting_Manager" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn">Submit</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Profile Modal -->
+<!-- Family Info Modal -->
+<div id="family_info_modal" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"> Family Informations</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("addEmp_Family", "HRMS", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary("", new { @class = "text-danger" })
+
+                    <input type="hidden" name="Emp_Id" value="@Model.ed.Id">
+                    <input type="hidden" name="role" value="EmpProfileAdmin">
+                    <div class="form-scroll">
+                        <div class="card">
+                            <div class="card-body">
+                                <h3 class="card-title">Family Member</h3>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Name</label>
+                                            <input class="form-control" name="Name" type="text" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Relationship <span class="text-danger">*</span></label>
+                                            <input class="form-control" name="Relationship" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Date of birth </label>
+                                            <input class="form-control" name="DOB" type="date">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Phone</label>
+                                            <input class="form-control" name="Phone" type="text" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn">Submit</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Family Info Modal -->
+<!-- Education Modal -->
+<div id="education_info" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"> Education Informations</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("addEmp_Edu", "HRMS", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary("", new { @class = "text-danger" })
+
+                    <input type="hidden" name="Emp_Id" value="@Model.ed.Id">
+                    <input type="hidden" name="role" value="EmpProfileAdmin">
+                    <div class="form-scroll">
+                        <div class="card">
+                            <div class="card-body">
+                                <h3 class="card-title">Education Informations </h3>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>School/University Name</label>
+                                            <input class="form-control" name="Name_School_University" type="text" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>School/University Location</label>
+                                            <input class="form-control" name="Location_School_Uni" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Degree/Subject</label>
+                                            <input class="form-control" name="Degree_Subject" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Year of Passing</label>
+                                            <input class="form-control" name="Year_Of_Passing" type="date">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Marks Obtained</label>
+                                            <input class="form-control" name="Marks_Obtained" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Certificates</label>
+                                            <input class="form-control" name="cert" type="file">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn">Submit</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Education Modal -->
+<!-- Experience Modal -->
+<div id="experience_info" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Experience Informations</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("addEmp_Exp", "HRMS", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary("", new { @class = "text-danger" })
+
+                    <input type="hidden" name="Emp_Id" value="@Model.ed.Id">
+                    <input type="hidden" name="role" value="EmpProfileAdmin">
+                    <div class="form-scroll">
+                        <div class="card">
+                            <div class="card-body">
+                                <h3 class="card-title">Experience Informations </h3>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Company Name</label>
+                                            <input class="form-control" name="Company_Name" type="text" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Company Location</label>
+                                            <input class="form-control" name="Company_Address" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Experience Year From</label>
+                                            <input class="form-control" name="Exp_Year_From" type="date">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Experience Year To</label>
+                                            <input class="form-control" name="Exp_Year_To" type="date">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Designation</label>
+                                            <input class="form-control" name="Designation" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Attachment</label>
+                                            <input class="form-control" name="comp" type="file">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn">Submit</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Experience Modal -->
+
+<div class="modal custom-modal fade" id="msgBox">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-header">
+                    <h3 style="font-size: 20px;">@TempData["message"] </h3>
+                </div>
+                <div class="modal-btn">
+                    <div class="submit-section col-sm-4 offset-sm-4">
+                        <a href="#" data-dismiss="modal" aria-label="Close" class="btn btn-primary cancel-btn">OK</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+@section scripts
+{
+    @if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+
+            window.onload = function () {
+                $('#msgBox').modal('show');
+            };
+        </script>
+
+
+    }
+
+    <script type="text/javascript">
+        $("#Marital_Status").change(function () {
+            if ($(this).val() == '13') {
+                document.getElementById("Marriage_Date").style.display = "block";
+            }
+            else {
+                document.getElementById("Marriage_Date").style.display = "none";
+            }
+        });
+
+        $(document).ready(function () {
+
+            if ($("#Marital_Status").val() == '13') {
+                document.getElementById("Marriage_Date").style.display = "block";
+            }
+            else {
+                document.getElementById("Marriage_Date").style.display = "none";
+            }
+        });
+
+    </script>
+}
+

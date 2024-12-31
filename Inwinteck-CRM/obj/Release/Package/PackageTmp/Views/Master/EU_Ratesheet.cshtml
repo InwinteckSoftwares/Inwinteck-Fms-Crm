@@ -1,0 +1,523 @@
+﻿@model Inwinteck_CRM.Models.EditEU_Ratecard
+@{
+    ViewBag.Title = "EU Ratesheet";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Content Header (Page header) -->
+<div class="page-header">
+    <div class="container-fluid d-sm-flex justify-content-between">
+        <h4>Ratesheet</h4>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">Master</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">EU Ratesheet</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Basic Forms -->
+            @if (ViewBag.Edit == "Show")
+            {
+                <div class="card">
+
+                    <!-- /.box-header -->
+                    <div class="card-body">
+                        @using (Html.BeginForm("editEU_Ratesheet", "Master", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary("", new { @class = "text-danger" })
+                            <input type="hidden" name="CreatedOn" value="@Model.EERC.CreatedOn" />
+                            <input type="hidden" name="CreatedBy" value="@Model.EERC.CreatedBy" />
+                            <input type="hidden" name="Id" value="@Model.EERC.Id" />
+                            <input type="hidden" name="EU_ID" value="@ViewBag.id" />
+                            <input type="hidden" name="Country" value="@Model.EERC.Country" />
+                            <div class="form-row">
+                                <label for="Customer" class="col-sm-2 col-form-label">Customer Name</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" value="@ViewBag.EU" placeholder="Enter Customer Name" readonly>
+                                </div>
+                                <label for="Country" class="col-sm-2 col-form-label">Country</label>
+                                <div class="col-sm-4">
+                                    @Html.DropDownListFor(m => m.EERC.Country, ViewBag.Country as IEnumerable<SelectListItem>, "--Select Country --", new { @class = "form-control", disabled = "disabled" })                                   
+
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="col-md-4">
+                                    <div class="form-row">
+                                        <h5 class="left-nav col-sm-12">4h SLA INCIDENTS</h5>
+                                        <div class="form-row">
+                                            <div class="col-sm-6">
+                                                <label for="SLA_Per_Hr_4" class="col-form-label">Per incident prices (including transportation + first hour onsite)</label>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label for="SLA_Per_Hr_4_add" class="col-form-label" style="height:100%;width:98%;">Per additional hour price</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <input type="number" class="form-control" name="SLA_Per_Hr_4" value="@Model.EERC.SLA_Per_Hr_4" placeholder="Enter" step="any">
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <input type="number" class="form-control" name="SLA_Per_Hr_4_add" value="@Model.EERC.SLA_Per_Hr_4_add" placeholder="Enter" step="any">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-row">
+                                        <h5 class="left-nav col-sm-12">NBD SLA INCIDENTS</h5>
+                                        <div class="form-row">
+                                            <div class="col-sm-6">
+                                                <label for="SLA_Per_Hr_NBD" class="col-form-label">Per incident prices (including transportation + first hour onsite)</label>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label for="SLA_Per_Hr_NBD_add" class="col-form-label" style="height:100%;width:98%;">Per additional hour price</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <input type="number" class="form-control" name="SLA_Per_Hr_NBD" value="@Model.EERC.SLA_Per_Hr_NBD" placeholder="Enter" step="any">
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <input type="number" class="form-control" name="SLA_Per_Hr_NBD_add" value="@Model.EERC.SLA_Per_Hr_NBD_add" placeholder="Enter" step="any">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-row">
+                                        <h5 class="left-nav col-sm-12">2BD SLA IMAC's</h5>
+                                        <div class="form-row">
+                                            <div class="col-sm-6">
+                                                <label for="SLA_Per_Hr_2" class="col-form-label">Per incident prices (including transportation + first hour onsite)</label>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label for="SLA_Per_Hr_2_add" class="col-form-label" style="height:100%;width:98%;">Per additional hour price</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <input type="number" class="form-control" name="SLA_Per_Hr_2" value="@Model.EERC.SLA_Per_Hr_2" placeholder="Enter" step="any">
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <input type="number" class="form-control" name="SLA_Per_Hr_2_add" value="@Model.EERC.SLA_Per_Hr_2_add" placeholder="Enter" step="any">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="form-row">
+                                <h5 class="left-nav col-sm-12">T&M RATES</h5>
+                                <label for="Business_Hr" class="col-sm-1 col-form-label">Business Hour</label>
+                                <div class="col-sm-2">
+                                    <input type="number" class="form-control" name="Business_Hr" value="@Model.EERC.Business_Hr" placeholder="Enter" required step="any">
+                                </div>
+                                <label for="Non_Business_Hr" class="col-sm-1 col-form-label">Non Business Hour</label>
+                                <div class="col-sm-2">
+                                    <input type="number" class="form-control" name="Non_Business_Hr" value="@Model.EERC.Non_Business_Hr" placeholder="Enter" required step="any">
+                                </div>
+                                <label for="Per_Job" class="col-sm-1 col-form-label">Per Job</label>
+                                <div class="col-sm-2">
+                                    <input type="number" class="form-control" name="Per_Job" value="@Model.EERC.Per_Job" placeholder="Enter" required step="any">
+                                </div>
+                                <label for="Travel_Charges" class="col-sm-1 col-form-label">Travel Charge</label>
+                                <div class="col-sm-2">
+                                    <input type="number" class="form-control" name="Travel_Charges" value="@Model.EERC.Travel_Charges" placeholder="Enter" required>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <label for="Minimum_Hrs" class="col-sm-1 col-form-label">Minimum Hrs</label>
+                                <div class="col-sm-2">
+                                    <input type="number" class="form-control" name="Minimum_Hrs"  value="@Model.EERC.Minimum_Hrs" placeholder="Enter" required>
+                                </div>
+                                <label for="Daily" class="col-sm-1 col-form-label">Daily</label>
+                                <div class="col-sm-2">
+                                    <input type="number" class="form-control" name="Daily" value="@Model.EERC.Daily" placeholder="Enter">
+                                </div>
+                                <label for="Weekly" class="col-sm-1 col-form-label">Weekly</label>
+                                <div class="col-sm-2">
+                                    <input type="number" class="form-control" name="Weekly" value="@Model.EERC.Weekly" placeholder="Enter">
+                                </div>
+                                <label for="Monthly" class="col-sm-1 col-form-label">Monthly</label>
+                                <div class="col-sm-2">
+                                    <input type="number" class="form-control" name="Monthly" value="@Model.EERC.Monthly" placeholder="Enter">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="col-md-6">
+                                    <div class="form-row">
+                                        <h5 class="left-nav col-sm-12">FTE RATES</h5>
+
+                                        <label for="FTE_Rates_Backfil" class="col-sm-4 col-form-label">FTE rates with backfil</label>
+                                        <div class="col-sm-2">
+                                            <input type="number" class="form-control" name="FTE_Rates_Backfil" value="@Model.EERC.FTE_Rates_Backfil" placeholder="Enter" required>
+                                        </div>
+                                        <label for="FTE_Rates_Backfil_wo" class="col-sm-4 col-form-label">FTE rates without backfil</label>
+                                        <div class="col-sm-2">
+                                            <input type="number" class="form-control" name="FTE_Rates_Backfil_wo" value="@Model.EERC.FTE_Rates_Backfil_wo" placeholder="Enter" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-row">
+                                        <h5 class="left-nav col-sm-12">OOH, WEEKENDS AND HOLIDAYS UPLIFTS</h5>
+
+                                        <label for="Business_Hr_Uplift" class="col-sm-4 col-form-label">Out of business hous uplift</label>
+                                        <div class="col-sm-2">
+                                            <input type="number" class="form-control" name="Business_Hr_Uplift" value="@Model.EERC.Business_Hr_Uplift" placeholder="Enter" required>
+                                        </div>
+                                        <label for="Weekends_Holiday_Uplift" class="col-sm-4 col-form-label">Weekends and Holidays uplift</label>
+                                        <div class="col-sm-2">
+                                            <input type="number" class="form-control" name="Weekends_Holiday_Uplift" value="@Model.EERC.Weekends_Holiday_Uplift" placeholder="Enter" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-12 text-center">
+                                    <input type="submit" class="btn btn-primary" value="Update" />
+                                    <a href="@Url.Action("EUMaster","Master")" class="btn btn-info">Cancel</a>
+                                </div>
+                            </div>
+
+                        }
+                    </div>
+                    <!-- /.box-body -->
+
+
+                </div>
+
+            }
+            else
+            {
+                <div class="card">
+
+                    <!-- /.box-header -->
+                    <div class="card-body">
+                        @using (Html.BeginForm("addEU_Ratesheet", "Master", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary("", new { @class = "text-danger" })
+                            <input type="hidden" name="Status" value="1" />
+                            <input type="hidden" name="EU_ID" value="@ViewBag.id" />
+                            <div class="form-row">
+                                <label for="Customer" class="col-sm-2 col-form-label">Customer Name</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" value="@ViewBag.EU" placeholder="Enter Customer Name" readonly>
+                                </div>
+                                <label for="Country" class="col-sm-2 col-form-label">Country</label>
+                                <div class="col-sm-4">
+                                    <select class="form-control" id="Country" name="Country" required>
+                                        <option value="">Select Country</option>
+                                        @foreach (var i in ViewBag.Country)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="col-md-4">
+                                    <div class="form-row">
+                                        <h5 class="left-nav col-sm-12">4h SLA INCIDENTS</h5>
+                                        <div class="form-row">
+                                            <div class="col-sm-6">
+                                                <label for="SLA_Per_Hr_4" class="col-form-label">Per incident prices (including transportation + first hour onsite)</label>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label for="SLA_Per_Hr_4_add" class="col-form-label" style="height:100%;width:98%;">Per additional hour price</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <input type="number" class="form-control" name="SLA_Per_Hr_4" placeholder="Enter" step="any">
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <input type="number" class="form-control" name="SLA_Per_Hr_4_add" placeholder="Enter" step="any">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-row">
+                                        <h5 class="left-nav col-sm-12">NBD SLA INCIDENTS</h5>
+                                        <div class="form-row">
+                                            <div class="col-sm-6">
+                                                <label for="SLA_Per_Hr_NBD" class="col-form-label">Per incident prices (including transportation + first hour onsite)</label>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label for="SLA_Per_Hr_NBD_add" class="col-form-label" style="height:100%;width:98%;">Per additional hour price</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <input type="number" class="form-control" name="SLA_Per_Hr_NBD" placeholder="Enter" step="any">
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <input type="number" class="form-control" name="SLA_Per_Hr_NBD_add" placeholder="Enter" step="any">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-row">
+                                        <h5 class="left-nav col-sm-12">2BD SLA IMAC's</h5>
+                                        <div class="form-row">
+                                            <div class="col-sm-6">
+                                                <label for="SLA_Per_Hr_2" class="col-form-label">Per incident prices (including transportation + first hour onsite)</label>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label for="SLA_Per_Hr_2_add" class="col-form-label" style="height:100%;width:98%;">Per additional hour price</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <input type="number" class="form-control" name="SLA_Per_Hr_2" placeholder="Enter" step="any">
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <input type="number" class="form-control" name="SLA_Per_Hr_2_add" placeholder="Enter" step="any">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="form-row">
+                                <h5 class="left-nav col-sm-12">T&M RATES</h5>
+                                <label for="Business_Hr" class="col-sm-1 col-form-label">Business Hour</label>
+                                <div class="col-sm-2">
+                                    <input type="number" class="form-control" name="Business_Hr" placeholder="Enter" required step="any">
+                                </div>
+                                <label for="Non_Business_Hr" class="col-sm-1 col-form-label">Non Business Hour</label>
+                                <div class="col-sm-2">
+                                    <input type="number" class="form-control" name="Non_Business_Hr" placeholder="Enter" required step="any">
+                                </div>
+                                <label for="Per_Job" class="col-sm-1 col-form-label">Per Job</label>
+                                <div class="col-sm-2">
+                                    <input type="number" class="form-control" name="Per_Job" placeholder="Enter" required step="any">
+                                </div>
+                                <label for="Travel_Charges" class="col-sm-1 col-form-label">Travel Charge</label>
+                                <div class="col-sm-2">
+                                    <input type="number" class="form-control" name="Travel_Charges" placeholder="Enter" required>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <label for="Minimum_Hrs" class="col-sm-1 col-form-label">Minimum Hrs</label>
+                                <div class="col-sm-2">
+                                    <input type="number" class="form-control" name="Minimum_Hrs" placeholder="Enter" required>
+                                </div>
+                                <label for="Daily" class="col-sm-1 col-form-label">Daily</label>
+                                <div class="col-sm-2">
+                                    <input type="number" class="form-control" name="Daily" placeholder="Enter">
+                                </div>
+                                <label for="Weekly" class="col-sm-1 col-form-label">Weekly</label>
+                                <div class="col-sm-2">
+                                    <input type="number" class="form-control" name="Weekly" placeholder="Enter">
+                                </div>
+                                <label for="Monthly" class="col-sm-1 col-form-label">Monthly</label>
+                                <div class="col-sm-2">
+                                    <input type="number" class="form-control" name="Monthly" placeholder="Enter">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="col-md-6">
+                                    <div class="form-row">
+                                        <h5 class="left-nav col-sm-12">FTE RATES</h5>
+
+                                        <label for="FTE_Rates_Backfil" class="col-sm-4 col-form-label">FTE rates with backfil</label>
+                                        <div class="col-sm-2">
+                                            <input type="number" class="form-control" name="FTE_Rates_Backfil" placeholder="Enter" required>
+                                        </div>
+                                        <label for="FTE_Rates_Backfil_wo" class="col-sm-4 col-form-label">FTE rates without backfil</label>
+                                        <div class="col-sm-2">
+                                            <input type="number" class="form-control" name="FTE_Rates_Backfil_wo" placeholder="Enter" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-row">
+                                        <h5 class="left-nav col-sm-12">OOH, WEEKENDS AND HOLIDAYS UPLIFTS</h5>
+
+                                        <label for="Business_Hr_Uplift" class="col-sm-4 col-form-label">Out of business hous uplift</label>
+                                        <div class="col-sm-2">
+                                            <input type="number" class="form-control" name="Business_Hr_Uplift" placeholder="Enter" required>
+                                        </div>
+                                        <label for="Weekends_Holiday_Uplift" class="col-sm-4 col-form-label">Weekends and Holidays uplift</label>
+                                        <div class="col-sm-2">
+                                            <input type="number" class="form-control" name="Weekends_Holiday_Uplift" placeholder="Enter" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-12 text-center">
+                                    <input type="submit" class="btn btn-primary" value="Insert" />
+                                    <a href="@Url.Action("EUMaster","Master")" class="btn btn-info">Cancel</a>
+                                </div>
+                            </div>
+
+                        }
+                    </div>
+                    <!-- /.box-body -->
+
+
+                </div>
+
+            }
+            
+
+
+            @if (ViewBag.List == "Show")
+            {
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <div class="form-row">
+                                <div class="form-group col-md-12 text-center">
+                                    <a href="@Url.Action("EU_Ratesheet","Master", new { Id = ViewBag.id })" class="btn btn-primary">Insert New Rate</a>
+                                </div>
+                            </div>
+                            <table class="table">
+                                <tr class="thead-dark">
+                                    <th>Action</th>
+                                    <th>Country</th>
+                                    <th colspan="2" class="text-center">4h SLA INCIDENTS</th>
+                                    <th colspan="2" class="text-center">NBD SLA INCIDENTS</th>
+                                    <th colspan="2" class="text-center">2BD SLA IMAC's</th>
+                                    <th colspan="8" class="text-center">T&M RATES</th>
+                                    <th colspan="2" class="text-center">FTE RATES</th>
+                                    <th colspan="2" class="text-center">OOH, WEEKENDS AND HOLIDAYS UPLIFTS</th>
+                                </tr>
+                                <tr>
+                                    <td> </td>
+                                    <td> </td>
+                                    <td>Per incident<br /> prices<br/> (including <br />transportation<br /> + <br />first<br /> hour<br /> onsite)</td>
+                                    <td>Per <br />additional<br /> hour <br />price</td>
+                                    <td>Per incident<br /> prices<br /> (including <br />transportation<br /> + <br />first<br /> hour<br /> onsite)</td>
+                                    <td>Per <br />additional<br /> hour <br />price</td>
+                                    <td>Per incident<br /> prices<br /> (including <br />transportation<br /> + <br />first<br /> hour<br /> onsite)</td>
+                                    <td>Per <br />additional<br /> hour <br />price</td>
+                                    <td>Business<br /> Hour</td>
+                                    <td>Non<br /> Business<br /> Hour</td>
+                                    <td>Per<br /> Job</td>
+                                    <td>Travel<br /> Charge</td>
+                                    <td>Minimum<br /> Hrs</td>
+                                    <td>Daily</td>
+                                    <td>Weekly</td>
+                                    <td>Monthly</td>
+                                    <td>FTE rates<br /> with backfil</td>
+                                    <td>FTE rates<br /> without backfil</td>
+                                    <td>Out of business<br /> hous uplift</td>
+                                    <td>Weekends and<br /> Holidays uplift</td>
+                                </tr>
+                                @if (Model.ERC.Count > 0)
+                                {
+                                    foreach (var i in Model.ERC)
+                                    {
+                                        <tr>
+                                            <td>
+
+                                                <a href="@Url.Action("EU_Ratesheet", "Master", new { Id = i.EU_ID,eid=i.Id })" title="edit"><i class="fa fa-edit"></i></a>
+
+                                               <a href="@Url.Action("DeleteEU_Ratesheet", "Master", new { Id = i.Id,euid = i.EU_ID })" title="Delete Ratesheet" style="margin-left: 10px;"><i class="fas fa-trash" aria-hidden="true"></i></a>
+
+                                            </td>
+                                            <td>@i.Country </td>
+                                            <td>@i.SLA_Per_Hr_4</td>
+                                            <td>@i.SLA_Per_Hr_4_add</td>
+                                            <td>@i.SLA_Per_Hr_NBD</td>
+                                            <td>@i.SLA_Per_Hr_NBD_add</td>
+                                            <td>@i.SLA_Per_Hr_2</td>
+                                            <td>@i.SLA_Per_Hr_2_add</td>
+                                            <td>@i.Business_Hr</td>
+                                            <td>@i.Non_Business_Hr</td>
+                                            <td>@i.Per_Job</td>
+                                            <td>@i.Travel_Charges</td>
+                                            <td>@i.Minimum_Hrs</td>
+                                            <td>@i.Daily</td>
+                                            <td>@i.Weekly</td>
+                                            <td>@i.Monthly</td>
+                                            <td>@i.FTE_Rates_Backfil</td>
+                                            <td>@i.FTE_Rates_Backfil_wo</td>
+                                            <td>@i.Business_Hr_Uplift</td>
+                                            <td>@i.Weekends_Holiday_Uplift</td>
+                                          
+
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr><td colspan="4" class="text-center"> <code style="font-size:20px;"> <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <br /> No Record Found </code></td></tr>
+                                }
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            }
+
+           
+            <!-- /.box -->
+        </div>
+    </div>
+
+</div>
+
+
+
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content  text-center">
+            <div class="modal-header">
+                <h4 class="modal-title text-center "><i class="fa fa-info-circle" aria-hidden="true"></i> Information</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 20px;">@TempData["message"] </p>
+            </div>
+            <div class="modal-footer">
+                <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+
+                <a href="#" data-dismiss="modal" aria-label="Close" class="btn btn-primary">OK</a>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+@section scripts
+{
+    @if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+
+            window.onload = function () {
+                $('#myModal').modal('show');
+            };
+        </script>
+    }
+
+}
+
+
+

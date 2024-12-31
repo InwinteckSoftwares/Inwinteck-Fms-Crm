@@ -1,0 +1,7 @@
+﻿
+.fePersonalData td,.fePersonalData th {
+    width:30%;
+}
+.fePersonalData td:last-child,.fePersonalData th:last-child {
+    width:10%;
+}

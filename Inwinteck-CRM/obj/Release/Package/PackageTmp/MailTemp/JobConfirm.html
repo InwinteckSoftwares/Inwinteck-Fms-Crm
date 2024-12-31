@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Confirmation</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 700px;
+            margin: 20px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 20px;
+            border-radius: 10px 10px 0 0;
+            text-align: center;
+        }
+
+            .header h3 {
+                margin: 0;
+                font-size: 28px;
+                font-weight: bold;
+                text-transform: uppercase;
+            }
+
+        .content {
+            padding: 20px;
+            font-size: 16px;
+            line-height: 1.8;
+            color: #333;
+        }
+
+            .content p {
+                margin: 0 0 15px;
+            }
+
+            .content strong {
+                display: inline-block;
+                font-weight: 600;
+            }
+
+        .instructions {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-left: 4px solid #007bff;
+            margin-top: 20px;
+        }
+
+            .instructions strong {
+                display: block;
+                font-size: 18px;
+                margin-bottom: 10px;
+            }
+
+        .pregame {
+            margin-left: 20px;
+            font-size: 15px;
+            line-height: 1.8;
+            color: #555;
+        }
+
+        .footer {
+            background-color: #f8f9fa;
+            padding: 15px;
+            text-align: center;
+            font-size: 14px;
+            border-top: 1px solid #e1e1e1;
+            border-radius: 0 0 10px 10px;
+            color: #888;
+        }
+
+            .footer a {
+                color: #007bff;
+                text-decoration: none;
+            }
+
+                .footer a:hover {
+                    text-decoration: underline;
+                }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h3>Job Confirmation</h3>
+        </div>
+        <div class="content">
+            <p>Hello <strong>{name}</strong>,</p>
+            <p>We are pleased to confirm the following details regarding the upcoming job:</p>
+
+            <p><strong>Site Name:</strong> {Site_Name}</p>
+            <p><strong>Contact Name:</strong> {Contact_Name}</p>
+            <p><strong>Site Address:</strong> {Site_Address}</p>
+            <p><strong>Dispatch Date and Time:</strong> {Disptach_Date_Time}</p>
+            <p><strong>Scope of Work:</strong> {Scope_Work}</p>
+
+            <div class="instructions">
+                <strong>Protocol / Instructions to Follow:</strong>
+                <p class="pregame">{Pregame}</p>
+            </div>
+
+            <p><strong>System Information:</strong> {system_info}</p>
+            <p><strong>OEM:</strong> {oem}</p>
+        </div>
+        <div class="footer">
+            <p>This is an auto-generated email. Please do not reply. For any inquiries, reach out to our <a href="mailto:support@inwinteck.com">support team</a>.</p>
+        </div>
+    </div>
+</body>
+</html>

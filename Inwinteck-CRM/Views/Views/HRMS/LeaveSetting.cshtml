@@ -1,0 +1,102 @@
+﻿@model  HRMS.Models.Leave_Setting
+@{
+    ViewBag.Title = "LeaveSetting";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+<!-- Page Header -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="page-head-box">
+            <h3>Leave Rules</h3>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index","Dashboard")">Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Leave Setting</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- /Page Header -->
+
+<div class="card">
+    <div class="card-body">
+        @using (Html.BeginForm("LeaveSetting", "HRMS", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary("", new { @class = "text-danger" })
+            <input type="hidden" value="@Model.Id" name="Id">
+            <input type="hidden" value="@Model.CreatedBy" name="CreatedBy">
+            <input type="hidden" value="@Model.CreatedOn" name="CreatedOn">
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-form-label">Leave Type<span class="text-danger">*</span></label>
+                        <select class="form-control" name="Leave_Type" id="Leave_Type" required>
+                            <option value="">Select Type </option>
+                            <option value="1">Monthly</option>
+                            <option value="3">Quarter</option>
+                            <option value="6">Half Yearly</option>
+                            <option value="12">Yearly</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-form-label">Number of Leave</label>
+                        <input class="form-control" name="Leave_Number" value="@Model.Leave_Number" type="text" required>
+                    </div>
+                </div>
+
+           
+            </div>
+
+            <div class="submit-section text-center">
+                <button class="btn btn-primary submit-btn">Save</button>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="modal custom-modal fade" id="msgBox">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-header">
+                    <h3 style="font-size: 20px;">@TempData["message"] </h3>
+                </div>
+                <div class="modal-btn">
+                    <div class="submit-section col-sm-4 offset-sm-4">
+                        <a href="#" data-dismiss="modal" aria-label="Close" class="btn btn-primary cancel-btn">OK</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+@section scripts
+{
+    @if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+
+            window.onload = function () {
+                $('#msgBox').modal('show');
+            };
+        </script>
+    }
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#Leave_Type').val('@Model.Leave_Type');
+        });
+    </script>
+
+}
+

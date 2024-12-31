@@ -1,0 +1,222 @@
+﻿@model List<Inwinteck_CRM.Models.grouplist>
+@{
+    ViewBag.Title = "Group header";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Content Header (Page header) -->
+<div class="page-header">
+    <div class="container-fluid d-sm-flex justify-content-between">
+        <h4>Group Header</h4>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">Master</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Group Header</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<!-- Main content -->
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Basic Forms -->
+            <div class="card">
+
+                <!-- /.box-header -->
+                <div class="card-body">
+                    <div class="row">
+
+                        @using (Html.BeginForm("groupheader", "Master", FormMethod.Get, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                        {
+                            <div class="col-12">
+                                <div class="form-row">
+                                    <label for="example-text-input" class="col-sm-2 col-form-label">Search</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control" name="searchtype" id="searchtype" required>
+                                            <option value="">Select Header Description</option>
+                                            @foreach (var i in ViewBag.gh)
+                                            {
+                                                <option value="@i.Text">@i.Text</option>
+                                            }
+                                        </select>
+                                    </div>
+                                  
+                                </div>
+
+                                <div class="box-footer text-center">
+
+
+                                    <button type="submit" class="btn btn-primary">Search</button>
+
+                                    <a href="@Url.Action("addgroupheader","Master")" class="btn btn-primary" title="Add New Header Description">Create Header Description</a>
+
+
+                                </div>
+                            </div>
+                <!-- /.col -->
+                        }
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.box-body -->
+
+
+            </div>
+            <!-- /.box -->
+            <!-- /.box-header -->
+            <div class="card">
+
+                <div class="card-body ">
+
+                    <div class="table-responsive">
+
+                        <table class="table">
+                            <tr class="thead-dark">
+                                <th>Action</th>
+                                <th>Header</th>
+                                <th>Description</th>
+                                <th>Status</th>
+                            </tr>
+                            @if (Model.Count > 0)
+                            {
+                                foreach (var i in Model)
+                                {
+                                    <tr>
+                                        <td>
+
+                                            <a href="@Url.Action("editgroupheader", "Master", new { Id = i.id })" title="edit"><i class="fa fa-edit"></i></a>
+                                            <a href="@Url.Action("viewgroupheader", "Master", new { Id = i.id })" title="View" style="margin-left: 10px;"><i class="fa fa-eye" aria-hidden="true"></i></a>
+
+                                        </td>
+                                        <td>@i.value</td>
+                                        <td>@i.Description</td>
+                                        @if (@i.Status == 1)
+                                        {
+
+                                            <td><a href="@Url.Action("statusgroupheader", "Master", new { Id = i.id })" )><span class="badge badge-success mr-2 d-sm-inline d-none">Active</span></a></td>
+
+                                        }
+                                        else
+                                        {
+
+                                            <td><a href="@Url.Action("statusgroupheader","Master", new {Id = i.id })" )><span class="badge badge-danger mr-2 d-sm-inline d-none">Deactive</span></a></td>
+
+
+                                        }
+
+
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr><td colspan="6" class="text-center"> <code style="font-size:20px;"> <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <br /> No Record Found </code></td></tr>
+                            }
+                        </table>
+
+                    </div>
+
+                </div>
+                <div class="col-md-12" style="overflow: auto;">
+                    <nav aria-label="...">
+                        <ul class="pagination">
+
+                            @for (int i = 0; i <= ViewBag.pageCount; i++)
+                            {
+                                if (i == ViewBag.pageNo)
+                                {
+                                    <li class="page-item active" aria-current="page"><a class="page-link" href="#">@(i + 1) <span class="sr-only">(current)</span></a></li>
+
+                                }
+                                else
+                                {
+
+                                    <li class="page-item">
+
+                                        @Html.ActionLink((i + 1).ToString(), "groupheader", new
+                                   { pageNo = i }, new { @class = "page-link" })
+
+
+                                    </li>
+
+                                }
+                            }
+
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content  text-center">
+            <div class="modal-header bg-theme">
+                <h4 class="modal-title text-center "><i class="fa fa-info-circle" aria-hidden="true"></i> Information</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 20px;">@TempData["message"] </p>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-primary" data-dismiss="modal">OK</a>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+@section scripts
+{
+@if (TempData["message"] != null)
+    {
+    <script type="text/javascript">
+
+            window.onload = function () {
+                $('#myModal').modal('show');
+            };
+    </script>
+}
+    <script type="text/javascript">
+
+        function getUrlVars() {
+            var vars = [], hash;
+            var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+            for (var i = 0; i < hashes.length; i++) {
+                hash = hashes[i].split('=');
+                vars.push(hash[0]);
+                vars[hash[0]] = hash[1];
+            }
+            return vars;
+        }
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var param1 = getUrlVars()["searchtype"];
+            var param2 = getUrlVars()["searchtext"];
+            if (param1 != null && param2 != null) {
+                $("#searchtype").val(param1);
+                $("#searchtext").val(param2);
+            }
+
+        });
+    </script>
+}
+
+
+
+
+
+

@@ -1,0 +1,205 @@
+﻿@model  List<Inwinteck_CRM.Models.ManageHeader_FE>
+@{
+    ViewBag.Title = "EUInvoice";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="page-header">
+    <div class="container-fluid d-sm-flex justify-content-between">
+        <h4>EU Invoice</h4>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">Invoice</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">EU Calculate Payment</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Basic Forms -->
+            <div class="card">
+
+                <!-- /.box-header -->
+                <div class="card-body">
+                    <div class="row">
+
+                        @using (Html.BeginForm("EUInvoice", "Transaction", FormMethod.Get, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                        {
+                            <div class="col-12">
+                                <div class="form-group row">
+                                    <label for="example-text-input" class="col-sm-2 col-form-label">From</label>
+                                    <div class="col-sm-4">
+                                        <input class="form-control" type="date" name="from" id="fromdate">
+                                    </div>
+                                    <label for="example-text-input" class="col-sm-2 col-form-label">To</label>
+                                    <div class="col-sm-4">
+                                        <input class="form-control" type="date" name="to" id="to">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="example-text-input" class="col-sm-2 col-form-label">Customer Name</label>
+                                    <div class="col-sm-4">
+                                        <select class="form-control" name="EU_ID" id="EU_ID" required>
+                                            <option value="">---- Select Customer ----</option>
+                                            @foreach (var i in ViewBag.EU)
+                                            {
+                                                <option value="@i.id">@i.name</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="box-footer text-center">
+
+
+                                    <button type="submit" class="btn btn-primary">Search</button>
+
+
+
+                                </div>
+                            </div>
+                <!-- /.col -->
+                        }
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.box-body -->
+
+
+            </div>
+            <!-- /.box -->
+            <!-- /.box-header -->
+            @if (ViewBag.Message != 0)
+            {
+                <div class="card">
+
+                    <div class="card-body ">
+
+                        <div class="table-responsive dt-responsive">
+
+                            <table id="dom-jqry" class="table table-striped table-bordered nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>Action</th>
+                                        <th>Ticket</th>
+                                        <th>EU Name</th>
+                                        <th>Site Name</th>
+                                        <th>Ticket Closed On</th>
+                                    </tr>
+                                </thead>
+                                @if (Model.Count > 0)
+                                {
+                                    foreach (var i in Model)
+                                    {
+                                        <tr>
+                                            <td>
+
+                                                <a href="@Url.Action("GenerateInvoiceEU","Transaction", new {Ticket = i.Ticket })" ) title="Generate"><span class="badge badge-warning d-sm-inline d-none"><i class="fas fa-file-invoice"></i> Generate Invoice</span></a>
+
+                                            </td>
+                                            <td>@i.Ticket</td>
+                                            <td>@i.EU</td>
+                                            <td>@i.site_name</td>
+                                            <td>@i.ClosedOn</td>
+
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr><td colspan="6" class="text-center"> <code style="font-size:20px;"> <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <br /> No Record Found </code></td></tr>
+                                }
+
+                            </table>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+        </div>
+    </div>
+
+</div>
+
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content  text-center">
+            <div class="modal-header">
+                <h4 class="modal-title text-center "><i class="fa fa-info-circle" aria-hidden="true"></i> Information</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 20px;">@TempData["message"] </p>
+
+            </div>
+            <div class="modal-footer">
+                <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+
+                <a href="#" data-dismiss="modal" aria-label="Close" class="btn btn-primary">OK</a>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+@section Scripts
+{
+    @if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+
+            window.onload = function () {
+                $('#myModal').modal('show');
+            };
+        </script>
+    }
+
+    <script type="text/javascript">
+
+        function getUrlVars() {
+            var vars = [], hash;
+            var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+            for (var i = 0; i < hashes.length; i++) {
+                hash = hashes[i].split('=');
+                vars.push(hash[0]);
+                vars[hash[0]] = hash[1];
+            }
+            return vars;
+        }
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var param1 = getUrlVars()["from"];
+            var param2 = getUrlVars()["to"];
+            var param3 = getUrlVars()["FE_ID"];
+
+            if (param1 != null && param2 != null && param3 != null) {
+                $("#fromdate").val(param1);
+                $("#to").val(param2);
+                $("#FE_ID").val(param3);
+
+            }
+
+        });
+    </script>
+}
+
+
+
+
+
+
+
+
+

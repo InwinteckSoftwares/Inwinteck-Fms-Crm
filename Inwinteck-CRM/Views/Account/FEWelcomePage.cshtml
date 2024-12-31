@@ -1,0 +1,126 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FE Welcome Page</title>
+
+    <style>
+        /* General Reset and Fonts */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f5f5; /* Light gray for a natural background */
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #333; /* Dark gray text for readability */
+        }
+
+        /* Container styling */
+        .container {
+            background: #fff; /* White background for the main content */
+            border-radius: 8px;
+            padding: 30px;
+            max-width: 600px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow for a modern look */
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        /* Heading styles */
+        h1 {
+            margin-bottom: 10px;
+            font-size: 28px;
+            color: #2c3e50; /* Muted blue/gray for headings */
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #34495e; /* Slightly darker gray for subheadings */
+        }
+
+        /* Paragraph styles */
+        p {
+            font-size: 16px;
+            margin: 10px 0;
+            color: #7f8c8d; /* Neutral gray text for a modern look */
+        }
+
+        /* Black text style */
+        .black-text {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        /* Link styles */
+        a {
+            color: #2980b9; /* Muted blue for links */
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: #1abc9c; /* Light teal on hover for a fresh modern feel */
+        }
+
+        /* Timer styling */
+        #timer {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2980b9; /* Matches the link color for consistency */
+        }
+
+        /* Media Query for Responsiveness */
+        @@media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                width: 90%;
+            }
+            h2 {
+                font-size: 22px;
+            }
+            p {
+                font-size: 14px;
+            }
+        }
+
+        /* Fade-in animation */
+        @@keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+    </style>
+
+    <script type="text/javascript">
+        // Countdown timer for redirection
+        let countdown = 20;
+        const intervalId = setInterval(function () {
+            document.getElementById("timer").innerHTML = countdown;
+            countdown--;
+            if (countdown < 0) {
+                clearInterval(intervalId);
+                window.location.href = "https://fms.inwinteck.com";
+            }
+        }, 1000); // Timer updates every second
+    </script>
+</head>
+<body>
+    <div class="container">
+        <!-- New Black Text Heading -->
+        <h1 class="black-text">Welcome to Inwinteck, we are eager to work with you</h1>
+
+        <h2>Thank You for Registration</h2>
+        <p>Your email: <strong>@ViewBag.Email</strong></p>
+        <p>Please check your email for login credentials.</p>
+        <p>Visit <a href="https://fms.inwinteck.com">fms.inwinteck.com</a> for login or wait till <span id="timer">20</span> seconds to get redirected automatically.</p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,231 @@
+﻿@using System.Data
+@model DataSet
+@{
+    ViewBag.Title = "AttendanceEmp";
+    Layout = ViewBag.Layout;
+}
+
+
+<!-- Page Header -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="page-head-box">
+            <h3>Attendance</h3>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index","Dashboard")">Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Attendance</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- /Page Header -->
+<!-- Search Filter -->
+@using (Html.BeginForm("AttendanceEmp", "HRMS", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+    <!-- Search Filter -->
+    <div class="row filter-row">
+        <div class="col-sm-6 col-md-3">
+            <div class="form-group form-focus select-focus mb-0">
+                <input type="month" class="form-control floating" name="searchDate" value="@ViewBag.searchDate.ToString("yyyy-MM")">
+                <label class="focus-label">Month</label>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3">
+            <button class="btn btn-success btn-search"><i class="fas fa-search mr-2"></i> Search </button>
+        </div>
+    </div>
+    <!-- /Search Filter -->
+}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="table-responsive att-table">
+            <table class="table table-striped custom-table table-nowrap mb-0">
+                <thead>
+                    <tr>
+                        <th>Employee</th>
+                        @foreach (var dat in ViewBag.Calendar)
+                        {
+
+                            <th>@dat.Day</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (DataRow rowas in Model.Tables[0].Rows)
+                    {
+                        <tr>
+                            <td>
+                                <h2 class="table-avatar">
+                                    <a class="avatar" href="@Url.Action("EmpProfileAdmin","HRMS", new { id = @rowas[1]})"><img alt="" src="@rowas[3]"></a>
+                                    <a href="@Url.Action("EmpProfileAdmin","HRMS", new { id = @rowas[1]})">@rowas[2]</a>
+                                </h2>
+                            </td>
+                            @for (int i = 0; i < Model.Tables.Count; i++)
+                            {
+                                foreach (DataRow row in Model.Tables[i].Rows)
+                                {
+                                    if (@rowas[1].ToString() == @row[1].ToString())
+                                    {
+                                        if (Convert.ToDateTime(@row[0]).DayOfWeek.ToString() == "Saturday")
+                                        {
+                                            <td><span class="role-info role-bg-two" style="min-width: auto;">WO</span> </td>
+                                        }
+                                        else if (Convert.ToDateTime(@row[0]).DayOfWeek.ToString() == "Sunday")
+                                        {
+                                            <td><span class="role-info role-bg-two" style="min-width: auto;">WO</span> </td>
+                                        }
+                                        else if (@row[4].ToString() != "")
+                                        {
+                                            <td><span class="role-info role-bg-one" style="min-width: auto;">PH</span></td>
+
+                                        }
+                                        else if (@row[5].ToString() != "")
+                                        {
+                                            <td><a href="javascript:void(0);" onclick="getTimesheetLog(@row[5])"><i class="fa fa-check text-success"></i></a></td>
+                                        }
+                                        else if (row[6].ToString() != "")
+                                        {
+                                            <td><span class="role-info role-bg-one" style="min-width: auto;">SL</span></td>
+
+                                        }
+                                        else
+                                        {
+                                            <td><span class="role-info role-bg-three" style="min-width: auto;">LOP</span></td>
+                                        }
+                                    }
+
+
+                                }
+                            }
+
+
+
+
+                        </tr>
+                    }
+
+                    @*<td><a href="javascript:void(0);" data-toggle="modal" data-target="#attendance_info"><i class="fa fa-check text-success"></i></a></td>
+                        <td><a href="javascript:void(0);" data-toggle="modal" data-target="#attendance_info"><i class="fa fa-check text-success"></i></a></td>
+                        <td><a href="javascript:void(0);" data-toggle="modal" data-target="#attendance_info"><i class="fa fa-check text-success"></i></a></td>
+                        <td><a href="javascript:void(0);" data-toggle="modal" data-target="#attendance_info"><i class="fa fa-check text-success"></i></a></td>
+                        <td><a href="javascript:void(0);" data-toggle="modal" data-target="#attendance_info"><i class="fa fa-check text-success"></i></a></td>
+                        <td><span class="role-info role-bg-two" style="min-width: auto;">WO</span> </td>
+                        <td><span class="role-info role-bg-two" style="min-width: auto;">WO</span> </td>
+                        <td><a href="javascript:void(0);" data-toggle="modal" data-target="#attendance_info"><i class="fa fa-check text-success"></i></a></td>
+                        <td>
+                            <span class="first-off"><a href="javascript:void(0);" data-toggle="modal" data-target="#attendance_info"><i class="fa fa-check text-success"></i></a></span>
+
+                        </td>
+                        <td><a href="javascript:void(0);" data-toggle="modal" data-target="#attendance_info"><i class="fa fa-check text-success"></i></a></td>
+                        <td><span class="role-info role-bg-three" style="min-width: auto;">SL</span></td>
+                        <td><span class="role-info role-bg-one" style="min-width: auto;">PH</span></td>
+                        <td><span class="role-info role-bg-two" style="min-width: auto;">WO</span> </td>
+                        <td><span class="role-info role-bg-two" style="min-width: auto;">WO</span> </td>
+                        <td><a href="javascript:void(0);" data-toggle="modal" data-target="#attendance_info"><i class="fa fa-check text-success"></i></a></td>
+                        <td><a href="javascript:void(0);" data-toggle="modal" data-target="#attendance_info"><i class="fa fa-check text-success"></i></a></td>
+                        <td><a href="javascript:void(0);" data-toggle="modal" data-target="#attendance_info"><i class="fa fa-check text-success"></i></a></td>
+                        <td>-</td>
+                        <td><span class="role-info role-bg-one" style="min-width: auto;">PH</span></td>
+                        <td><span class="role-info role-bg-two" style="min-width: auto;">WO</span> </td>
+                        <td><span class="role-info role-bg-two" style="min-width: auto;">WO</span> </td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td><span class="role-info role-bg-two" style="min-width: auto;">WO</span> </td>
+                        <td><span class="role-info role-bg-two" style="min-width: auto;">WO</span> </td>
+                        <td>-</td>
+                        <td>-</td>*@
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- Attendance Modal -->
+<div class="modal custom-modal fade" id="attendance_info" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Attendance Info</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card punch-status">
+                            <div class="card-body">
+                                <h5 class="card-title">Timesheet <small class="text-muted" id="timsheet_date"></small></h5>
+                                <div class="punch-det">
+                                    <h6>Punch In at</h6>
+                                    <p id="punch_in"></p>
+                                </div>
+                                <div class="punch-info">
+                                    <div class="punch-hours">   
+                                        <span id="work_hrss"></span> <!-- Ensure ID matches the JavaScript function -->
+                                    </div>
+                                </div>
+                                <div class="punch-det">
+                                    <h6>Punch Out at</h6>
+                                    <p id="punch_out"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card recent-activity">
+                            <div class="card-body">
+                                <h5 class="card-title">Activity</h5>
+                                <ul class="res-activity-list" id="activity_li">
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- /Attendance Modal -->
+
+@section scripts
+{
+    <script>
+        function getTimesheetLog(id) {
+            $.get(baseurl + "/HRMS/GetTimesheetlog", { Id: id }, function (data) {
+                console.log(data); // Log the entire response to verify data is correct
+                if (data.res == "Success") {
+                    $("#timsheet_date").text(data.ts['Date_name']);
+                    $("#punch_in").text(data.ts['Punch_In_name']);
+                    $("#punch_out").text(data.ts['Punch_Out_name']);
+                    console.log('Working Hours:', data.ts['Working_Hrs']); // Log the Working Hours data
+                    $("#work_hrss").text(data.ts['Working_Hrs']); // 
+
+                    if (Object.keys(data.al).length > 0) {
+                        $("#activity_li").empty();
+                        $.each(data.al, function (i, val) {
+                            $("#activity_li").append('<li><p class= "mb-0" >' + data.al[i]['Activity'] +
+                                '</p><p class="res-activity-time"> <i class="far fa-clock"></i> ' + data.al[i]['Timesheet'] + '</p></li>');
+                        });
+                    }
+                } else {
+                    $("#activity_li").empty();
+                }
+            });
+
+            $('#attendance_info').modal('show');
+        }
+    </script>
+
+
+
+}

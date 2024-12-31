@@ -1,0 +1,211 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #fff;
+            color: #747474;
+            margin: 0;
+            padding: 0;
+        }
+
+        a:hover,
+        .color-pasific {
+            color: #0f709a;
+        }
+
+        .heading {
+            border-bottom: 3px solid #0f709a;
+            width: 50px;
+            margin: 20px auto;
+            display: block;
+            font-size: 15px;
+            opacity: 1 !important;
+        }
+
+        .parallax-window-3 {
+            min-height: 250px;
+            max-width: 1920px;
+            background: transparent;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .font-pacifico {
+            font-family: 'Pacifico', cursive;
+        }
+
+        .font-montserrat {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .mt55 {
+            margin-top: 55px;
+        }
+
+        .pt30 {
+            padding-top: 30px;
+        }
+
+        .container {
+            padding-right: 15px;
+            padding-left: 15px;
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+        .row {
+            margin-right: -15px;
+            margin-left: -15px;
+        }
+
+        h3 {
+            font-size: 36px;
+            line-height: 45px;
+        }
+
+        h4 {
+            font-size: 18px;
+            line-height: 30px;
+        }
+
+        p {
+            font-size: 13px;
+            line-height: 25px;
+        }
+
+        .footer {
+            background: #f1f1f1;
+            padding: 20px 0;
+            color: #747474;
+        }
+
+            .footer p {
+                margin: 0;
+            }
+
+        .img-responsive {
+            display: block;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .center-block {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* New styles for Ticket Details heading */
+        .ticket-details-heading {
+            background-color: #0f709a;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+            margin-top: 55px;
+            font-size: 36px;
+            line-height: 45px;
+            font-family: 'Pacifico', cursive;
+        }
+
+        /* New styles for the logo */
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 30px;
+        }
+
+        .logo {
+            border: 2px solid #0f709a;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+            .logo:hover {
+                transform: scale(1.05);
+            }
+
+        /* Button styles */
+        .copy-button {
+            background-color: #0f709a;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+            .copy-button:hover {
+                background-color: #0d6082;
+            }
+    </style>
+</head>
+
+<body>
+    <header class="parallax-window-3">
+        <div class="container text-center">
+            <div class="row">
+                <div class="col-md-12 pt30">
+                    <h3 class="ticket-details-heading">Ticket Details</h3>
+                    <h6>This Ticket has been Created using API</h6>
+                    <p id="ticket-details">
+                        Ticket Number: <b class="font-montserrat color-dark">{Ticket_Number}</b><br>
+                        Email Subject: <b class="font-montserrat color-dark">{Email_Subject}</b><br>
+                        <br>
+                        Case No: {Case_No} <br>
+                        OEM: <b class="font-montserrat color-dark">{OEM}</b><br>
+                        TSE Name : <b class="font-montserrat color-dark">{TSE_Name}</b><br>
+                        Site Name: <b class="font-montserrat color-dark">{Site_Name}</b><br>
+                        <br>
+                        Street Address: <b class="font-montserrat color-dark">{Street_address}</b><br>
+                        City: <b class="font-montserrat color-dark">{City}</b><br>
+                        Zip/Pin Code: <b class="font-montserrat color-dark">{Zip_Pin_Code}</b><br>
+                        Country: <b class="font-montserrat color-dark">{Country}</b><br>
+                        State: <b class="font-montserrat color-dark">{State}</b><br>
+                        <br>
+                        Dispatched Date: <b class="font-montserrat color-dark">{Dispatched_date}</b><br>
+                        Job Description: <b class="font-montserrat color-dark">{Job_Description}</b><br>
+                        <br>
+                        EU Name: <b class="font-montserrat color-dark">{EU_Name}</b><br>
+                        EU Email: <b class="font-montserrat color-dark">{EU_Contect}</b><br>
+                        EU Contact: <b class="font-montserrat color-dark">{EU_Email}</b><br>
+                    </p>
+                   
+            </div>
+        </div>
+    </header>
+
+    <div class="container text-center">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h4 class="text-uppercase font-montserrat color-dark">
+                    Team
+                </h4>
+                <div class="logo-container">
+                    <img src="https://fms.inwinteck.com/assets/images/logo.png" alt="Inwinteck FMS Logo" class="img-responsive logo">
+                </div>
+                <div class="heading"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer text-center">
+        <div class="container">
+            <p>This is an auto-generated email. Please do not reply.</p>
+        </div>
+    </footer>
+
+</body>
+
+</html>

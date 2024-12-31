@@ -1,0 +1,2 @@
+C:\Users\Prashant\source\repos\Inwinteck-CRM\VapidKeyGeneratorApp\obj\Debug\VapidKeyGeneratorApp.csproj.AssemblyReference.cache
+C:\Users\Prashant\source\repos\Inwinteck-CRM\VapidKeyGeneratorApp\obj\Debug\VapidKeyGeneratorApp.csproj.CoreCompileInputs.cache

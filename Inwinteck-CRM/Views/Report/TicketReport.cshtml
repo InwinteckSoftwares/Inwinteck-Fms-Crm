@@ -1,0 +1,251 @@
+﻿@model IEnumerable<Inwinteck_CRM.viewModel.ticketDetailsViewModel>
+@{
+    ViewBag.Title = "TicketReport";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        color: #333;
+        margin: 0;
+        padding: 20px;
+    }
+
+    h2 {
+        text-align: center;
+        color: #0f709a;
+        margin-top: 0;
+    }
+
+    .search-container {
+        margin-bottom: 20px;
+    }
+
+        .search-container label {
+            margin-right: 10px;
+        }
+
+        .search-container input,
+        .search-container select {
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+    .table-container {
+        overflow-x: auto;
+    }
+
+    table.dataTable {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: white;
+    }
+
+        table.dataTable th, table.dataTable td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        table.dataTable th {
+            background-color: #0f709a;
+            color: white;
+        }
+
+        table.dataTable tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        table.dataTable tr:hover {
+            background-color: #f1f1f1;
+        }
+
+    .export-btn {
+        display: inline-block;
+        margin: 0 10px 20px 10px;
+        padding: 10px;
+        background-color: #0f709a;
+        color: white;
+        text-align: center;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        border-radius: 5px;
+    }
+
+        .export-btn:hover {
+            background-color: #0c5b78;
+        }
+
+    tbody td {
+        white-space: nowrap;
+    }
+</style>
+
+<h2>Ticket Report</h2>
+<div class="search-container">
+   
+
+    <label for="sortDropdown">Sort by: </label>
+    <select id="sortDropdown">
+        <option value="">Select</option>
+        <option value="requestedDateAsc">Requested Date Ascending</option>
+        <option value="requestedDateDesc">Requested Date Descending</option>
+        <option value="dispatchedDateAsc">Dispatched Date Ascending</option>
+        <option value="dispatchedDateDesc">Dispatched Date Descending</option>
+    </select>
+
+    <label for="fromDate">From: </label>
+    <input type="date" id="fromDate">
+    <label for="toDate">To: </label>
+    <input type="date" id="toDate">
+</div>
+
+<button class="export-btn" onclick="exportTableToExcel('reportTable', 'service_report')">Export</button>
+
+<div class="table-container">
+    <table id="reportTable" class="display">
+        <thead>
+            <tr>
+                <th>Client </th>
+                <th>Client Call Refrence</th>
+                <th>Iniwnteck Call Refrence</th>
+                <th>Call Date</th>
+                <th>Month</th>
+                <th>Call Status</th>
+                <th>Country</th>
+                <th>City</th>
+                <th>FE Name</th>
+                <th>OEM</th>
+
+                <th>Dispatched Date</th>
+                @*<th>Dispatched Time</th>*@
+                <th>Check In Time</th>
+                <th>Check Out Time</th>
+                <th>Total Hours</th>
+                <th>Cancellation Reason</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>@item.EU_Master.Customer_Name</td>
+                <td>@item.Ticket.Case_No</td>
+                <td>@item.Ticket.Ticket_No</td>
+                <td>@item.Ticket.CreatedOn.ToString("dd-MMMM-yyyy HH:mm")</td>
+
+                <td>@item.Ticket.CreatedOn.ToString("MMMM")</td>
+                <td>@item.Ticket_Status</td>
+                <td>@item.Ticket.Country</td>
+                <td>@item.Ticket.City</td>
+                <td>@item.FE_Master_Personal.First_Name @item.FE_Master_Personal.Last_Name</td>
+                <td>@item.OEM</td>
+
+
+
+                <td>@(item.Ticket.Dispatch_Date.HasValue ? item.Ticket.Dispatch_Date.Value.ToString("dd-MMMM-yyyy HH:mm") : "N/A")</td>
+
+                @*<td>@item.Ticket.Dispatch_Date.Value.ToString("HH:mm")</td>*@
+                <td>@item.Ticket.In_Time</td>
+                <td>@item.Ticket.Out_Time</td>
+                <td>@item.Ticket.Total_Hours</td>
+                <td>@item.cancellationReason</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Include DataTables CSS and JS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+<!-- Include XLSX JS for exporting table to Excel -->
+<script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        const table = $('#reportTable').DataTable({
+            paging: true,
+            searching: true,
+            ordering: true,
+            pageLength: 10,
+            lengthMenu: [5, 10, 25, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000],
+            order: [[3, 'desc']], // Default sorting by Requested Date descending
+            deferRender: true,
+            columnDefs: [
+                { type: 'date', targets: [3, 6] }, // Specify date columns for sorting
+                { orderable: false, targets: '_all' }
+            ]
+        });
+
+        // Custom sort function for the dropdown
+        $('#sortDropdown').on('change', function () {
+            const sortValue = $(this).val();
+            let columnIndex, order;
+            switch (sortValue) {
+                case 'requestedDateAsc':
+                    columnIndex = 3;
+                    order = 'asc';
+                    break;
+                case 'requestedDateDesc':
+                    columnIndex = 3;
+                    order = 'desc';
+                    break;
+                case 'dispatchedDateAsc':
+                    columnIndex = 6;
+                    order = 'asc';
+                    break;
+                case 'dispatchedDateDesc':
+                    columnIndex = 6;
+                    order = 'desc';
+                    break;
+                default:
+                    columnIndex = 3;
+                    order = 'desc';
+            }
+            table.order([columnIndex, order]).draw();
+        });
+
+        // Custom date range filter
+        $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+            const fromDate = $('#fromDate').val();
+            const toDate = $('#toDate').val();
+            const requestedDate = new Date(data[3]);
+            if (
+                (fromDate === '' || new Date(fromDate) <= requestedDate) &&
+                (toDate === '' || requestedDate <= new Date(toDate))
+            ) {
+                return true;
+            }
+            return false;
+        });
+
+        $('#fromDate, #toDate').on('change', function () {
+            table.draw();
+        });
+    });
+
+    function exportTableToExcel(tableID, filename = '') {
+        const table = $('#reportTable').DataTable();
+        const originalPageLength = table.page.len();
+
+        // Show all rows
+        table.page.len(-1).draw();
+
+        // Export to Excel
+        const tableElement = document.getElementById(tableID);
+        const wb = XLSX.utils.table_to_book(tableElement, { sheet: "Sheet1" });
+        filename = filename ? filename + '.xlsx' : 'excel_data.xlsx';
+        XLSX.writeFile(wb, filename);
+
+        // Restore original page length
+        table.page.len(originalPageLength).draw();
+    }
+
+
+</script>

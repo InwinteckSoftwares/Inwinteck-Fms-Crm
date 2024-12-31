@@ -1,0 +1,202 @@
+﻿
+@{
+    ViewBag.Title = "add || Enquiry";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    #office_add {
+        display: none;
+    }
+
+    #Contact_add {
+        display: none;
+    }
+    #loadermodel {
+        display: none;
+    }
+</style>
+<!-- Content Header (Page header) -->
+<div class="page-header">
+    <div class="container-fluid d-sm-flex justify-content-between">
+        <h4>Enquiry Master</h4>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">IT</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Add Enquiry</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Basic Forms -->
+            <div class="card">
+
+                <!-- /.box-header -->
+                <div class="card-body">
+                    @using (Html.BeginForm("addEnquiry", "IT", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary("", new { @class = "text-danger" })
+                        <input type="hidden" name="Status" value="1" />
+
+                        <div class="form-row">
+                            <label for="Customer_Name" class="col-sm-2 col-form-label">Customer</label>
+                            <div class="col-md-4">
+                                <select class="js-example-basic-single form-control" placeholder="select Code" name="Customer_Id" id="Customer_Id" required>
+                                    <option value="">Select Customer</option>
+                                    @foreach (var i in ViewBag.Customer)
+                                    {
+                                        <option value="@i.Value">@i.Text</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="Requirement_Date" class="col-sm-2 col-form-label">Requirement</label>
+                            <div class="col-md-4">
+                                <input type="date" class="form-control" name="Requirement_Date" placeholder="Enter Requirement Date" required>
+                            </div>
+
+                            <label for="Reff_No" class="col-sm-2 col-form-label">Reference No</label>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" name="Reff_No" placeholder="Enter Reference Number" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <label for="Job_Title" class="col-sm-2 col-form-label">Specialization Position</label>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" name="Job_Title"  placeholder="Enter Job Title" required>
+                            </div>
+                            <label for="Job_Location" class="col-sm-2 col-form-label">Job Location</label>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" name="Job_Location" placeholder="Enter Job Location">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="Job_Exp" class="col-sm-2 col-form-label">Job Experience</label>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" name="Job_Exp" placeholder="Enter Job Experience">
+                            </div>
+                            
+                            <label for="Job_Duration" class="col-sm-2 col-form-label">Job Duration</label>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" name="Job_Duration" placeholder="Enter Job Duration">
+                            </div>
+                        </div>
+
+                                <div class="form-row">                                   
+                                    <label for="Country" class="col-sm-2 col-form-label">Job Description</label>
+                                    <div class="col-md-10">
+                                        <textarea class="form-control" rows="3" placeholder="Add your Description about ticket" name="Job_Description"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <label for="Candidate_Rate" class="col-sm-2 col-form-label">Candidate Rate</label>
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control" name="Candidate_Rate" placeholder="Enter Candidate Rate">
+                                    </div>
+
+                                    <label for="Closing_Date" class="col-sm-2 col-form-label">Closing Date</label>
+                                    <div class="col-md-4">
+                                        <input type="date" class="form-control" name="Closing_Date" placeholder="Enter Closing Date">
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <label class="col-sm-2 col-form-label">Comments</label>
+                                    <div class="col-md-10">
+                                        <textarea class="form-control" rows="3" placeholder="Add your remark about ticket" name="Comments" required></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-12 text-center">
+                                        <input type="submit" class="btn btn-primary" value="Create" />
+                                        <a href="@Url.Action("Enquiry","IT")" class="btn btn-info">Cancel</a>
+                                    </div>
+                                </div>
+
+                    }
+                </div>
+                <!-- /.box-body -->
+
+
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+
+</div>
+
+
+
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content  text-center">
+            <div class="modal-header">
+                <h4 class="modal-title text-center "><i class="fa fa-info-circle" aria-hidden="true"></i> Information</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 20px;">@TempData["message"] </p>
+
+
+            </div>
+            <div class="modal-footer">
+                <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+
+                <a href="#" data-dismiss="modal" aria-label="Close" class="btn btn-primary">OK</a>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+@section scripts
+{
+    @if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+
+            window.onload = function () {
+                $('#myModal').modal('show');
+            };
+        </script>
+    }
+
+    <script type="text/javascript">
+        $("#Pincode_Zipcode").blur(function () {
+            var code = $(this).val();
+
+            $.get(baseurl + "/Master/GetLocation", { PinCode: code }, function (data) {
+
+                if (data.res == "Success") {
+                    $("#City").val(data.Location['city']);
+                    $("#State").val(data.Location['state']);
+                    $("#Country").val(data.Location['Country']);
+                } else {
+
+                }
+            });
+
+
+        });
+
+    </script>
+
+}
+
+
+
+

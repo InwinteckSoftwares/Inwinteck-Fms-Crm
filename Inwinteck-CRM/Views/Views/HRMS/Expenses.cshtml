@@ -1,0 +1,743 @@
+﻿@model List<HRMS.Models.Expenselist>
+@{
+    ViewBag.Title = "Expenses";
+    Layout = ViewBag.Layout;
+}
+
+<!-- Page Header -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="page-head-box">
+            <h3>Expenses</h3>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index","Dashboard")">Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Expenses</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- /Page Header -->
+<!-- Search Filter -->
+<div class="row filter-row">
+    <div class="col-md-8"></div>
+    <div class="col-md-4">
+        <div class="add-emp-section">
+            <a href="#" class="btn btn-success btn-add-emp" data-toggle="modal" data-target="#add_expenses"><i class="fas fa-plus"></i>  Add Expenses</a>
+        </div>
+    </div>
+</div>
+<!-- /Search Filter -->
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="table-responsive">
+            <table class="table table-striped custom-table datatable">
+                <thead>
+                    <tr>
+                        <th class="text-center">Delete</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                        <th>Category Name</th>
+                        <th>Amount</th>
+                        <th>Expense From</th>
+                        <th>Expense To</th>
+                        <th class="text-center">Attachment</th>
+                        <th class="text-center">Attachment</th>
+                        <th class="text-center">Attachment</th>
+                        <th class="text-center">Attachment</th>
+                        <th class="text-center">Attachment</th>
+                        <th class="text-center">On Site Location</th>
+                        <th class="text-center">HR </th>
+                        <th class="text-center">Promoter</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Count > 0)
+                    {
+                        foreach (var i in Model)
+                        {
+                            if (i.Status_Promoter == 11 || i.Status_Promoter == 12)
+                            {
+
+                    <tr>
+                        <td class="text-center ico-sec">
+                            <a class="dropdown-item" href="#" title="Status Updated by Promoter can not be deleted"><i class="fas fa-trash"></i></a>
+                        </td>
+                        <td>@i.Type</td>
+                        <td>@i.Description</td>
+                        <td title="@i.Sub_Category_Name">@i.Category_Name</td>
+                        <td>@i.Amount</td>
+                        <td>@i.Expense_From.ToString("dd MMM yyyy")</td>
+                        <td>@i.Expense_To.ToString("dd MMM yyyy")</td>
+
+                        <td>
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#view_bill_@i.Id"><i class="fas fa-eye"></i></a>
+
+                            <!-- View Bill Modal -->
+                            <div class="modal custom-modal fade" id="view_bill_@i.Id" role="dialog">
+                                <div class="modal-dialog modal-dialog-centered modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <embed src="@i.Bill" style="width:100%;height:100%;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- / View Bill Modal -->
+
+                        </td>
+
+                        <td>
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#view_bill1_@i.Id"><i class="fas fa-eye"></i></a>
+
+                            <!-- View Bill Modal -->
+                            <div class="modal custom-modal fade" id="view_bill1_@i.Id" role="dialog">
+                                <div class="modal-dialog modal-dialog-centered modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <embed src="@i.Bill1" style="width:100%;height:100%;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- / View Bill Modal -->
+
+                        </td>
+
+                        <td>
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#view_bill2_@i.Id"><i class="fas fa-eye"></i></a>
+
+                            <!-- View Bill Modal -->
+                            <div class="modal custom-modal fade" id="view_bill2_@i.Id" role="dialog">
+                                <div class="modal-dialog modal-dialog-centered modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <embed src="@i.Bill2" style="width:100%;height:100%;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- / View Bill Modal -->
+
+                        </td>
+
+                        <td>
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#view_bill3_@i.Id"><i class="fas fa-eye"></i></a>
+
+                            <!-- View Bill Modal -->
+                            <div class="modal custom-modal fade" id="view_bill3_@i.Id" role="dialog">
+                                <div class="modal-dialog modal-dialog-centered modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <embed src="@i.Bill3" style="width:100%;height:100%;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- / View Bill Modal -->
+
+                        </td>
+
+                        <td>
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#view_bill4_@i.Id"><i class="fas fa-eye"></i></a>
+
+                            <!-- View Bill Modal -->
+                            <div class="modal custom-modal fade" id="view_bill4_@i.Id" role="dialog">
+                                <div class="modal-dialog modal-dialog-centered modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <embed src="@i.Bill4" style="width:100%;height:100%;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- / View Bill Modal -->
+
+                        </td>
+
+                        <td>@i.On_Site_Location</td>
+                        @if (i.Status_HR == 10)
+                        {
+                            <td class="text-center">
+                                <div class="dropdown action-label">
+                                    <a class="role-info role-bg-three" href="#">
+                                        <i class="fa fa-dot-circle-o text-danger"></i> Pending
+                                    </a>
+                                </div>
+                            </td>
+                        }
+                        else if (i.Status_HR == 11)
+                        {
+                            <td class="text-center">
+                                <div class="dropdown action-label">
+                                    <a class="role-info role-bg-two" href="#">
+                                        <i class="fa fa-dot-circle-o text-danger"></i> Approved
+                                    </a>
+                                </div>
+                            </td>
+                        }
+                        else if (i.Status_HR == 12)
+                        {
+                            <td class="text-center" title="Reason: @i.Reject_Reason_HR">
+                                <div class="dropdown action-label">
+                                    <a class="role-info role-bg-one" href="#">
+                                        <i class="fa fa-dot-circle-o text-danger"></i> Rejected
+                                    </a>
+                                </div>
+                            </td>
+                        }
+
+
+                        @if (i.Status_Promoter == 11)
+                        {
+
+                            <td class="text-center">
+                                <div class="dropdown action-label">
+                                    <a class="role-info role-bg-two" href="#">
+                                        <i class="fa fa-dot-circle-o text-danger"></i> Approved
+                                    </a>
+                                </div>
+                            </td>
+                        }
+                        else
+                        {
+
+                            <td class="text-center" title="Reason: @i.Reject_Reason_Promoter">
+                                <div class="dropdown action-label">
+                                    <a class="role-info role-bg-one" href="#">
+                                        <i class="fa fa-dot-circle-o text-danger"></i> Rejected
+                                    </a>
+                                </div>
+                            </td>
+                        }
+
+                    </tr>
+
+                            }
+                            else
+                            {
+
+                <tr>
+                    <td class="text-center ico-sec">
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_Expenses_@i.Id"><i class="fas fa-trash"></i></a>
+
+
+                        <!-- /Delete Expenses Modal -->
+                        <div class="modal custom-modal fade" id="delete_Expenses_@i.Id" role="dialog">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <div class="form-header">
+                                            <h3>Delete Expense</h3>
+                                            <p>Are you sure want to delete?</p>
+                                        </div>
+                                        <div class="modal-btn delete-action">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <a href="@Url.Action("deleteExpenses","HRMS", new {Id = i.Id })" class="btn btn-primary continue-btn">Delete</a>
+                                                </div>
+                                                <div class="col-6">
+                                                    <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /Delete Expenses Modal -->
+
+                    </td>
+                    <td>@i.Type</td>
+                    <td>@i.Description</td>
+                    <td title="@i.Sub_Category_Name">@i.Category_Name</td>
+                    <td>@i.Amount</td>
+                    <td>@i.Expense_From.ToString("dd MMM yyyy")</td>
+
+                    <td>@i.Expense_To.ToString("dd MMM yyyy")</td>
+                    <td>
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#view_bill_@i.Id"><i class="fas fa-eye"></i></a>
+
+                        <!-- View Bill Modal -->
+                        <div class="modal custom-modal fade" id="view_bill_@i.Id" role="dialog">
+                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <embed src="@i.Bill" style="width:100%;height:100%;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- / View Bill Modal -->
+
+                    </td>
+
+                    <td>
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#view_bill1_@i.Id"><i class="fas fa-eye"></i></a>
+
+                        <!-- View Bill Modal -->
+                        <div class="modal custom-modal fade" id="view_bill1_@i.Id" role="dialog">
+                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <embed src="@i.Bill1" style="width:100%;height:100%;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- / View Bill Modal -->
+
+                    </td>
+
+                    <td>
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#view_bill2_@i.Id"><i class="fas fa-eye"></i></a>
+
+                        <!-- View Bill Modal -->
+                        <div class="modal custom-modal fade" id="view_bill2_@i.Id" role="dialog">
+                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <embed src="@i.Bill2" style="width:100%;height:100%;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- / View Bill Modal -->
+
+                    </td>
+
+                    <td>
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#view_bill3_@i.Id"><i class="fas fa-eye"></i></a>
+
+                        <!-- View Bill Modal -->
+                        <div class="modal custom-modal fade" id="view_bill3_@i.Id" role="dialog">
+                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <embed src="@i.Bill3" style="width:100%;height:100%;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- / View Bill Modal -->
+
+                    </td>
+
+                    <td>
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#view_bill4_@i.Id"><i class="fas fa-eye"></i></a>
+
+                        <!-- View Bill Modal -->
+                        <div class="modal custom-modal fade" id="view_bill4_@i.Id" role="dialog">
+                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <embed src="@i.Bill4" style="width:100%;height:100%;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- / View Bill Modal -->
+
+                    </td>
+                    <td>@i.On_Site_Location</td>
+                    @if (ViewBag.Promoter == "Yes")
+                    {
+                        if (i.Status_HR == 10)
+                        {
+                            <td class="text-center">
+                                <div class="dropdown action-label">
+                                    <a class="role-info role-bg-three" href="#">
+                                        <i class="fa fa-dot-circle-o text-danger"></i> Pending
+                                    </a>
+                                </div>
+                            </td>
+                        }
+                        else if (i.Status_HR == 11)
+                        {
+                            <td class="text-center">
+                                <div class="dropdown action-label">
+                                    <a class="role-info role-bg-two" href="#">
+                                        <i class="fa fa-dot-circle-o text-danger"></i> Approved
+                                    </a>
+                                </div>
+                            </td>
+                        }
+                        else if (i.Status_HR == 12)
+                        {
+                            <td class="text-center" title="Reason: @i.Reject_Reason_HR">
+                                <div class="dropdown action-label">
+                                    <a class="role-info role-bg-one" href="#">
+                                        <i class="fa fa-dot-circle-o text-danger"></i> Rejected
+                                    </a>
+                                </div>
+                            </td>
+                        }
+
+
+
+                        <td class="text-center">
+                            <div class="dropdown action-label">
+                                <a class="role-info role-bg-one dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa fa-dot-circle-o text-danger"></i> Pending
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item" href="@Url.Action("statusPromoterExpenses","HRMS", new { Id = i.Id,status=11,reason="" })"><i class="fa fa-dot-circle-o text-danger"></i> Approved</a>
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#reject_reason_pr_@i.Id"><i class="fa fa-dot-circle-o text-success"></i> Rejected</a>
+                                </div>
+                            </div>
+
+                            <!-- Reject PR Modal -->
+                            <div class="modal custom-modal fade" id="reject_reason_pr_@i.Id" role="dialog">
+                                <div class="modal-dialog modal-dialog-centered modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            @using (Html.BeginForm("statusPromoterExpenses", "HRMS", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                                            {
+                                                @Html.AntiForgeryToken()
+                                                @Html.ValidationSummary("", new { @class = "text-danger" })
+                                                <input type="hidden" value="@i.Id" name="Id">
+                                                <input type="hidden" value="12" name="status">
+                                                <div class="row text-left">
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group">
+                                                            <label class="col-form-label">Reject Reason <span class="text-danger">*</span></label>
+                                                            <textarea class="form-control" name="reason"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="submit-section">
+                                                    <button class="btn btn-primary cancel-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                                                    <button class="btn btn-primary submit-btn">Submit</button>
+                                                </div>
+                                            }
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- / Reject PR Modal -->
+
+                        </td>
+
+
+
+                    }
+                    else
+                    {
+
+                        if (i.Status_HR == 10)
+                        {
+
+                            <td class="text-center">
+                                <div class="dropdown action-label">
+                                    <a class="role-info role-bg-three  dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
+                                        <i class="fa fa-dot-circle-o text-danger"></i> Pending
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="@Url.Action("statusHRExpenses","HRMS", new { Id = i.Id,status=11,reason="" })"><i class="fa fa-dot-circle-o text-danger"></i> Approved</a>
+                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#reject_reason_hr_@i.Id"><i class="fa fa-dot-circle-o text-success"></i> Rejected</a>
+                                    </div>
+                                </div>
+
+                                <!-- Reject HR Modal -->
+                                <div class="modal custom-modal fade" id="reject_reason_hr_@i.Id" role="dialog">
+                                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                                @using (Html.BeginForm("statusHRExpenses", "HRMS", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                                                {
+                                                    @Html.AntiForgeryToken()
+                                                    @Html.ValidationSummary("", new { @class = "text-danger" })
+                                                    <input type="hidden" value="@i.Id" name="Id">
+                                                    <input type="hidden" value="12" name="status">
+                                                    <div class="row text-left">
+                                                        <div class="col-sm-12">
+                                                            <div class="form-group">
+                                                                <label class="col-form-label">Reject Reason <span class="text-danger">*</span></label>
+                                                                <textarea class="form-control" name="reason"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="submit-section">
+                                                        <button class="btn btn-primary cancel-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                                                        <button class="btn btn-primary submit-btn">Submit</button>
+                                                    </div>
+                                                }
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- / Reject HR Modal -->
+                            </td>
+                        }
+                        else if (i.Status_HR == 11)
+                        {
+
+                            <td class="text-center">
+                                <div class="dropdown action-label">
+                                    <a class="role-info role-bg-two  dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
+                                        <i class="fa fa-dot-circle-o text-danger"></i> Approved
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#reject_reason_hr_@i.Id"><i class="fa fa-dot-circle-o text-success"></i> Rejected</a>
+                                    </div>
+                                </div>
+
+                                <!-- Reject HR Modal -->
+                                <div class="modal custom-modal fade" id="reject_reason_hr_@i.Id" role="dialog">
+                                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                                @using (Html.BeginForm("statusHRExpenses", "HRMS", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                                                {
+                                                    @Html.AntiForgeryToken()
+                                                    @Html.ValidationSummary("", new { @class = "text-danger" })
+                                                    <input type="hidden" value="@i.Id" name="Id">
+                                                    <input type="hidden" value="12" name="status">
+                                                    <div class="row text-left">
+                                                        <div class="col-sm-12">
+                                                            <div class="form-group">
+                                                                <label class="col-form-label">Reject Reason <span class="text-danger">*</span></label>
+                                                                <textarea class="form-control" name="reason"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="submit-section">
+                                                        <button class="btn btn-primary cancel-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                                                        <button class="btn btn-primary submit-btn">Submit</button>
+                                                    </div>
+                                                }
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- / Reject HR Modal -->
+                            </td>
+                        }
+                        else if (i.Status_HR == 12)
+                        {
+                            <td class="text-center" title="Reason: @i.Reject_Reason_HR">
+                                <div class="dropdown action-label">
+                                    <a class="role-info role-bg-one  dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
+                                        <i class="fa fa-dot-circle-o text-danger"></i> Rejected
+                                    </a>
+
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="@Url.Action("statusHRExpenses","HRMS", new { Id = i.Id,status=11,reason="" })"><i class="fa fa-dot-circle-o text-danger"></i> Approved</a>
+                                    </div>
+                                </div>
+                            </td>
+
+
+                        }
+                        <td class="text-center">
+                            <div class="dropdown action-label">
+                                <a class="role-info role-bg-three " href="#" data-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa fa-dot-circle-o text-danger"></i> Pending
+                                </a>
+                            </div>
+                        </td>
+
+                    }
+                </tr>
+                            }
+                        }
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<!-- Add Modal -->
+<div class="modal custom-modal fade" id="add_expenses" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Expenses</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("addExpenses", "HRMS", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary("", new { @class = "text-danger" })
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label> Expenses Type <span class="text-danger">*</span></label>
+                            <select class="select" name="Type" id="Type">
+                                <option value="">Select Type</option>
+                                <option value="0">Office</option>
+                                <option value="1">Personal</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label> Category <span class="text-danger">*</span></label>
+                            <select class="select" name="Category" id="Category" required>
+                                <option value="">Select Category</option>
+                                @foreach (var d in ViewBag.Category)
+                                {
+                                    <option value="@d.Value">@d.Text</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label> Sub Category </label>
+                            <select class="select" name="Sub_Category" id="Sub_Category">
+                                <option value="">Select Sub Category</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-form-label">Expense From <span class="text-danger">*</span></label>
+                            <input class="form-control" name="Expense_From" type="date" required>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-form-label">Expense To <span class="text-danger">*</span></label>
+                            <input class="form-control" name="Expense_To" type="date" required>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-form-label">Amount <span class="text-danger">*</span></label>
+                            <input class="form-control" name="Amount" type="number" required step=any>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-form-label">Attachment <span class="text-danger">*</span></label>
+                            <input class="form-control" name="pht" type="file" required>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-form-label">Attachment <span class="text-danger">*</span></label>
+                            <input class="form-control" name="pht1" type="file">
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-form-label">Attachment <span class="text-danger">*</span></label>
+                            <input class="form-control" name="pht2" type="file">
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-form-label">Attachment <span class="text-danger">*</span></label>
+                            <input class="form-control" name="pht3" type="file">
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-form-label">Attachment <span class="text-danger">*</span></label>
+                            <input class="form-control" name="pht4" type="file">
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label class="col-form-label">On Site Location <span class="text-danger">*</span></label>
+                            <textarea class="form-control ta" name="On_Site_Location"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label class="col-form-label">Description <span class="text-danger">*</span></label>
+                            <textarea class="form-control ta" name="Description" required></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                    <div class="submit-section">
+                        <button class="btn btn-primary cancel-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                        <button class="btn btn-primary submit-btn">Submit</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Add Modal -->
+
+<div class="modal custom-modal fade" id="msgBox">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-header">
+                    <h3 style="font-size: 20px;">@TempData["message"] </h3>
+                </div>
+                <div class="modal-btn">
+                    <div class="submit-section col-sm-4 offset-sm-4">
+                        <a href="#" data-dismiss="modal" aria-label="Close" class="btn btn-primary cancel-btn">OK</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+@section scripts
+{
+    @if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+
+            window.onload = function () {
+                $('#msgBox').modal('show');
+            };
+        </script>
+    }
+
+
+    <script type="text/javascript">
+        $("#Category").change(function () {
+
+            var code = $(this).val();
+
+            $.get(baseurl + "/HRMS/GetSubCategory", { Id: code }, function (data) {
+
+                if (data.res == "success") {
+
+                    $('#Sub_Category').empty();
+
+
+                    if (Object.keys(data.pl).length > 0) {
+                        $('#Sub_Category').append('<option value = "" > Select Sub Category </option>');
+
+                        $.each(data.pl, function (i, val) {
+
+                            $('#Sub_Category').append('<option value =' + data.pl[i]['Id'] + '>' + data.pl[i]['value'] + '</option>');
+                        });
+                    }
+                } else {
+                    $('#Sub_Category').empty();
+                    $('#Sub_Category').append('<option value = "0" > No Sub Category </option>');
+
+                }
+            });
+
+        });
+    </script>
+
+}

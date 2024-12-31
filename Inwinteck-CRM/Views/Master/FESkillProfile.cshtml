@@ -1,0 +1,930 @@
+﻿@model Inwinteck_CRM.Models.ManageSkill
+@{
+    ViewBag.Title = "FESkillProfile";
+    Layout = "~/Views/Shared/_LayoutProfile.cshtml";
+    ViewBag.FEid = ViewBag.FE;
+    ViewBag.FEContract = ViewBag.Contract;
+}
+
+@*======================================================================= EDIT FE Skill ========================================================================*@
+@if (ViewBag.Edit == "Yes")
+{
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-md-12">
+                <!-- Basic Forms -->
+                <div class="card">
+
+                    <!-- /.box-header -->
+                    <div class="card-body">
+                        @using (Html.BeginForm("EditFESkillProfile", "Master", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary("", new { @class = "text-danger" })
+                            <input type="hidden" name="Id" value="@Model.FE.Id" />
+                            <input type="hidden" name="FE_ID" value="@Model.FE.FE_ID" />
+                            <input type="hidden" name="CreatedBy" value="@Model.FE.CreatedBy" />
+                            <input type="hidden" name="CreatedOn" value="@Model.FE.CreatedOn" />
+
+                            <div class="form-row">
+                                <label for="Bio_Data" class="col-sm-2 col-form-label">Resume</label>
+                                <div class="col-md-4">
+                                    <input type="file" class="dropify" data-default-file="@Model.FE.Bio_Data" name="pht" data-max-file-size="2000K">
+                                </div>
+                                <div class="col-md-6" style="padding: 23px;">
+                                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#Certificate">Add Certificate</button>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-12 col-md-12 mb-5">
+                               
+                                @if (Model.IC.Count > 0)
+                                {
+
+                                    <div class="form-row">
+
+                                        <div class="col-md-12 text-center">
+                                            <label for="Signature" class="col-sm-12 col-form-label">All Certification</label>
+
+                                        </div>
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Certificate Type</th>
+
+                                                    <th>File</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var i in Model.IC)
+                                                {
+                                                    <tr class="data-contact-person fePersonalData">
+                                                        <td>
+                                                            @i.Certification_Name
+                                                        </td>
+
+                                                        <td>
+                                                            <img style="width:200px;" src="@i.Certification_Upload" />
+                                                        </td>
+                                                        <td>
+                                                            <a href="@Url.Action("DeleteCertificateProfile","Master", new {FeId=@ViewBag.FE,IdType = i.Id })" class="btn btn-xs btn-primary  has-ripple"><i class="fas fa-trash"></i><span class="ripple ripple-animate" style="height: 54px; width: 54px; animation-duration: 0.7s; animation-timing-function: linear; background: rgb(255, 255, 255); opacity: 0.4; top: 4px; left: -3.5px;"></span></a>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+
+
+                                    </div>
+                                }
+
+
+                            </div>
+
+                            <div class="form-row">
+                                <label for="Hardware_Repair" class="col-sm-4 col-form-label">Hardware Repair / FRU Parts Replacement</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="Hardware_Repair" id="Hardware_Repair">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                                <label for="Service_performed" class="col-sm-4 col-form-label">Service performed in Data Centers</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="Service_performed" id="Service_performed">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <label for="Service_Hospitals" class="col-sm-4 col-form-label">Service at Hospitals / Medical Facilities</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="Service_Hospitals" id="Service_Hospitals">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                                <label for="Service_Government" class="col-sm-4 col-form-label">Service at Government / Secured Facilities</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="Service_Government" id="Service_Government">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <label for="Work_Stations" class="col-sm-4 col-form-label">Work Stations / Personal Computers</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="Work_Stations" id="Work_Stations">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                                <label for="Desktop_Servers" class="col-sm-4 col-form-label">Desktop Servers</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="Desktop_Servers" id="Desktop_Servers">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <label for="Rack_Mount" class="col-sm-4 col-form-label">Rack Mount Servers</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="Rack_Mount" id="Rack_Mount">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                                <label for="Blade_Servers" class="col-sm-4 col-form-label">Blade Servers</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="Blade_Servers" id="Blade_Servers">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <label for="Multi_Node_Server" class="col-sm-4 col-form-label">Multi-Node Server Systems</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="Multi_Node_Server" id="Multi_Node_Server">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                                <label for="SAN_Storage" class="col-sm-4 col-form-label">NAS / SAN Storage Systems</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="SAN_Storage" id="SAN_Storage">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+
+                            <div class="form-row">
+                                <label for="Tape_Libraries" class="col-sm-4 col-form-label">Tape Libraries / Back-Up Systems</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="Tape_Libraries" id="Tape_Libraries">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                                <label for="Security_Camera" class="col-sm-4 col-form-label">Security Camera / Imaging Systems</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="Security_Camera" id="Security_Camera">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <label for="Systems_Installation" class="col-sm-4 col-form-label">Systems Installation / De-Installation</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="Systems_Installation" id="Systems_Installation">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                                <label for="CLI" class="col-sm-4 col-form-label">Command Line Interface - CLI</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="CLI" id="CLI">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <label for="Console_Connectivity" class="col-sm-4 col-form-label">Console Connectivity / USB-Serial Interface</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="Console_Connectivity" id="Console_Connectivity">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                                <label for="Cat_5" class="col-sm-4 col-form-label">Cabling - Cat 5, etc.</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="Cat_5" id="Cat_5">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <label for="Cabling_Fibre" class="col-sm-4 col-form-label">Cabling - Fibre Optic</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="Cabling_Fibre" id="Cabling_Fibre">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                                <label for="Switch_Configuration" class="col-sm-4 col-form-label">Networking - Router / Switch Configuration</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="Switch_Configuration" id="Switch_Configuration">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <label for="RAID_Configuration" class="col-sm-4 col-form-label">RAID Configuration</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="RAID_Configuration" id="RAID_Configuration">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                                <label for="Out_of_Band_Interface" class="col-sm-4 col-form-label">Out of Band Interface  (ILO, IPMI, etc.)</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="Out_of_Band_Interface" id="Out_of_Band_Interface">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <label for="Telephony" class="col-sm-4 col-form-label">Telephony / PBX Systems</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="Telephony" id="Telephony">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                                <label for="Digital_Display" class="col-sm-4 col-form-label">Digital Display / Signage</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="Digital_Display" id="Digital_Display">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+
+                            <div class="form-row">
+                                <label for="VM_Ware" class="col-sm-4 col-form-label">VM Ware</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="VM_Ware" id="VM_Ware">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                                <input type="text" class="col-sm-4 form-control" name="Ext_1" value="@Model.FE.Ext_1" placeholder="Extra Knowledge, Skills and Experience you possess" />
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="Ext_1_Sel" id="Ext_1_Sel">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <input type="text" class="col-sm-4 form-control" name="Ext_2" value="@Model.FE.Ext_2" placeholder="Extra Knowledge, Skills and Experience you possess" />
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="Ext_2_Sel" id="Ext_2_Sel">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                                <input type="text" class="col-sm-4 form-control" name="Ext_3" value="@Model.FE.Ext_3" placeholder="Extra Knowledge, Skills and Experience you possess" />
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="Ext_3_Sel" id="Ext_3_Sel">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <h4 class="mb-3 f-w-400 text-center" style="color: #0f709a;">Skill Set</h4>
+
+                            <div class="form-row">
+                                <label for="Skill_Set" class="col-sm-4 col-form-label">Extra Skill Set and Certification details</label>
+                                <div class="col-sm-8">
+                                    <textarea class="form-control" name="Others" id="Skill_Set" rows="3" spellcheck="false" placeholder="Extra Skill Set and Certification details">@Model.FE.Others</textarea>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-12 text-center">
+                                    <input type="submit" class="btn btn-primary" value="Update" />
+                                </div>
+                            </div>
+
+                        }
+                    </div>
+                    <!-- /.box-body -->
+
+
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+
+    </div>
+}
+else
+{
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-md-12">
+                <!-- Basic Forms -->
+                <div class="card">
+
+                    <!-- /.box-header -->
+                    <div class="card-body">
+                        @using (Html.BeginForm("addFESkillProfile", "Master", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary("", new { @class = "text-danger" })
+                            <input type="hidden" name="FE_ID" value="@ViewBag.FE" />
+
+                            <div class="form-row">
+                                <label for="Bio_Data" class="col-sm-2 col-form-label">Resume</label>
+                                <div class="col-md-4">
+                                    <input type="file" class="dropify" name="pht" data-max-file-size="2000K">
+                                </div>
+                                <div class="col-md-6" style="padding: 23px;">
+                                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#Certificate">Add Certificate</button>
+                                </div>
+                            </div>
+                       
+
+                            if (Model.IC.Count > 0)
+                            {
+                                <div class="form-row">
+
+                                    <div class="col-md-12 text-center">
+                                        <label for="Signature" class="col-sm-12 col-form-label">All Certification</label>
+
+                                    </div>
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Certificate Type</th>
+
+                                                <th>File</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var i in Model.IC)
+                                            {
+                                                <tr class="data-contact-person fePersonalData">
+                                                    <td>
+                                                        @i.Certification_Name
+                                                    </td>
+
+                                                    <td>
+                                                        <img style="width:200px;" src="@i.Certification_Upload" />
+                                                    </td>
+                                                    <td>
+                                                        <a href="@Url.Action("DeleteCertificateProfile","Master", new {FeId=@ViewBag.FE,IdType = i.Id })" class="btn btn-xs btn-primary has-ripple"><i class="fas fa-trash"></i><span class="ripple ripple-animate" style="height: 54px; width: 54px; animation-duration: 0.7s; animation-timing-function: linear; background: rgb(255, 255, 255); opacity: 0.4; top: 4px; left: -3.5px;"></span></a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+
+
+                                </div>
+                            }
+
+                            <div class="form-row">
+                                <label for="Hardware_Repair" class="col-sm-4 col-form-label">Hardware Repair / FRU Parts Replacement</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="Hardware_Repair" id="Hardware_Repair">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                                <label for="Service_performed" class="col-sm-4 col-form-label">Service performed in Data Centers</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="Service_performed" id="Service_performed">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <label for="Service_Hospitals" class="col-sm-4 col-form-label">Service at Hospitals / Medical Facilities</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="Service_Hospitals" id="Service_Hospitals">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                                <label for="Service_Government" class="col-sm-4 col-form-label">Service at Government / Secured Facilities</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="Service_Government" id="Service_Government">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <label for="Work_Stations" class="col-sm-4 col-form-label">Work Stations / Personal Computers</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="Work_Stations" id="Work_Stations">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                                <label for="Desktop_Servers" class="col-sm-4 col-form-label">Desktop Servers</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="Desktop_Servers" id="Desktop_Servers">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <label for="Rack_Mount" class="col-sm-4 col-form-label">Rack Mount Servers</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="Rack_Mount" id="Rack_Mount">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                                <label for="Blade_Servers" class="col-sm-4 col-form-label">Blade Servers</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="Blade_Servers" id="Blade_Servers">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <label for="Multi_Node_Server" class="col-sm-4 col-form-label">Multi-Node Server Systems</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="Multi_Node_Server" id="Multi_Node_Server">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                                <label for="SAN_Storage" class="col-sm-4 col-form-label">NAS / SAN Storage Systems</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="SAN_Storage" id="SAN_Storage">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+
+                            <div class="form-row">
+                                <label for="Tape_Libraries" class="col-sm-4 col-form-label">Tape Libraries / Back-Up Systems</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="Tape_Libraries" id="Tape_Libraries">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                                <label for="Security_Camera" class="col-sm-4 col-form-label">Security Camera / Imaging Systems</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="Security_Camera" id="Security_Camera">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <label for="Systems_Installation" class="col-sm-4 col-form-label">Systems Installation / De-Installation</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="Systems_Installation" id="Systems_Installation">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                                <label for="CLI" class="col-sm-4 col-form-label">Command Line Interface - CLI</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="CLI" id="CLI">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <label for="Console_Connectivity" class="col-sm-4 col-form-label">Console Connectivity / USB-Serial Interface</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="Console_Connectivity" id="Console_Connectivity">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                                <label for="Cat_5" class="col-sm-4 col-form-label">Cabling - Cat 5, etc.</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="Cat_5" id="Cat_5">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <label for="Cabling_Fibre" class="col-sm-4 col-form-label">Cabling - Fibre Optic</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="Cabling_Fibre" id="Cabling_Fibre">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                                <label for="Switch_Configuration" class="col-sm-4 col-form-label">Networking - Router / Switch Configuration</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="Switch_Configuration" id="Switch_Configuration">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <label for="RAID_Configuration" class="col-sm-4 col-form-label">RAID Configuration</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="RAID_Configuration" id="RAID_Configuration">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                                <label for="Out_of_Band_Interface" class="col-sm-4 col-form-label">Out of Band Interface  (ILO, IPMI, etc.)</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="Out_of_Band_Interface" id="Out_of_Band_Interface">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <label for="Telephony" class="col-sm-4 col-form-label">Telephony / PBX Systems</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="Telephony" id="Telephony">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                                <label for="Digital_Display" class="col-sm-4 col-form-label">Digital Display / Signage</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="Digital_Display" id="Digital_Display">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+
+                            <div class="form-row">
+                                <label for="VM_Ware" class="col-sm-4 col-form-label">VM Ware</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="VM_Ware" id="VM_Ware">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                                <input type="text" class="col-sm-4 form-control" name="Ext_1" placeholder="Extra Knowledge, Skills and Experience you possess" />
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="Ext_1_Sel" id="Ext_1_Sel">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <input type="text" class="col-sm-4 form-control" name="Ext_2" placeholder="Extra Knowledge, Skills and Experience you possess" />
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="Ext_2_Sel" id="Ext_2_Sel">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                                <input type="text" class="col-sm-4 form-control" name="Ext_3" placeholder="Extra Knowledge, Skills and Experience you possess" />
+                                <div class="col-sm-2">
+                                    <select class="form-control" name="Ext_3_Sel" id="Ext_3_Sel">
+                                        @foreach (var i in ViewBag.Exp)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                            <h4 class="mb-3 f-w-400 text-center" style="color: #0f709a;">Skill Set</h4>
+
+                            <div class="form-row">
+                                <label for="Skill_Set" class="col-sm-4 col-form-label">Extra Skill Set and Certification details</label>
+                                <div class="col-sm-8">
+                                    <textarea class="form-control" name="Others" id="Skill_Set" rows="3" spellcheck="false" placeholder="Extra Skill Set and Certification details"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-12 text-center">
+                                    <input type="submit" class="btn btn-primary" value="Update" />
+                                </div>
+                            </div>
+
+                        }
+                    </div>
+                    <!-- /.box-body -->
+
+
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+
+    </div>
+}
+
+
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content  text-center">
+            <div class="modal-header">
+                <h4 class="modal-title text-center "><i class="fa fa-info-circle" aria-hidden="true"></i> Information</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 20px;">@TempData["message"] </p>
+            </div>
+            <div class="modal-footer">
+                <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+
+                <a href="#" data-dismiss="modal" aria-label="Close" class="btn btn-primary">OK</a>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<div class="modal fade bs-example-modal-lg" id="Certificate" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">Certificate</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+
+                @using (Html.BeginForm("InsertCertificateProfile", "Master", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12 " }))
+                {
+
+                    <table class="table" id="maintable">
+                        <thead>
+                            <tr>
+                                <th>Certificate</th>
+                                <th>Upload</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="data-contact-person">
+                                <td>
+                                    <input type="hidden" name="IV[0].FE_ID" value="@ViewBag.FE" />
+                                    <select class="form-control col-sm-12" name="IV[0].Certification_Name">
+                                        <option value="">Select Certificate</option>
+                                        @foreach (var i in ViewBag.Certification)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    </select>
+
+                                </td>
+                                <td>
+                                    <input type="file" name="IV[0].Certification_Upload" class="form-control l-name01" />
+                                </td>
+                                <td>
+                                    <button type="button" id="btnAdd" class="btn btn-xs btn-primary classAdd"><i class="fas fa-plus-circle"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="modal-footer text-center">
+
+                        <button type="submit" id="btnSubmit" class="btn btn-primary waves-effect ">Save</button>
+                        <button type="button" class="btn btn-info waves-effect " data-dismiss="modal">Cancel</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts
+{
+    @if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+
+            window.onload = function () {
+                $('#myModal').modal('show');
+            };
+        </script>
+    }
+    @if (ViewBag.Edit == "Yes")
+    {
+        <script type="text/javascript">
+
+            $(document).ready(function () {
+                debugger
+                $('#Hardware_Repair').val('@Model.FE.Hardware_Repair');
+                $('#Service_performed').val('@Model.FE.Service_performed');
+                $('#Service_Hospitals').val('@Model.FE.Service_Hospitals');
+                $('#Service_Government').val('@Model.FE.Service_Government');
+                $('#Work_Stations').val('@Model.FE.Work_Stations');
+                $('#Desktop_Servers').val('@Model.FE.Desktop_Servers');
+                $('#Rack_Mount').val('@Model.FE.Rack_Mount');
+                $('#Blade_Servers').val('@Model.FE.Blade_Servers');
+                $('#Multi_Node_Server').val('@Model.FE.Multi_Node_Server');
+                $('#SAN_Storage').val('@Model.FE.SAN_Storage');
+                $('#Tape_Libraries').val('@Model.FE.Tape_Libraries');
+                $('#Security_Camera').val('@Model.FE.Security_Camera');
+                $('#Systems_Installation').val('@Model.FE.Systems_Installation');
+                $('#CLI').val('@Model.FE.CLI');
+                $('#Console_Connectivity').val('@Model.FE.Console_Connectivity');
+                $('#Cat_5').val('@Model.FE.Cat_5');
+                $('#Cabling_Fibre').val('@Model.FE.Cabling_Fibre');
+                $('#Switch_Configuration').val('@Model.FE.Switch_Configuration');
+                $('#RAID_Configuration').val('@Model.FE.RAID_Configuration');
+                $('#Out_of_Band_Interface').val('@Model.FE.Out_of_Band_Interface');
+                $('#Telephony').val('@Model.FE.Telephony');
+                $('#Digital_Display').val('@Model.FE.Digital_Display');
+                $('#VM_Ware').val('@Model.FE.VM_Ware');
+                $('#Ext_1_Sel').val('@Model.FE.Ext_1_Sel');
+                $('#Ext_2_Sel').val('@Model.FE.Ext_2_Sel');
+                $('#Ext_3_Sel').val('@Model.FE.Ext_3_Sel');
+
+                $('input[type="checkbox"]').each(function () {
+                    if ($(this).val() == 1) {
+                        $(this).attr('checked', true);
+                    }
+                    else if ($(this).val() == 0) {
+                        $(this).attr('checked', false);
+                    }
+                });
+
+            });
+        </script>
+
+    }
+    <script type="text/javascript">
+        $('input[type="checkbox"]').click(function () {
+            if ($(this).prop("checked") == true) {
+                $(this).val('1');
+                $(this).attr('checked', true);
+            }
+            else if ($(this).prop("checked") == false) {
+                $(this).attr('checked', false);
+                $(this).val('0');
+            }
+        });
+
+        $(document).on("click", ".classAdd", function () { //
+            var rowCount = $('.data-contact-person').length + 1;
+            var i = rowCount - 1;
+            var contactdiv = '<tr class="data-contact-person">' +
+                '<td><input type="hidden" name="IV[' + i + '].FE_ID" value="@ViewBag.FE"/><select class="form-control col-sm-12" name="IV[' + i + '].Certification_Name" id="pt"><option value="">Select Certificate</option>@foreach (var i in ViewBag.Certification){<option value="@i.Value">@i.Text</option>}</select></td>' +
+                '<td><input type="file" name="IV[' + i + '].Certification_Upload" class="form-control l-name01" /></td>' +
+                '<td><button type="button" id="btnAdd" class="btn btn-xs btn-primary classAdd"><i class="fas fa-plus-circle"></i></button>' +
+                '<button type="button" id="btnDelete" class="deleteContact btn btn btn-danger btn-xs"><i class="fas fa-minus-circle"></i></button></td>' +
+                '</tr>';
+            $('#maintable').append(contactdiv);
+        });
+
+        $(document).on("click", ".deleteContact", function () {
+            $(this).closest("tr").remove(); // closest used to remove the respective 'tr' in which I have my controls
+        });
+
+    </script>
+
+}
+
+
+
+
+
+
+
+
+
+
+
+

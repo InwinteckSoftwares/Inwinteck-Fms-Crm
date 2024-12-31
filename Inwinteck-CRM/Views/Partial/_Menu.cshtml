@@ -1,0 +1,149 @@
+﻿@model Inwinteck_CRM.Models.Menu
+@using Microsoft.AspNet.Identity
+
+<nav class="pcoded-navbar theme-horizontal menu-light brand-blue">
+    <div class="navbar-wrapper container">
+        <div class="navbar-content sidenav-horizontal" id="layout-sidenav">
+            <ul class="nav pcoded-inner-navbar sidenav-inner">
+                <li class="nav-item pcoded-menu-caption">
+                    <label>Navigation</label>
+                </li>
+                @if (Model.mm != null)
+                {
+                    if (Model.mm.Count > 0)
+                    {
+                        foreach (var i in Model.mm)
+                        {
+                            <li class="nav-item pcoded-hasmenu">
+                                <a  class="nav-link "><span class="pcoded-micon"><i class="feather icon-layers"></i></span><span class="pcoded-mtext">@i.display_name</span></a>
+                                <ul class="pcoded-submenu">
+                                    @if (Model.fl != null)
+                                    {
+                                        if (Model.fl.Count > 0)
+                                        {
+                                            foreach (var j in Model.fl)
+                                            {
+                                                if (i.menu_id == j.parent_menu_id)
+                                                {
+                                                    <li class="pcoded-hasmenu">
+                                                        <a >@j.display_name</a>
+                                                        <ul class="pcoded-submenu">
+                                                            
+                                                            @if (Model.sl.Count > 0)
+                                                            {
+                                                                List
+                                                                <string>
+                                                                    abc = new List<string>
+                                                                        ();
+                                                                foreach (var k in Model.sl)
+                                                                {
+                                                                    if (k.menu_id == j.menu_id)
+                                                                    {
+
+                                                                        bool exist = abc.Exists(e => e == k.target_url);
+
+                                                                        if (exist)
+                                                                        {
+
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <li>
+                                                                                <a href="@k.target_url">
+                                                                                    @k.display_text
+                                                                                </a>
+                                                                            </li>
+                                                                            abc.Add(k.target_url);
+                                                                        }
+
+
+                                                                    }
+
+                                                                }
+                                                            }
+                                                      
+
+
+                                                        </ul>
+                                                    </li>
+
+                                                }
+                                            }
+                                        }
+                                    }
+                                </ul>
+                            </li>
+                        }
+
+                    }
+                }
+
+
+            </ul>
+
+
+        </div>
+    </div>
+</nav>
+
+<!-- begin::header -->
+<header class="navbar pcoded-header navbar-expand-lg navbar-light header-blue">
+    <div class="container">
+        <div class="m-header" style="background: #fff;border-bottom: solid #0f709a 1px;">
+            <a class="mobile-menu" id="mobile-collapse" href="#"><span></span></a>
+            <a href="@Url.Action(ViewBag.Link,"Dashboard")" class="b-brand">
+                <!-- ========   change your logo hear   ============ -->
+                <img src="~/assets/images/logo.png" alt="" class="logo">
+                <img src="~/assets/images/logo.png" alt="" class="logo-thumb">
+            </a>
+            <a href="#" class="mob-toggler">
+                <i class="feather icon-more-vertical"></i>
+            </a>
+        </div>
+        <div >
+        </div>
+        <div class="collapse navbar-collapse">
+
+            <ul class="navbar-nav ml-auto">
+
+                <li class="nav-item">
+                    <a href="https://fms.inwinteck.com/chat/Bossmessaging" target="_blank" class="btn btn-primary" style="color: white;">
+                        Internal Communication
+                    </a>
+                </li>
+
+                <li>
+                    <div class="dropdown drp-user">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="feather icon-user"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right profile-notification">
+                            <div class="pro-head">
+
+                                <span> @User.Identity.GetUserName()</span>
+
+                            </div>
+                            <ul class="pro-body">
+                                <li><a href="@Url.Action("ChangePassword", "Account")" class="dropdown-item"><i class="feather icon-mail"></i>Change Password</a></li>
+                                @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", }))
+                                {
+                                    @Html.AntiForgeryToken()
+
+                                    <li>
+                                        <a href="javascript:document.getElementById('logoutForm').submit()" data-toggle="tooltip" data-placement="right" class="dropdown-item">
+                                            <i class="feather icon-log-out"></i> Log Out
+                                        </a>
+                                    </li>
+                                }
+
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</header>
+
+
+

@@ -1,0 +1,274 @@
+﻿@model HRMS.Models.Employee_Detail_Dashboard
+@{
+    ViewBag.Title = "Index";
+    Layout = ViewBag.Layout;
+    ViewBag.Manger = ViewBag.Mng;
+}
+
+
+
+<!-- start page title -->
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="profile-view">
+                    <div class="profile-img-wrap">
+                        <div class="profile-img">
+                            <a href="#"><img alt="" src="@Model.Photo"></a>
+                        </div>
+                    </div>
+                    <div class="profile-basic">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="profile-info-left">
+                                    <h3 class="user-name m-t-0 mb-0">@Model.First_Name @Model.Last_Name</h3>
+                                    <h3 class="user-name m-t-0 mb-0">@Model.First_Name @Model.Last_Name</h3>
+                                    <div class="staff-id">Employee ID : @Model.Emp_Code</div>
+                                    <div class="small doj text-muted">Date of Join : @Model.DOJ.Value.ToString("dd-MM-yyyy")</div>
+                                    @if (ViewBag.PunchIn == null)
+                                    {
+                                        using (Html.BeginForm("PunchIn", "Dashboard", FormMethod.Post, new { enctype = "multipart/form-data", role = "form" }))
+                                        {
+                                            <input type="hidden" value="@Model.Id" name="Emp_Id">
+                                            <div class="social-source mt-3">
+                                                <button type="submit" class="btn btn-primary waves-effect waves-light">Punch In</button>
+                                            </div>
+                                        }
+                                    }
+                                    else if (ViewBag.PunchOut == null)
+                                    {
+                                        using (Html.BeginForm("PunchOut", "Dashboard", FormMethod.Post, new { enctype = "multipart/form-data", role = "form" }))
+                                        {
+                                            <input type="hidden" value="@Model.Id" name="Emp_Id">
+                                            <div class="social-source mt-3">
+                                                <button type="submit" class="btn btn-primary waves-effect waves-light">Punch Out</button>
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <div class="social-source mt-3">
+                                            <button type="submit" class="btn btn-primary waves-effect waves-light" disabled>Work Completed</button>
+                                        </div>
+                                    }
+
+                                    </li>
+                                    <li>
+                                        <div class="title">Email:</div>
+                                        <div class="text"><a href="">@Model.Email</a></div>
+                                    </li>
+                                    <li>
+                                        <div class="title">Designation:</div>
+                                        <div class="text">@Model.Designation</div>
+                                    </li>
+                                    <li>
+                                        <div class="title">Department:</div>
+                                        <div class="text">@Model.Department</div>
+                                    </li>
+                                    <li>
+                                        <div class="title">Gender:</div>
+                                        <div class="text">@Model.Gender</div>
+                                    </li>
+                                    <li>
+                                        <div class="title">Reports to:</div>
+                                        <div class="text">
+                                            <div class="avatar-box">
+                                                <div class="avatar avatar-xs">
+                                                    <img src="@Model.rmPhoto" alt="">
+                                                </div>
+                                            </div>
+                                            <a href="#">
+                                                @Model.Reporting_Manager
+                                            </a>
+                                        </div>
+                                    </li>
+                                    </ul>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="pro-edit"><a class="edit-icon" href="@Url.Action("EmpProfile","HRMS")"><i class="fas fa-pencil-alt"></i></a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 d-flex">
+        <div class="card punch-status flex-fill">
+            <div class="card-body">
+                <h5 class="card-title">Timesheet</h5>
+
+                <div class="punch-finger">
+                    <i class="fas fa-fingerprint"></i>
+                    <div class="punch-det">
+                        <h6>Today's Date</h6>
+                        <p>@ViewBag.DateTime </p>
+                    </div>
+                </div>
+                <div class="punch-info">
+                    <div class="punch-hours">
+                        <span>@ViewBag.BreakTime </span>
+                    </div>
+                </div>
+                @if (ViewBag.PunchIn == null || ViewBag.PunchOut != null)
+                {
+                    <div class="punch-btn-section text-center">
+
+                        <button type="submit" class="btn btn-primary waves-effect waves-light" disabled>Break In</button>
+
+                    </div>
+                }
+                else if (ViewBag.Break == "Yes")
+                {
+                    using (Html.BeginForm("BreakIn", "Dashboard", FormMethod.Post, new { enctype = "multipart/form-data", role = "form" }))
+                    {
+                        <input type="hidden" value="@Model.Id" name="Emp_Id">
+
+
+                        <div class="punch-btn-section text-center">
+
+                            <button type="submit" class="btn btn-primary waves-effect waves-light">Break In</button>
+
+                        </div>
+
+                    }
+                }
+                else
+                {
+                    using (Html.BeginForm("BreakOut", "Dashboard", FormMethod.Post, new { enctype = "multipart/form-data", role = "form" }))
+                    {
+                        <input type="hidden" value="@Model.Id" name="Emp_Id">
+
+
+                        <div class="punch-btn-section text-center">
+
+                            <button type="submit" class="btn btn-primary waves-effect waves-light">Break Out</button>
+
+                        </div>
+
+                    }
+                }
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 d-flex">
+        <div class="card recent-activity flex-fill">
+            <div class="card-body">
+                <h5 class="card-title">Today Activity</h5>
+                @if (ViewBag.Activity.Count > 0)
+                {
+
+                    <ul class="res-activity-list">
+                        @foreach (var i in ViewBag.Activity)
+                        {
+                            <li>
+                                <p class="mb-0">@i.Activity</p>
+                                <p class="res-activity-time">
+                                    <i class="far fa-clock"></i>
+                                    @i.Timesheet.ToString("hh:mm tt")
+                                </p>
+
+                            </li>
+                        }
+
+                    </ul>
+                }
+                else
+                {
+                    <span class="badge badge-pill badge-soft-danger font-size-11">No Activity</span>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 col-lg-12 col-xl-12 d-flex">
+        <div class="card att-card flex-fill">
+            <div class="card-header">
+                <h3><i class="fas fa-calendar-alt"></i> Notice Board</h3>
+
+            </div>
+            <div class="card-body pt-0 pb-0">
+                <div class="tab-content p-0" id="myTabContent">
+                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        @if (ViewBag.Notice.Count > 0)
+                        {
+                        <ul class="leave-list">
+                            @foreach (var i in ViewBag.Notice)
+                            {
+                                if (i.Type == "Brithday")
+                                {
+                                    <li>
+                                        <img src="@i.Photo">
+                                        <p>@i.Name has brithday today. </p>
+
+                                    </li>
+
+                                }
+                                else
+                                {
+                                    <li>
+                                        <img src="@i.Photo">
+                                        <p>@i.Name has Marriage Anniversary today.</p>
+
+                                    </li>
+
+                                }
+                            }
+
+                        </ul>
+                        }
+                        else
+                        {
+                            <span class="badge badge-pill badge-soft-danger font-size-11">No Notice</span>
+                        }
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+</div>
+
+
+<div class="modal custom-modal fade" id="msgBox">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-header">
+                    <h3 style="font-size: 20px;">@TempData["message"] </h3>
+                </div>
+                <div class="modal-btn">
+                    <div class="submit-section col-sm-4 offset-sm-4">
+                        <a href="#" data-dismiss="modal" aria-label="Close" class="btn btn-primary cancel-btn">OK</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+@section scripts
+{
+    @if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+
+            window.onload = function () {
+                $('#msgBox').modal('show');
+            };
+        </script>
+    }
+
+}

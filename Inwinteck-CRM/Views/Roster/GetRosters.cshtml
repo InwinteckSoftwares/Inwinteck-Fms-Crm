@@ -1,0 +1,42 @@
+﻿@model IEnumerable<HRMS.Models.RosterViewModel>
+
+@{
+    ViewBag.Title = "Roster Calendar";
+    Layout = null;
+}
+
+<h2 class="text-center my-4">Roster Calendar</h2>
+
+<!-- jQuery 2.2.4 CDN (compatible with FullCalendar 2.x) -->
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+
+
+<!-- Moment.js (required for FullCalendar 3.x) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
+<!-- FullCalendar 2.9.1 -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.9.1/fullcalendar.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.9.1/fullcalendar.min.js"></script>
+<!-- Calendar Container -->
+<div class="container">
+    <div id="calendar"></div>
+</div>
+
+<script>
+    // Use jQuery and avoid noConflict issues
+    var $jq = jQuery.noConflict();
+
+    $jq(document).ready(function () {
+        $jq('#calendar').fullCalendar({
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,agendaWeek,agendaDay'
+            },
+            events: '@Url.Action("GetRosterEvents", "Roster")', // Fetch events from your controller action
+            editable: false, // Set to true if you want users to modify events
+            selectable: true,
+            height: 600, // Customize calendar height as per your needs
+        });
+    });
+</script>

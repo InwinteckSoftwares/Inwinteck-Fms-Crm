@@ -1,0 +1,197 @@
+﻿@model List<HRMS.Models.Payslip_View>
+@{
+    ViewBag.Title = "Payslip";
+    Layout = "~/Views/Shared/_LayoutHRMS.cshtml";
+}
+
+
+
+<!-- Page Header -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="page-head-box">
+            <h3>Payslip</h3>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index","Dashboard")">Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Payroll</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- /Page Header -->
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="table-responsive">
+            <table id="AllSlipTable" class="table table-striped custom-table datatable">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Employee ID</th>
+                        <th>Month</th>
+                        <th>Salary</th>
+                        <th>Payslip</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Count > 0)
+                    {
+                        foreach (var i in Model)
+                        {
+                            var salaryDate = new DateTime(i.Month.Year, i.Month.Month, 5);
+
+                            if (DateTime.Now >= salaryDate)
+                            {
+                                <tr>
+                                    <td>
+                                        @i.Employee_Name
+                                    </td>
+                                    <td>@i.EMP_Code</td>
+                                    <td>
+                                        @i.Month.ToString("MMMM yy")
+                                    </td>
+                                    <td>
+                                        @i.Salary
+                                    </td>
+                                    <td>
+                                        <a class="role-info role-bg-two" href="@Url.Action("PayslipView", "HRMS", new { id = i.Id })">View Slip</a>
+                                    </td>
+
+                                </tr>
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal custom-modal fade" id="msgBox">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-header">
+                    <h3 style="font-size: 20px;" id="txtmsg">@TempData["message"] </h3>
+                </div>
+                <div class="modal-btn">
+                    <div class="submit-section col-sm-4 offset-sm-4">
+                        <a href="#" data-dismiss="modal" aria-label="Close" class="btn btn-primary cancel-btn">OK</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+@section scripts
+{
+    @if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+
+            window.onload = function () {
+                $('#msgBox').modal('show');
+            };
+        </script>
+    }
+
+
+    <script type="text/javascript">
+        $("#Emp_Id").change(function () {
+
+            var code = $(this).val();
+
+            $.get(baseurl + "/HRMS/GetEmpSalary", { Id: code, Mnt: $("#month").val() }, function (data) {
+
+                if (data.res == "Slip") {
+
+                    $('#txtmsg').text('Salary generated for this month');
+                    $('#msgBox').modal('show');
+
+                }
+                else if (data.res == "success") {
+                    $('#Salary').val(data.ps['Salary']);
+                    $('#Total_Earnings').val(data.ps['Total_Earnings']);
+                    $('#Basic').val(data.ps['Basic']);
+                    $('#HRA').val(data.ps['HRA']);
+                    $('#Conveyance_Allowance').val(data.ps['Conveyance_Allowance']);
+                    $('#Special_Allowance').val(data.ps['Special_Allowance']);
+                    $('#PF').val(data.ps['PF']);
+                    $('#ESIC').val(data.ps['ESIC']);
+                    $('#PT').val(data.ps['PT']);
+                    $('#Total_Deduction').val(data.ps['Total_Deduction']);
+                    $('#Net_Pay').val(data.ps['Net_Pay']);
+                    $('#Day_Paid').val(data.ps['Day_Paid']);
+                    $('#LOP_Absent').val(data.ps['LOP_Absent']);
+                }
+                else {
+
+                    $('#txtmsg').text('No Data Found');
+                    $('#msgBox').modal('show');
+
+                }
+            });
+
+        });
+
+
+        $("#Day_Paid").blur(function () {
+
+            var perday = 0;
+            perday = $("#Salary").val() / 31;
+
+            $("#Total_Earnings").val(perday * $(this).val());
+
+            $("#Basic").val($("#Total_Earnings").val() * 50 / 100);
+
+            $("#HRA").val($("#Basic").val() * 50 / 100);
+
+            $("#Special_Allowance").val($("#Total_Earnings").val() - $("#HRA").val() - $("#Basic").val() - $("#Conveyance_Allowance").val());
+
+            $("#Net_Pay").val($("#Total_Earnings").val() - $("#Total_Deduction").val());
+
+        });
+
+
+
+        $("#Other_Earning").blur(function () {
+            debugger;
+            var a = parseInt($("#Total_Earnings").val());
+            var b = parseInt($(this).val());
+            var c = a + b;
+            $("#Total_Earnings").val(c);
+            $("#Net_Pay").val($("#Total_Earnings").val() - $("#Total_Deduction").val());
+
+        });
+
+        $("#Other_Deduction").blur(function () {
+            var a = parseInt($("#Total_Deduction").val());
+            var b = parseInt($(this).val());
+            var c = a + b;
+            $("#Total_Deduction").val(c);
+            $("#Net_Pay").val($("#Total_Earnings").val() - $("#Total_Deduction").val());
+
+        });
+    </script>
+    <script>
+
+        $(document).ready(function () {
+            var table = $('#AllSlipTable').DataTable();
+            table.destroy();
+
+            $('#AllSlipTable').DataTable({
+                ordering: false
+            });
+        });
+    </script>
+
+}
+
+
+

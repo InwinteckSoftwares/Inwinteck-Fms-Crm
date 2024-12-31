@@ -1,0 +1,120 @@
+﻿@model Inwinteck_CRM.Models.Certification_Master
+@{
+    ViewBag.Title = "Edit || Certification";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Content Header (Page header) -->
+<div class="page-header">
+    <div class="container-fluid d-sm-flex justify-content-between">
+        <h4>Certification</h4>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">Master</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Edit Certification</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Basic Forms -->
+            <div class="card">
+
+                <!-- /.box-header -->
+                <div class="card-body">
+                    @using (Html.BeginForm("editCertification", "Master", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary("", new { @class = "text-danger" })
+                       
+                         <input type="hidden" name="Status" value="@Model.Status" />
+                            <input type="hidden" name="CreatedBy" value="@Model.CreatedBy" />
+                            <input type="hidden" name="CreatedOn" value="@Model.CreatedOn" />
+
+                        <div class="form-row">
+                            <label for="OEM" class="col-sm-2 col-form-label">OEM Name</label>
+                            <div class="col-sm-4">
+                                <select class="form-control" id="OEM" name="OEM" required>
+                                    <option value="">Select OEM</option>
+                                    @foreach (var i in ViewBag.OEM)
+                                    {
+                                        <option value="@i.Value">@i.Text</option>
+                                    }
+                                </select>
+
+                            </div>
+                            <label for="Code" class="col-sm-2 col-form-label">Certification Name</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" name="Certification_Name" value="@Model.Certification_Name" placeholder="Enter Certification Name" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-12 text-center">
+                                <input type="submit" class="btn btn-primary" value="Update" />
+                                <a href="@Url.Action("Certification","Master")" class="btn btn-info">Cancel</a>
+                            </div>
+                        </div>
+
+                    }
+                </div>
+                <!-- /.box-body -->
+
+
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+
+</div>
+
+
+
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content  text-center">
+            <div class="modal-header">
+                <h4 class="modal-title text-center "><i class="fa fa-info-circle" aria-hidden="true"></i> Information</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 20px;">@TempData["message"] </p>
+            </div>
+            <div class="modal-footer">
+                <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+
+                <a href="#" data-dismiss="modal" aria-label="Close" class="btn btn-primary">OK</a>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+@section scripts
+{
+    @if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+
+            window.onload = function () {
+                $('#myModal').modal('show');
+            };
+        </script>
+    }
+<script type="text/javascript">
+
+    $("#OEM").val('@Model.OEM');
+</script>
+}
+
+
+
+

@@ -1,0 +1,92 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>BossMessage</title>
+</head>
+<body>
+    <div>
+        <div class="boss-message-container">
+            <div class="chat-header">
+                <h2>Boss Messaging System</h2>
+                <select id="connectedUsers">
+                    <option value="">Select a User</option>
+                    @foreach (var user in ViewBag.ConnectedUsers)
+                    {
+                        <option value="@user.ConnectionId">@user.DisplayName</option>
+                    }
+                </select>
+            </div>
+
+            <div class="chat-body" id="bossDiscussion">
+                <!-- Messages will be appended here -->
+            </div>
+
+            <div class="chat-footer">
+                <input type="hidden" id="bossName" value="@ViewBag.DisplayName" />
+                <input type="text" id="bossMessage" placeholder="Enter your message" class="chat-input" />
+                <button type="button" id="sendBossMessage" class="chat-send-btn">Send</button>
+            </div>
+        </div>
+
+        <audio id="bossNotificationSound" src="~/assets/audio/notification.wav" preload="auto"></audio>
+
+        <script src="~/HRMS/new/assets/js/jquery-3.6.0.min.js"></script>
+        <!-- SignalR scripts -->
+        <script src="~/Scripts/jquery.signalR-2.4.3.min.js"></script>
+        <script src="~/signalr/hubs"></script>
+
+        <script>
+    $(document).ready(function () {
+        var bossMessageHub = $.connection.bossMessageHub; // Reference to the BossMessageHub
+        var currentBossName = $('#bossName').val();
+
+        // Handle receiving a message
+        bossMessageHub.client.receiveBossMessage = function (bossName, message, timestamp) {
+            appendBossMessage(bossName, message, timestamp);
+        };
+
+        // Add user when they connect
+        bossMessageHub.client.userConnected = function (userName, connectionId) {
+            $('#connectedUsers').append('<option value="' + connectionId + '">' + userName + '</option>');
+        };
+
+        // Remove user when they disconnect
+        bossMessageHub.client.userDisconnected = function (connectionId) {
+            $('#connectedUsers option[value="' + connectionId + '"]').remove();
+        };
+
+        // Append message to the chat
+        function appendBossMessage(name, content, timestamp) {
+            var messageClass = 'chat-message sent';
+            var messageContent = '<div><strong>' + name + '</strong>: ' + content + '</div>';
+            $('#bossDiscussion').append('<div class="' + messageClass + '">' + messageContent + '</div>');
+            $('#bossDiscussion').scrollTop($('#bossDiscussion')[0].scrollHeight);
+        }
+
+        // Event listener for boss send button
+        $('#sendBossMessage').click(function () {
+            var message = $('#bossMessage').val();
+            var selectedUser = $('#connectedUsers').val(); // User's connection ID
+            if (message.trim() !== "" && selectedUser !== "") {
+                bossMessageHub.server.sendBossMessage(message, selectedUser, currentBossName);  // SignalR method
+                $('#bossMessage').val('');
+            } else {
+                alert('Please select a user and enter a message.');
+            }
+        });
+
+        // Start the SignalR connection
+        $.connection.hub.start();
+    });
+        </script>
+
+    </div>
+</body>
+</html>
