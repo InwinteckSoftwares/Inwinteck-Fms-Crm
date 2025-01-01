@@ -881,8 +881,7 @@ namespace Inwinteck_CRM.Controllers
                     SentTravelCharge = ticketCharges.SentTravelCharge ?? 0f,
                     SentTravelCharge2 = ticketCharges.SentTravelCharge2 ?? 0f
                 };
-
-                // Save feTravelCharge to your database context or collection
+                db.TicketFeCharges .Add(feTravelCharge);
             }
 
 
