@@ -116,7 +116,7 @@ namespace Inwinteck_CRM.Controllers
                                 }
                                 else if (UserManager.IsInRole(user.Id, "Help Desk Manager"))
                                 {
-                                    return RedirectToLocal(returnUrl ?? Url.Action("IndexHelpDesk", "Dashboard"));
+                                    return RedirectToLocal(returnUrl ?? Url.Action("IndexAdmin", "Dashboard"));
                                 }
                                 else if (UserManager.IsInRole(user.Id, "Sr.Help Desk Manager"))
                                 {
