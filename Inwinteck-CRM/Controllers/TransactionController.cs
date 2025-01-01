@@ -870,13 +870,20 @@ namespace Inwinteck_CRM.Controllers
 
             if (existingTicketCharge != null)
             {
-                existingTicketCharge.SentTravelCharge = ticketCharges.SentTravelCharge;
-
-                if (ticketCharges.SentTravelCharge2.HasValue)
-                {
-                    existingTicketCharge.SentTravelCharge2 = ticketCharges.SentTravelCharge2.Value;
-                }
+                existingTicketCharge.SentTravelCharge = ticketCharges.SentTravelCharge ?? 0f; // Default to 0 if null
+                existingTicketCharge.SentTravelCharge2 = ticketCharges.SentTravelCharge2 ?? 0f; // Default to 0 if null
             }
+            else
+            {
+                var feTravelCharge = new Ticket_FE_Charges
+                {
+                    Ticket_Id = sa.Id,
+                    SentTravelCharge = ticketCharges.SentTravelCharge ?? 0f,
+                    SentTravelCharge2 = ticketCharges.SentTravelCharge2 ?? 0f
+                };
+                db.TicketFeCharges .Add(feTravelCharge);
+            }
+
 
             int saveCharges = db.SaveChanges();
             string caseNo = sa.Case_No;
