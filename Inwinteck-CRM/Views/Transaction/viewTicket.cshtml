@@ -917,7 +917,7 @@
                                                                 @if (Model.Ticket.TicketFeCharges != null && Model.Ticket.TicketFeCharges.Count() > 0)
                                                                 {
                                                                     foreach (var Travel_Charge_1 in new List<SelectListItem>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    {
                     new SelectListItem { Text = "Yes", Value = "True" },
                     new SelectListItem { Text = "No", Value = "False" }
                 })
@@ -962,7 +962,7 @@
                                                                 @if (Model.Ticket.TicketFeCharges != null && Model.Ticket.TicketFeCharges.Count() > 0)
                                                                 {
                                                                     foreach (var Charge_Type_1 in new List<SelectListItem>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    {
                     new SelectListItem { Text = "Per Job", Value = "Per Job" },
                     new SelectListItem { Text = "Per Hour", Value = "Per Hour" }
                 })
@@ -1027,7 +1027,7 @@
                                                                         @if (Model.Ticket.TicketFeCharges != null && Model.Ticket.TicketFeCharges.Count() > 0)
                                                                         {
                                                                             foreach (var Travel_Charge_2 in new List<SelectListItem>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    {
                                                                                     new SelectListItem { Text = "Yes", Value = "True" },
                                                                                     new SelectListItem { Text = "No", Value = "False" }
                                                                                 })
@@ -1071,7 +1071,7 @@
                                                                         @if (Model.Ticket.TicketFeCharges != null && Model.Ticket.TicketFeCharges.Count() > 0)
                                                                         {
                                                                             foreach (var Charge_Type_2 in new List<SelectListItem>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    {
                                                                                     new SelectListItem { Text = "Per Job", Value = "Per Job" },
                                                                                     new SelectListItem { Text = "Per Hour", Value = "Per Hour" }
                                                                                 })
@@ -1124,6 +1124,72 @@
 
                                                 </div>
                                             </div>
+                                            <div class="card shadow-sm mt-4" id="chargesSentSection">
+                                                <div class="row align-items-center mb-3">
+                                                    @if (Model.Ticket.TicketFeCharges != null && Model.Ticket.TicketFeCharges.Count() > 0)
+                                                    {
+
+                                                        <label for="travelChargesFE1" class="col-sm-2 col-form-label">Travel Charges FE1</label>
+                                                        <div class="col-sm-10">
+                                                            <input type="number"
+                                                                   id="travelChargesFE1"
+                                                                   class="form-control"
+                                                                   min="0"
+                                                                   step="0.01"
+                                                                   name="SentTravelCharge"
+                                                                   value="@Model.Ticket.TicketFeCharges.FirstOrDefault().SentTravelCharge" />
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <label for="travelChargesFE1" class="col-sm-2 col-form-label">Travel Charges FE1</label>
+                                                        <div class="col-sm-10">
+                                                            <input type="number"
+                                                                   id="travelChargesFE1"
+                                                                   class="form-control"
+                                                                   min="0"
+                                                                   step="0.01"
+                                                                   name="SentTravelCharge"
+                                                                   value="" />
+                                                        </div>
+                                                    }
+                                                </div>
+
+                                                @if (Model.Ticket.IsSecondFEEnabled)
+                                                {
+
+                                                    <div class="row align-items-center mb-3">
+                                                        @if (Model.Ticket.TicketFeCharges != null && Model.Ticket.TicketFeCharges.Count() > 0)
+                                                        {
+
+                                                            <label for="travelChargesFE2" class="col-sm-2 col-form-label">Travel Charges FE2</label>
+                                                            <div class="col-sm-10">
+                                                                <input type="number"
+                                                                       id="travelChargesFE2"
+                                                                       class="form-control"
+                                                                       min="0"
+                                                                       step="0.01"
+                                                                       name="SentTravelCharge2"
+                                                                       value="@Model.Ticket.TicketFeCharges.FirstOrDefault().SentTravelCharge2" />
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <label for="travelChargesFE2" class="col-sm-2 col-form-label">Travel Charges FE2</label>
+                                                            <div class="col-sm-10">
+                                                                <input type="number"
+                                                                       id="travelChargesFE2"
+                                                                       class="form-control"
+                                                                       min="0"
+                                                                       step="0.01"
+                                                                       name="SentTravelCharge2"
+                                                                       value="" />
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                }
+                                            </div>
+
 
                                             @using (Html.BeginForm("ValidationByManager", "Transaction", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
                                             {
@@ -1401,12 +1467,12 @@
                                                         <div class="form-group row">
                                                             <label class="col-sm-2 col-form-label">Quality Remark</label>
                                                             <div class="col-sm-10">
-                                                                <textarea class="form-control" id="qualityRemark"  name="Quality_Remark" rows="4">@Model.Ticket.Quality_Remark</textarea>
+                                                                <textarea class="form-control" id="qualityRemark" name="Quality_Remark" rows="4">@Model.Ticket.Quality_Remark</textarea>
                                                             </div>
                                                         </div>
                                                     }
 
-                                                     if (!string.IsNullOrEmpty(buttonText))
+                                                    if (!string.IsNullOrEmpty(buttonText))
                                                     {
                                                         <div class="form-group row">
                                                             <div class="col-sm-12 text-center">
@@ -2078,6 +2144,7 @@
                 $(".TDR").css('display', 'none');
                 $(".TCR").css('display', 'none');
                 $(".chin").css('display', 'block');
+                $("#chargesSentSection").css('display', 'block');
 
             }
             else if (@Model.Ticket.Status == 1415) {
