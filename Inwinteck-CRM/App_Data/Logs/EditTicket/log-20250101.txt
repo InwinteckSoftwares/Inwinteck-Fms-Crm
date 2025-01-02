@@ -1,0 +1,63 @@
+2025-01-01 09:25:44.041 +05:30 [INF] ====================== editTicket method invoked for Ticket ID: 4799 ===========================
+2025-01-01 09:25:44.490 +05:30 [INF] Formatted values: CaseDtUs: 2024-12-20T12:53, CaseDtLocal: 2024-12-20T17:53, DispDtUs: 2025-02-10T02:30, DispDtIndia: 2025-02-10T13:00
+2025-01-01 09:25:44.494 +05:30 [INF] Formatted values: InTimeUs: null, InTimeLocal: null, OutTimeUs: null, OutTimeLocal: null
+2025-01-01 09:25:44.499 +05:30 [INF] Formatted values: InTimeUs2: null, InTimeLocal2: null, OutTimeUs2: null, OutTimeLocal2: null
+2025-01-01 09:25:44.702 +05:30 [INF] Before Declined Reason ViewBag
+2025-01-01 09:25:44.744 +05:30 [INF] IWT Ticket No: INWIN0004799
+2025-01-01 09:25:44.882 +05:30 [INF] End
+2025-01-01 09:26:03.533 +05:30 [INF] ====================== editTicket method invoked for Ticket ID: 4799 ===========================
+2025-01-01 09:26:03.551 +05:30 [INF] Formatted values: CaseDtUs: 2024-12-20T12:53, CaseDtLocal: 2024-12-20T17:53, DispDtUs: 2025-02-10T02:30, DispDtIndia: 2025-02-10T13:00
+2025-01-01 09:26:03.564 +05:30 [INF] Formatted values: InTimeUs: null, InTimeLocal: null, OutTimeUs: null, OutTimeLocal: null
+2025-01-01 09:26:03.570 +05:30 [INF] Formatted values: InTimeUs2: null, InTimeLocal2: null, OutTimeUs2: null, OutTimeLocal2: null
+2025-01-01 09:26:03.631 +05:30 [INF] Before Declined Reason ViewBag
+2025-01-01 09:26:03.643 +05:30 [INF] IWT Ticket No: INWIN0004799
+2025-01-01 09:26:03.714 +05:30 [INF] End
+2025-01-01 09:27:09.491 +05:30 [INF] ====================== editTicket method invoked for Ticket ID: 4799 ===========================
+2025-01-01 09:27:09.523 +05:30 [INF] Formatted values: CaseDtUs: 2024-12-20T12:53, CaseDtLocal: 2024-12-20T17:53, DispDtUs: 2025-02-10T02:30, DispDtIndia: 2025-02-10T13:00
+2025-01-01 09:27:09.529 +05:30 [INF] Formatted values: InTimeUs: null, InTimeLocal: null, OutTimeUs: null, OutTimeLocal: null
+2025-01-01 09:27:09.534 +05:30 [INF] Formatted values: InTimeUs2: null, InTimeLocal2: null, OutTimeUs2: null, OutTimeLocal2: null
+2025-01-01 09:27:09.620 +05:30 [INF] Before Declined Reason ViewBag
+2025-01-01 09:27:09.633 +05:30 [INF] IWT Ticket No: INWIN0004799
+2025-01-01 09:27:09.681 +05:30 [INF] End
+2025-01-01 09:41:56.402 +05:30 [INF] ====================== editTicket method invoked for Ticket ID: 4799 ===========================
+2025-01-01 09:41:56.669 +05:30 [INF] Formatted values: CaseDtUs: 2024-12-20T12:53, CaseDtLocal: 2024-12-20T17:53, DispDtUs: 2025-02-10T02:30, DispDtIndia: 2025-02-10T13:00
+2025-01-01 09:41:56.678 +05:30 [INF] Formatted values: InTimeUs: null, InTimeLocal: null, OutTimeUs: null, OutTimeLocal: null
+2025-01-01 09:41:56.678 +05:30 [INF] Formatted values: InTimeUs2: null, InTimeLocal2: null, OutTimeUs2: null, OutTimeLocal2: null
+2025-01-01 09:41:56.836 +05:30 [INF] Before Declined Reason ViewBag
+2025-01-01 09:41:56.884 +05:30 [INF] IWT Ticket No: INWIN0004799
+2025-01-01 09:41:56.987 +05:30 [INF] End
+2025-01-01 09:43:34.142 +05:30 [INF] ====================== editTicket method invoked for Ticket ID: 4799 ===========================
+2025-01-01 09:43:34.167 +05:30 [INF] Formatted values: CaseDtUs: 2024-12-20T12:53, CaseDtLocal: 2024-12-20T17:53, DispDtUs: 2025-02-10T02:30, DispDtIndia: 2025-02-10T13:00
+2025-01-01 09:43:34.171 +05:30 [INF] Formatted values: InTimeUs: null, InTimeLocal: null, OutTimeUs: null, OutTimeLocal: null
+2025-01-01 09:43:34.176 +05:30 [INF] Formatted values: InTimeUs2: null, InTimeLocal2: null, OutTimeUs2: null, OutTimeLocal2: null
+2025-01-01 09:43:34.270 +05:30 [INF] Before Declined Reason ViewBag
+2025-01-01 09:43:34.288 +05:30 [INF] IWT Ticket No: INWIN0004799
+2025-01-01 09:43:34.327 +05:30 [INF] End
+2025-01-01 09:43:38.977 +05:30 [INF] ====================== editTicket method invoked for Ticket ID: 4799 ===========================
+2025-01-01 09:43:38.989 +05:30 [INF] Formatted values: CaseDtUs: 2024-12-20T12:53, CaseDtLocal: 2024-12-20T17:53, DispDtUs: 2025-02-10T02:30, DispDtIndia: 2025-02-10T13:00
+2025-01-01 09:43:38.991 +05:30 [INF] Formatted values: InTimeUs: null, InTimeLocal: null, OutTimeUs: null, OutTimeLocal: null
+2025-01-01 09:43:38.991 +05:30 [INF] Formatted values: InTimeUs2: null, InTimeLocal2: null, OutTimeUs2: null, OutTimeLocal2: null
+2025-01-01 09:43:39.034 +05:30 [INF] Before Declined Reason ViewBag
+2025-01-01 09:43:39.045 +05:30 [INF] IWT Ticket No: INWIN0004799
+2025-01-01 09:43:39.064 +05:30 [INF] End
+2025-01-01 09:57:50.630 +05:30 [INF] ====================== editTicket method invoked for Ticket ID: 4799 ===========================
+2025-01-01 09:57:50.896 +05:30 [INF] Formatted values: CaseDtUs: 2024-12-20T12:53, CaseDtLocal: 2024-12-20T17:53, DispDtUs: 2025-02-10T02:30, DispDtIndia: 2025-02-10T13:00
+2025-01-01 09:57:50.896 +05:30 [INF] Formatted values: InTimeUs: null, InTimeLocal: null, OutTimeUs: null, OutTimeLocal: null
+2025-01-01 09:57:50.896 +05:30 [INF] Formatted values: InTimeUs2: null, InTimeLocal2: null, OutTimeUs2: null, OutTimeLocal2: null
+2025-01-01 09:57:51.024 +05:30 [INF] Before Declined Reason ViewBag
+2025-01-01 09:57:51.036 +05:30 [INF] IWT Ticket No: INWIN0004799
+2025-01-01 09:57:51.136 +05:30 [INF] End
+2025-01-01 09:58:28.785 +05:30 [INF] ====================== editTicket method invoked for Ticket ID: 4799 ===========================
+2025-01-01 09:58:28.810 +05:30 [INF] Formatted values: CaseDtUs: 2024-12-20T12:53, CaseDtLocal: 2024-12-20T17:53, DispDtUs: 2025-02-10T02:30, DispDtIndia: 2025-02-10T13:00
+2025-01-01 09:58:28.822 +05:30 [INF] Formatted values: InTimeUs: null, InTimeLocal: null, OutTimeUs: null, OutTimeLocal: null
+2025-01-01 09:58:28.822 +05:30 [INF] Formatted values: InTimeUs2: null, InTimeLocal2: null, OutTimeUs2: null, OutTimeLocal2: null
+2025-01-01 09:58:28.905 +05:30 [INF] Before Declined Reason ViewBag
+2025-01-01 09:58:28.917 +05:30 [INF] IWT Ticket No: INWIN0004799
+2025-01-01 09:58:28.965 +05:30 [INF] End
+2025-01-01 11:14:35.369 +05:30 [INF] ====================== editTicket method invoked for Ticket ID: 4365 ===========================
+2025-01-01 11:14:35.819 +05:30 [INF] Formatted values: CaseDtUs: 2024-11-05T07:48, CaseDtLocal: 2024-11-05T15:48, DispDtUs: 2024-11-08T12:30, DispDtIndia: 2024-11-08T23:00
+2025-01-01 11:14:35.828 +05:30 [INF] Formatted values: InTimeUs: 2024-11-08T13:02, InTimeLocal: 2024-11-08T20:02, OutTimeUs: null, OutTimeLocal: null
+2025-01-01 11:14:35.831 +05:30 [INF] Formatted values: InTimeUs2: null, InTimeLocal2: null, OutTimeUs2: null, OutTimeLocal2: null
+2025-01-01 11:14:36.014 +05:30 [INF] Before Declined Reason ViewBag
+2025-01-01 11:14:36.047 +05:30 [INF] IWT Ticket No: INWIN0004365
+2025-01-01 11:14:36.176 +05:30 [INF] End
