@@ -464,6 +464,7 @@
     <Compile Include="Models\ChatMessageInwinteckInternal.cs" />
     <Compile Include="Models\Communication.cs" />
     <Compile Include="Models\PushSubscription.cs" />
+    <Compile Include="Models\QualityHotRequirement.cs" />
     <Compile Include="Models\Ticket_FE_Charges.cs" />
     <Compile Include="Models\TicketData.cs" />
     <Compile Include="Models\TimeZone.cs" />

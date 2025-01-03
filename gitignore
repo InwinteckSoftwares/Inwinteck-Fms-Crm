@@ -1,0 +1,28 @@
+# Ignore all .dll files
+*.dll
+
+# Ignore all .pdb files
+*.pdb
+
+# Ignore Visual Studio and VSCode files
+.vs/
+.vscode/
+
+# Ignore user-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Ignore build outputs
+bin/
+obj/
+
+# Ignore specific files related to assembly references and compile inputs
+Inwinteck-CRM/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+Inwinteck-CRM/obj/Debug/Inwinteck-CRM.csproj.AssemblyReference.cache
+Inwinteck-CRM/obj/Debug/Inwinteck-CRM.csproj.CoreCompileInputs.cache
+
+# Ignore assembly reference cache files
+**/obj/Debug/*.cache
+

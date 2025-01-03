@@ -348,3 +348,24 @@ if (qualityRemark && qualityRemark.value.trim() !== "") {
     qualityRemark.readOnly = true;
     qualityRemark.style.display = 'block'; // Ensures it is visible if needed
 }
+
+
+//=================Quality hot Requiremnt========================//
+
+document.getElementById('Sourcing').addEventListener('blur', calculateTotal);
+document.getElementById('CertificationValue').addEventListener('blur', calculateTotal);
+document.getElementById('Charges').addEventListener('blur', calculateTotal);
+document.getElementById('MeetingSLA').addEventListener('blur', calculateTotal);
+
+
+
+
+function calculateTotal() {
+    var sourcing = parseFloat(document.getElementById('Sourcing').value) || 0;
+    var certification = parseFloat(document.getElementById('CertificationValue').value) || 0;
+    var charges = parseFloat(document.getElementById('Charges').value) || 0;
+    var meetingSLA = parseFloat(document.getElementById('MeetingSLA').value) || 0;
+
+    var total = sourcing + certification + charges + meetingSLA;
+    document.getElementById('TotalHotRequirement').value = total.toFixed(2);
+}

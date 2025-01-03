@@ -148,6 +148,7 @@ namespace Inwinteck_CRM.Models
            public DbSet<Ticket_Eu_Selection> Ticket_Eu_Selection { get; set; }
 
            public DbSet<QualityMarksBraekdown> QualityMarksBraekdown { get; set; }
+           public DbSet<QualityHotRequirement> QualityHotRequirement { get; set; }
 
            public DbSet<ChatMessage> ChatMessages { get; set; }
            public DbSet<Communication> Communication { get; set; }

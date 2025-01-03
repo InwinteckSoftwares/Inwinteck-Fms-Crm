@@ -10,5 +10,6 @@ namespace Inwinteck_CRM.viewModel
     {
         public Ticket Ticket { get; set; }
         public QualityMarksBraekdown QualityMarksBraekdown { get; set; }
+        public QualityHotRequirement QualityHotRequirement { get; set; }
     }
 }

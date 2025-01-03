@@ -787,813 +787,813 @@
                                             </div>
 
                                             @*------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*@
-                                        <div class="card-body" id="Activity" style="margin-top: -42px;">
-                                            <span class="heading-border">Activity Detail </span>
+                                            <div class="card-body" id="Activity" style="margin-top: -42px;">
+                                                <span class="heading-border">Activity Detail </span>
 
-                                            <div class="form-row m-t-10">
-                                                <label for="Ticket_Mode" class="col-sm-2 col-form-label">Ticket Status</label>
-                                                <div class="col-md-4">
-                                                    <select class="form-control" name="Status" id="Status" readonly>
-                                                        <option value="">Select Status</option>
-                                                        @foreach (var i in ViewBag.Status)
-                                                        {
-                                                            <option value="@i.Value">@i.Text</option>
-                                                        }
-                                                    </select>
-                                                </div>
-                                                @if (Model.Ticket.Old_Ticket != null)
-                                                {
-                                                    <label for="Ticket_Mode" class="col-sm-2 col-form-label">Old Ticket Number</label>
+                                                <div class="form-row m-t-10">
+                                                    <label for="Ticket_Mode" class="col-sm-2 col-form-label">Ticket Status</label>
                                                     <div class="col-md-4">
-                                                        <input type="text" class="form-control" value="@ViewBag.Old_Ticket" readonly>
+                                                        <select class="form-control" name="Status" id="Status" readonly>
+                                                            <option value="">Select Status</option>
+                                                            @foreach (var i in ViewBag.Status)
+                                                            {
+                                                                <option value="@i.Value">@i.Text</option>
+                                                            }
+                                                        </select>
                                                     </div>
-                                                }
-                                                else if (ViewBag.New_Ticket != null)
-                                                {
-                                                    <label for="Ticket_Mode" class="col-sm-2 col-form-label">New Ticket Number</label>
+                                                    @if (Model.Ticket.Old_Ticket != null)
+                                                    {
+                                                        <label for="Ticket_Mode" class="col-sm-2 col-form-label">Old Ticket Number</label>
+                                                        <div class="col-md-4">
+                                                            <input type="text" class="form-control" value="@ViewBag.Old_Ticket" readonly>
+                                                        </div>
+                                                    }
+                                                    else if (ViewBag.New_Ticket != null)
+                                                    {
+                                                        <label for="Ticket_Mode" class="col-sm-2 col-form-label">New Ticket Number</label>
+                                                        <div class="col-md-4">
+                                                            <input type="text" class="form-control" value="@ViewBag.New_Ticket" readonly>
+                                                        </div>
+                                                    }
+
+                                                </div>
+                                                <div class="form-row">
+                                                    <label for="Reschedule_DT" class="col-sm-2 col-form-label RDT ">Reschedule Date </label>
                                                     <div class="col-md-4">
-                                                        <input type="text" class="form-control" value="@ViewBag.New_Ticket" readonly>
+                                                        @Html.TextBoxFor(m => m.Ticket.Reschedule_DT, "{0:s}", new { @class = "form-control RDT", type = "datetime-local", @readonly = "readonly" })
                                                     </div>
-                                                }
 
-                                            </div>
-                                            <div class="form-row">
-                                                <label for="Reschedule_DT" class="col-sm-2 col-form-label RDT ">Reschedule Date </label>
-                                                <div class="col-md-4">
-                                                    @Html.TextBoxFor(m => m.Ticket.Reschedule_DT, "{0:s}", new { @class = "form-control RDT", type = "datetime-local", @readonly = "readonly" })
+                                                    <label for="Reschedule_Reason" class="col-sm-2 col-form-label RDT ">Reschedule Reason </label>
+                                                    <div class="col-md-4">
+                                                        <input type="text" class="form-control RDT" name="Reschedule_Reason" value="@Model.Ticket.Reschedule_Reason" readonly>
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <label for="Decline_Reason" class="col-sm-2 col-form-label TDR">Decline Reason</label>
+                                                    <div class="col-md-10">
+                                                        <!-- Textarea for decline reason with placeholder text -->
+                                                        <textarea class="form-control TDR"
+                                                                  name="Decline_Reason"
+                                                                  id="declineReasonTextarea"
+                                                                  placeholder="Type Decline Reason"
+                                                                  disabled>@Model.Ticket.Decline_Reason</textarea>
+                                                    </div>
                                                 </div>
 
-                                                <label for="Reschedule_Reason" class="col-sm-2 col-form-label RDT ">Reschedule Reason </label>
-                                                <div class="col-md-4">
-                                                    <input type="text" class="form-control RDT" name="Reschedule_Reason" value="@Model.Ticket.Reschedule_Reason" readonly>
-                                                </div>
-                                            </div>
-                                            <div class="form-row">
-                                                <label for="Decline_Reason" class="col-sm-2 col-form-label TDR">Decline Reason</label>
-                                                <div class="col-md-10">
-                                                    <!-- Textarea for decline reason with placeholder text -->
-                                                    <textarea class="form-control TDR"
-                                                              name="Decline_Reason"
-                                                              id="declineReasonTextarea"
-                                                              placeholder="Type Decline Reason"
-                                                              disabled>@Model.Ticket.Decline_Reason</textarea>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-row">
-                                                <label for="Cancel_Reason" class="col-sm-2 col-form-label TCR">Cancel Reason</label>
-                                                <div class="col-md-4">
-                                                    <select class="form-control TCR" name="Cancel_Reason" id="Cancel_Reason" readonly>
-                                                        <option value="">Select Cancel Reason</option>
-                                                        @foreach (var i in ViewBag.Cancel_Reason)
-                                                        {
-                                                            <option value="@i.Value">@i.Text</option>
-                                                        }
-                                                    </select>
-                                                </div>
-                                            </div>
-
-
-                                            @*------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*@
-
-                                            <div class="form-row ">
-                                                <label class="col-sm-2 col-form-label sc" style="height:50%;">Is Pregame Given ? </label>
-                                                <div class="col-md-4">
-                                                    <select class="form-control sc" name="Pregame" id="Pregame" readonly>
-                                                        <option value="">Select Pregame</option>
-                                                        <option value="1">Yes</option>
-                                                        <option value="0">No</option>
-                                                    </select>
+                                                <div class="form-row">
+                                                    <label for="Cancel_Reason" class="col-sm-2 col-form-label TCR">Cancel Reason</label>
+                                                    <div class="col-md-4">
+                                                        <select class="form-control TCR" name="Cancel_Reason" id="Cancel_Reason" readonly>
+                                                            <option value="">Select Cancel Reason</option>
+                                                            @foreach (var i in ViewBag.Cancel_Reason)
+                                                            {
+                                                                <option value="@i.Value">@i.Text</option>
+                                                            }
+                                                        </select>
+                                                    </div>
                                                 </div>
 
-                                            </div>
 
+                                                @*------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*@
 
-                                            <div class="form-row ">
-                                                <label class="col-sm-2 col-form-label pg">Pregame Description</label>
-                                                <div class="col-md-10 pg">
-                                                    <textarea class="form-control" rows="3" placeholder="Add Pregame Description" name="pregame_detail" readonly style="height:360px;">@Model.Ticket.pregame_detail</textarea>
+                                                <div class="form-row ">
+                                                    <label class="col-sm-2 col-form-label sc" style="height:50%;">Is Pregame Given ? </label>
+                                                    <div class="col-md-4">
+                                                        <select class="form-control sc" name="Pregame" id="Pregame" readonly>
+                                                            <option value="">Select Pregame</option>
+                                                            <option value="1">Yes</option>
+                                                            <option value="0">No</option>
+                                                        </select>
+                                                    </div>
+
                                                 </div>
-                                            </div>
 
 
-
-                                            <div class="card shadow-sm mt-4" id="currencySectionContainer">
-                                                <div class="card-header bg-primary text-white">
-                                                    <h5 class="mb-0" style="color:white"><i class="fas fa-dollar-sign"></i> Currency</h5>
+                                                <div class="form-row ">
+                                                    <label class="col-sm-2 col-form-label pg">Pregame Description</label>
+                                                    <div class="col-md-10 pg">
+                                                        <textarea class="form-control" rows="3" placeholder="Add Pregame Description" name="pregame_detail" readonly style="height:360px;">@Model.Ticket.pregame_detail</textarea>
+                                                    </div>
                                                 </div>
-                                                <div class="card-body">
-                                                    <!-- Currency Dropdown -->
-                                                    <div class="form-row m-t-10">
-                                                        <label for="Currency" class="col-sm-4 col-form-label">Currency</label>
-                                                        <div class="col-sm-8">
-                                                            <select class="form-control" id="Currency" name="Currency" disabled>
-                                                                <option value="">Select Currency</option>
-                                                                @foreach (var currency in ViewBag.Currency)
-                                                                {
-                                                                    var selectedCurrency = Model.Ticket.TicketFeCharges?.FirstOrDefault()?.Currency;
-                                                                    <option value="@currency.Currency" @(currency.Currency == selectedCurrency ? "selected" : "")>
-                                                                        @currency.Country (@currency.Currency)
-                                                                    </option>
-                                                                }
-                                                            </select>
+
+
+
+                                                <div class="card shadow-sm mt-4" id="currencySectionContainer">
+                                                    <div class="card-header bg-primary text-white">
+                                                        <h5 class="mb-0" style="color:white"><i class="fas fa-dollar-sign"></i> Currency</h5>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <!-- Currency Dropdown -->
+                                                        <div class="form-row m-t-10">
+                                                            <label for="Currency" class="col-sm-4 col-form-label">Currency</label>
+                                                            <div class="col-sm-8">
+                                                                <select class="form-control" id="Currency" name="Currency" disabled>
+                                                                    <option value="">Select Currency</option>
+                                                                    @foreach (var currency in ViewBag.Currency)
+                                                                    {
+                                                                        var selectedCurrency = Model.Ticket.TicketFeCharges?.FirstOrDefault()?.Currency;
+                                                                        <option value="@currency.Currency" @(currency.Currency == selectedCurrency ? "selected" : "")>
+                                                                            @currency.Country (@currency.Currency)
+                                                                        </option>
+                                                                    }
+                                                                </select>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="card shadow-sm mt-4" id="chargesSectionContainer">
-                                                <div class="card-header bg-primary text-white">
-                                                    <h5 class="mb-0" style="color:white"> <i class="fas fa-money-bill-wave"></i> Charges</h5>
-                                                </div>
-                                                <div class="card-body" id="">
-                                                    <input type="hidden" id="Ticket_Id" value="@Model.Ticket.Id" name="Ticket_Id" />
+                                                <div class="card shadow-sm mt-4" id="chargesSectionContainer">
+                                                    <div class="card-header bg-primary text-white">
+                                                        <h5 class="mb-0" style="color:white"> <i class="fas fa-money-bill-wave"></i> Charges</h5>
+                                                    </div>
+                                                    <div class="card-body" id="">
+                                                        <input type="hidden" id="Ticket_Id" value="@Model.Ticket.Id" name="Ticket_Id" />
 
-                                                    <!-- Travel Charge Dropdown -->
-                                                    <div class="form-row align-items-center m-t-10">
-                                                        <label for="TravelCharge" class="col-sm-4 col-form-label">Travel Charge</label>
-                                                        <div class="col-sm-8">
-                                                            <select class="form-control" name="Travel_Charge_1" id="TravelCharge" disabled>
-                                                                <option value="">Select</option>
-                                                                @if (Model.Ticket.TicketFeCharges != null && Model.Ticket.TicketFeCharges.Count() > 0)
-                                                                {
-                                                                    foreach (var Travel_Charge_1 in new List<SelectListItem>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    {
+                                                        <!-- Travel Charge Dropdown -->
+                                                        <div class="form-row align-items-center m-t-10">
+                                                            <label for="TravelCharge" class="col-sm-4 col-form-label">Travel Charge</label>
+                                                            <div class="col-sm-8">
+                                                                <select class="form-control" name="Travel_Charge_1" id="TravelCharge" disabled>
+                                                                    <option value="">Select</option>
+                                                                    @if (Model.Ticket.TicketFeCharges != null && Model.Ticket.TicketFeCharges.Count() > 0)
+                                                                    {
+                                                                        foreach (var Travel_Charge_1 in new List<SelectListItem>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            {
                     new SelectListItem { Text = "Yes", Value = "True" },
                     new SelectListItem { Text = "No", Value = "False" }
                 })
-                                                                    {
-                                                                        var travelChargeBool = bool.Parse(Travel_Charge_1.Value);
-                                                                        var highestIdTicketFeCharge = Model.Ticket.TicketFeCharges.OrderByDescending(c => c.Id).FirstOrDefault();
-                                                                        <option value="@Travel_Charge_1.Value" @(travelChargeBool == highestIdTicketFeCharge?.Travel_Charge_1 ? "selected" : "")>
-                                                                            @Travel_Charge_1.Text
-                                                                        </option>
+                                                                        {
+                                                                            var travelChargeBool = bool.Parse(Travel_Charge_1.Value);
+                                                                            var highestIdTicketFeCharge = Model.Ticket.TicketFeCharges.OrderByDescending(c => c.Id).FirstOrDefault();
+                                                                            <option value="@Travel_Charge_1.Value" @(travelChargeBool == highestIdTicketFeCharge?.Travel_Charge_1 ? "selected" : "")>
+                                                                                @Travel_Charge_1.Text
+                                                                            </option>
+                                                                        }
                                                                     }
+                                                                    else
+                                                                    {
+                                                                        <option value="True">Yes</option>
+                                                                        <option value="False">No</option>
+                                                                    }
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Travel Amount Input -->
+                                                        <div class="form-row align-items-center m-t-10">
+                                                            <label for="TravelAmount" class="col-sm-4 col-form-label">Travel Amount</label>
+                                                            <div class="col-sm-8">
+                                                                @if (Model.Ticket.TicketFeCharges != null && Model.Ticket.TicketFeCharges.Count() > 0)
+                                                                {
+                                                                    <input type="number" class="form-control" name="Travel_Amount_1" id="TravelAmount" value="@Model.Ticket.TicketFeCharges.FirstOrDefault().Travel_Amount_1" readonly />
                                                                 }
                                                                 else
                                                                 {
-                                                                    <option value="True">Yes</option>
-                                                                    <option value="False">No</option>
+                                                                    <input type="number" class="form-control" name="Travel_Amount_1" id="TravelAmount" value="" />
                                                                 }
-                                                            </select>
+                                                            </div>
                                                         </div>
-                                                    </div>
 
-                                                    <!-- Travel Amount Input -->
-                                                    <div class="form-row align-items-center m-t-10">
-                                                        <label for="TravelAmount" class="col-sm-4 col-form-label">Travel Amount</label>
-                                                        <div class="col-sm-8">
-                                                            @if (Model.Ticket.TicketFeCharges != null && Model.Ticket.TicketFeCharges.Count() > 0)
-                                                            {
-                                                                <input type="number" class="form-control" name="Travel_Amount_1" id="TravelAmount" value="@Model.Ticket.TicketFeCharges.FirstOrDefault().Travel_Amount_1" readonly />
-                                                            }
-                                                            else
-                                                            {
-                                                                <input type="number" class="form-control" name="Travel_Amount_1" id="TravelAmount" value="" />
-                                                            }
-                                                        </div>
-                                                    </div>
-
-                                                    <!-- Charge Type Dropdown -->
-                                                    <div class="form-row align-items-center m-t-10">
-                                                        <label for="ChargeType" class="col-sm-4 col-form-label">Charge Type</label>
-                                                        <div class="col-sm-8">
-                                                            <select class="form-control" name="Charge_Type_1" id="ChargeType" disabled>
-                                                                <option value="">Select</option>
-                                                                @if (Model.Ticket.TicketFeCharges != null && Model.Ticket.TicketFeCharges.Count() > 0)
-                                                                {
-                                                                    foreach (var Charge_Type_1 in new List<SelectListItem>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    {
+                                                        <!-- Charge Type Dropdown -->
+                                                        <div class="form-row align-items-center m-t-10">
+                                                            <label for="ChargeType" class="col-sm-4 col-form-label">Charge Type</label>
+                                                            <div class="col-sm-8">
+                                                                <select class="form-control" name="Charge_Type_1" id="ChargeType" disabled>
+                                                                    <option value="">Select</option>
+                                                                    @if (Model.Ticket.TicketFeCharges != null && Model.Ticket.TicketFeCharges.Count() > 0)
+                                                                    {
+                                                                        foreach (var Charge_Type_1 in new List<SelectListItem>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            {
                     new SelectListItem { Text = "Per Job", Value = "Per Job" },
                     new SelectListItem { Text = "Per Hour", Value = "Per Hour" }
                 })
-                                                                    {
-                                                                        <option value="@Charge_Type_1.Value" @(Charge_Type_1.Value == Model.Ticket.TicketFeCharges.FirstOrDefault()?.Charge_Type_1 ? "selected" : "")>
-                                                                            @Charge_Type_1.Text
-                                                                        </option>
+                                                                        {
+                                                                            <option value="@Charge_Type_1.Value" @(Charge_Type_1.Value == Model.Ticket.TicketFeCharges.FirstOrDefault()?.Charge_Type_1 ? "selected" : "")>
+                                                                                @Charge_Type_1.Text
+                                                                            </option>
+                                                                        }
                                                                     }
+                                                                    else
+                                                                    {
+                                                                        <option value="Per Job">Per Job</option>
+                                                                        <option value="Per Hour">Per Hour</option>
+                                                                    }
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Per Job Input -->
+                                                        <div class="form-row align-items-center m-t-10">
+                                                            <label for="PerJob" class="col-sm-4 col-form-label">Per Job</label>
+                                                            <div class="col-sm-8">
+                                                                @if (Model.Ticket.TicketFeCharges != null && Model.Ticket.TicketFeCharges.Count() > 0)
+                                                                {
+                                                                    <input type="number" class="form-control" name="Per_Job_1" id="PerJob" step="0.01" value="@Model.Ticket.TicketFeCharges.FirstOrDefault().Per_Job_1" readonly />
                                                                 }
                                                                 else
                                                                 {
-                                                                    <option value="Per Job">Per Job</option>
-                                                                    <option value="Per Hour">Per Hour</option>
+                                                                    <input type="number" class="form-control" name="Per_Job_1" id="PerJob" step="0.01" value="" />
                                                                 }
-                                                            </select>
+                                                            </div>
                                                         </div>
-                                                    </div>
 
-                                                    <!-- Per Job Input -->
-                                                    <div class="form-row align-items-center m-t-10">
-                                                        <label for="PerJob" class="col-sm-4 col-form-label">Per Job</label>
-                                                        <div class="col-sm-8">
-                                                            @if (Model.Ticket.TicketFeCharges != null && Model.Ticket.TicketFeCharges.Count() > 0)
-                                                            {
-                                                                <input type="number" class="form-control" name="Per_Job_1" id="PerJob" step="0.01" value="@Model.Ticket.TicketFeCharges.FirstOrDefault().Per_Job_1" readonly />
-                                                            }
-                                                            else
-                                                            {
-                                                                <input type="number" class="form-control" name="Per_Job_1" id="PerJob" step="0.01" value="" />
-                                                            }
+                                                        <!-- Per Hour Input -->
+                                                        <div class="form-row align-items-center m-t-10">
+                                                            <label for="PerHour" class="col-sm-4 col-form-label">Per Hour</label>
+                                                            <div class="col-sm-8">
+                                                                @if (Model.Ticket.TicketFeCharges != null && Model.Ticket.TicketFeCharges.Count() > 0)
+                                                                {
+                                                                    <input type="number" class="form-control" name="Per_Hour_1" id="PerHour" step="0.01" value="@Model.Ticket.TicketFeCharges.FirstOrDefault().Per_Hour_1" readonly />
+                                                                }
+                                                                else
+                                                                {
+                                                                    <input type="number" class="form-control" name="Per_Hour_1" id="PerHour" step="0.01" value="" />
+                                                                }
+                                                            </div>
                                                         </div>
-                                                    </div>
-
-                                                    <!-- Per Hour Input -->
-                                                    <div class="form-row align-items-center m-t-10">
-                                                        <label for="PerHour" class="col-sm-4 col-form-label">Per Hour</label>
-                                                        <div class="col-sm-8">
-                                                            @if (Model.Ticket.TicketFeCharges != null && Model.Ticket.TicketFeCharges.Count() > 0)
-                                                            {
-                                                                <input type="number" class="form-control" name="Per_Hour_1" id="PerHour" step="0.01" value="@Model.Ticket.TicketFeCharges.FirstOrDefault().Per_Hour_1" readonly />
-                                                            }
-                                                            else
-                                                            {
-                                                                <input type="number" class="form-control" name="Per_Hour_1" id="PerHour" step="0.01" value="" />
-                                                            }
-                                                        </div>
-                                                    </div>
 
 
-                                                    <!-- Second Charges Section (Initially Hidden) -->
-                                                    <div class="card mb-4" id="secondChargesSection" style="display:none">
-                                                        <div class="card-header bg-secondary text-white">
-                                                            <h6 class="mb-0"><i class="fas fa-wallet"></i> Charges (2nd FE)</h6>
-                                                        </div>
-                                                        <div class="card-body charges-section">
-                                                            <!-- Travel Charge Dropdown -->
-                                                            <div class="form-row m-t-10">
-                                                                <label for="TravelCharge2" class="col-sm-4 col-form-label">Travel Charge</label>
-                                                                <div class="col-sm-8">
-                                                                    <select class="form-control" name="Travel_Charge_2" id="TravelCharge2" disabled>
-                                                                        <option value="">Select</option>
-                                                                        @if (Model.Ticket.TicketFeCharges != null && Model.Ticket.TicketFeCharges.Count() > 0)
-                                                                        {
-                                                                            foreach (var Travel_Charge_2 in new List<SelectListItem>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    {
+                                                        <!-- Second Charges Section (Initially Hidden) -->
+                                                        <div class="card mb-4" id="secondChargesSection" style="display:none">
+                                                            <div class="card-header bg-secondary text-white">
+                                                                <h6 class="mb-0"><i class="fas fa-wallet"></i> Charges (2nd FE)</h6>
+                                                            </div>
+                                                            <div class="card-body charges-section">
+                                                                <!-- Travel Charge Dropdown -->
+                                                                <div class="form-row m-t-10">
+                                                                    <label for="TravelCharge2" class="col-sm-4 col-form-label">Travel Charge</label>
+                                                                    <div class="col-sm-8">
+                                                                        <select class="form-control" name="Travel_Charge_2" id="TravelCharge2" disabled>
+                                                                            <option value="">Select</option>
+                                                                            @if (Model.Ticket.TicketFeCharges != null && Model.Ticket.TicketFeCharges.Count() > 0)
+                                                                            {
+                                                                                foreach (var Travel_Charge_2 in new List<SelectListItem>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    {
                                                                                     new SelectListItem { Text = "Yes", Value = "True" },
                                                                                     new SelectListItem { Text = "No", Value = "False" }
                                                                                 })
-                                                                            {
-                                                                                var travelChargeBool = bool.Parse(Travel_Charge_2.Value);
-                                                                                <option value="@Travel_Charge_2.Value" @(travelChargeBool == Model.Ticket.TicketFeCharges.FirstOrDefault()?.Travel_Charge_2 ? "selected" : "")>
-                                                                                    @Travel_Charge_2.Text
-                                                                                </option>
+                                                                                {
+                                                                                    var travelChargeBool = bool.Parse(Travel_Charge_2.Value);
+                                                                                    <option value="@Travel_Charge_2.Value" @(travelChargeBool == Model.Ticket.TicketFeCharges.FirstOrDefault()?.Travel_Charge_2 ? "selected" : "")>
+                                                                                        @Travel_Charge_2.Text
+                                                                                    </option>
+                                                                                }
                                                                             }
+                                                                            else
+                                                                            {
+                                                                                <option value="True">Yes</option>
+                                                                                <option value="False">No</option>
+                                                                            }
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+
+                                                                <!-- Travel Amount Input -->
+                                                                <div class="form-row m-t-10" id="travelAmountRow2">
+                                                                    <label for="TravelAmount2" class="col-sm-4 col-form-label">Travel Amount</label>
+                                                                    <div class="col-sm-8">
+                                                                        @if (Model.Ticket.TicketFeCharges != null && Model.Ticket.TicketFeCharges.Count() > 0)
+                                                                        {
+                                                                            <input type="number" class="form-control" name="Travel_Amount_2" id="TravelAmount2" step="0.01" value="@Model.Ticket.TicketFeCharges.FirstOrDefault().Travel_Amount_2" readonly />
                                                                         }
                                                                         else
                                                                         {
-                                                                            <option value="True">Yes</option>
-                                                                            <option value="False">No</option>
+                                                                            <input type="number" class="form-control" name="Travel_Amount_2" id="TravelAmount2" step="0.01" value="" />
                                                                         }
-                                                                    </select>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
 
-                                                            <!-- Travel Amount Input -->
-                                                            <div class="form-row m-t-10" id="travelAmountRow2">
-                                                                <label for="TravelAmount2" class="col-sm-4 col-form-label">Travel Amount</label>
-                                                                <div class="col-sm-8">
-                                                                    @if (Model.Ticket.TicketFeCharges != null && Model.Ticket.TicketFeCharges.Count() > 0)
-                                                                    {
-                                                                        <input type="number" class="form-control" name="Travel_Amount_2" id="TravelAmount2" step="0.01" value="@Model.Ticket.TicketFeCharges.FirstOrDefault().Travel_Amount_2" readonly />
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        <input type="number" class="form-control" name="Travel_Amount_2" id="TravelAmount2" step="0.01" value="" />
-                                                                    }
-                                                                </div>
-                                                            </div>
-
-                                                            <!-- Charge Type Dropdown -->
-                                                            <div class="form-row m-t-10">
-                                                                <label for="ChargeType2" class="col-sm-4 col-form-label">Charge Type</label>
-                                                                <div class="col-sm-8">
-                                                                    <select class="form-control" name="Charge_Type_2" id="ChargeType2" disabled>
-                                                                        <option value="">Select</option>
-                                                                        @if (Model.Ticket.TicketFeCharges != null && Model.Ticket.TicketFeCharges.Count() > 0)
-                                                                        {
-                                                                            foreach (var Charge_Type_2 in new List<SelectListItem>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    {
+                                                                <!-- Charge Type Dropdown -->
+                                                                <div class="form-row m-t-10">
+                                                                    <label for="ChargeType2" class="col-sm-4 col-form-label">Charge Type</label>
+                                                                    <div class="col-sm-8">
+                                                                        <select class="form-control" name="Charge_Type_2" id="ChargeType2" disabled>
+                                                                            <option value="">Select</option>
+                                                                            @if (Model.Ticket.TicketFeCharges != null && Model.Ticket.TicketFeCharges.Count() > 0)
+                                                                            {
+                                                                                foreach (var Charge_Type_2 in new List<SelectListItem>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    {
                                                                                     new SelectListItem { Text = "Per Job", Value = "Per Job" },
                                                                                     new SelectListItem { Text = "Per Hour", Value = "Per Hour" }
                                                                                 })
-                                                                            {
-                                                                                <option value="@Charge_Type_2.Value" @(Charge_Type_2.Value == Model.Ticket.TicketFeCharges.FirstOrDefault()?.Charge_Type_2 ? "selected" : "")>
-                                                                                    @Charge_Type_2.Text
-                                                                                </option>
+                                                                                {
+                                                                                    <option value="@Charge_Type_2.Value" @(Charge_Type_2.Value == Model.Ticket.TicketFeCharges.FirstOrDefault()?.Charge_Type_2 ? "selected" : "")>
+                                                                                        @Charge_Type_2.Text
+                                                                                    </option>
+                                                                                }
                                                                             }
+                                                                            else
+                                                                            {
+                                                                                <option value="Per Job">Per Job</option>
+                                                                                <option value="Per Hour">Per Hour</option>
+                                                                            }
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+
+                                                                <!-- Per Job Input -->
+                                                                <div class="form-row m-t-10" id="perJobRow2">
+                                                                    <label for="PerJob2" class="col-sm-4 col-form-label">Per Job</label>
+                                                                    <div class="col-sm-8">
+                                                                        @if (Model.Ticket.TicketFeCharges != null && Model.Ticket.TicketFeCharges.Count() > 0)
+                                                                        {
+                                                                            <input type="number" class="form-control" name="Per_Job_2" id="PerJob2" step="0.01" value="@Model.Ticket.TicketFeCharges.FirstOrDefault().Per_Job_2" readonly />
                                                                         }
                                                                         else
                                                                         {
-                                                                            <option value="Per Job">Per Job</option>
-                                                                            <option value="Per Hour">Per Hour</option>
+                                                                            <input type="number" class="form-control" name="Per_Job_2" id="PerJob2" step="0.01" value="" />
                                                                         }
-                                                                    </select>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
 
-                                                            <!-- Per Job Input -->
-                                                            <div class="form-row m-t-10" id="perJobRow2">
-                                                                <label for="PerJob2" class="col-sm-4 col-form-label">Per Job</label>
-                                                                <div class="col-sm-8">
-                                                                    @if (Model.Ticket.TicketFeCharges != null && Model.Ticket.TicketFeCharges.Count() > 0)
-                                                                    {
-                                                                        <input type="number" class="form-control" name="Per_Job_2" id="PerJob2" step="0.01" value="@Model.Ticket.TicketFeCharges.FirstOrDefault().Per_Job_2" readonly />
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        <input type="number" class="form-control" name="Per_Job_2" id="PerJob2" step="0.01" value="" />
-                                                                    }
-                                                                </div>
-                                                            </div>
-
-                                                            <!-- Per Hour Input -->
-                                                            <div class="form-row m-t-10" id="perHourRow2">
-                                                                <label for="PerHour2" class="col-sm-4 col-form-label">Per Hour</label>
-                                                                <div class="col-sm-8">
-                                                                    @if (Model.Ticket.TicketFeCharges != null && Model.Ticket.TicketFeCharges.Count() > 0)
-                                                                    {
-                                                                        <input type="number" class="form-control" name="Per_Hour_2" id="PerHour2" step="0.01" value="@Model.Ticket.TicketFeCharges.FirstOrDefault().Per_Hour_2" readonly />
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        <input type="number" class="form-control" name="Per_Hour_2" id="PerHour2" step="0.01" value="" />
-                                                                    }
+                                                                <!-- Per Hour Input -->
+                                                                <div class="form-row m-t-10" id="perHourRow2">
+                                                                    <label for="PerHour2" class="col-sm-4 col-form-label">Per Hour</label>
+                                                                    <div class="col-sm-8">
+                                                                        @if (Model.Ticket.TicketFeCharges != null && Model.Ticket.TicketFeCharges.Count() > 0)
+                                                                        {
+                                                                            <input type="number" class="form-control" name="Per_Hour_2" id="PerHour2" step="0.01" value="@Model.Ticket.TicketFeCharges.FirstOrDefault().Per_Hour_2" readonly />
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <input type="number" class="form-control" name="Per_Hour_2" id="PerHour2" step="0.01" value="" />
+                                                                        }
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
+
                                                     </div>
-
                                                 </div>
-                                            </div>
-                                            <div class="card shadow-sm mt-4" id="chargesSentSection">
-                                                <div class="row align-items-center mb-3">
-                                                    @if (Model.Ticket.TicketFeCharges != null && Model.Ticket.TicketFeCharges.Count() > 0)
-                                                    {
-
-                                                        <label for="travelChargesFE1" class="col-sm-2 col-form-label">Travel Charges FE1</label>
-                                                        <div class="col-sm-10">
-                                                            <input type="number"
-                                                                   id="travelChargesFE1"
-                                                                   class="form-control"
-                                                                   min="0"
-                                                                   step="0.01"
-                                                                   name="SentTravelCharge"
-                                                                   value="@Model.Ticket.TicketFeCharges.FirstOrDefault().SentTravelCharge" />
-                                                        </div>
-                                                    }
-                                                    else
-                                                    {
-                                                        <label for="travelChargesFE1" class="col-sm-2 col-form-label">Travel Charges FE1</label>
-                                                        <div class="col-sm-10">
-                                                            <input type="number"
-                                                                   id="travelChargesFE1"
-                                                                   class="form-control"
-                                                                   min="0"
-                                                                   step="0.01"
-                                                                   name="SentTravelCharge"
-                                                                   value="" />
-                                                        </div>
-                                                    }
-                                                </div>
-
-                                                @if (Model.Ticket.IsSecondFEEnabled)
-                                                {
-
+                                                <div class="card shadow-sm mt-4" id="chargesSentSection">
                                                     <div class="row align-items-center mb-3">
                                                         @if (Model.Ticket.TicketFeCharges != null && Model.Ticket.TicketFeCharges.Count() > 0)
                                                         {
 
-                                                            <label for="travelChargesFE2" class="col-sm-2 col-form-label">Travel Charges FE2</label>
+                                                            <label for="travelChargesFE1" class="col-sm-2 col-form-label">Travel Charges FE1</label>
                                                             <div class="col-sm-10">
                                                                 <input type="number"
-                                                                       id="travelChargesFE2"
+                                                                       id="travelChargesFE1"
                                                                        class="form-control"
                                                                        min="0"
                                                                        step="0.01"
-                                                                       name="SentTravelCharge2"
-                                                                       value="@Model.Ticket.TicketFeCharges.FirstOrDefault().SentTravelCharge2" />
+                                                                       name="SentTravelCharge"
+                                                                       value="@Model.Ticket.TicketFeCharges.FirstOrDefault().SentTravelCharge" />
                                                             </div>
                                                         }
                                                         else
                                                         {
-                                                            <label for="travelChargesFE2" class="col-sm-2 col-form-label">Travel Charges FE2</label>
+                                                            <label for="travelChargesFE1" class="col-sm-2 col-form-label">Travel Charges FE1</label>
                                                             <div class="col-sm-10">
                                                                 <input type="number"
-                                                                       id="travelChargesFE2"
+                                                                       id="travelChargesFE1"
                                                                        class="form-control"
                                                                        min="0"
                                                                        step="0.01"
-                                                                       name="SentTravelCharge2"
+                                                                       name="SentTravelCharge"
                                                                        value="" />
                                                             </div>
                                                         }
                                                     </div>
-                                                }
-                                            </div>
 
+                                                    @if (Model.Ticket.IsSecondFEEnabled)
+                                                    {
 
-                                            @using (Html.BeginForm("ValidationByManager", "Transaction", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
-                                            {
-                                                bool isSecondFEEnabled = Model.Ticket.IsSecondFEEnabled;
-                                                int status = Model.Ticket.Status;
-                                                var userRoles = User.IsInRole("Quality") || User.IsInRole("Sr.Help Desk Manager");
-                                                <input type="hidden" value="@Model.Ticket.Id" name="Ticket_Id">
-                                                <input type="hidden" value="@ViewBag.email_office" name="email_office">
-                                                <!-- Hidden field to store Case_No -->
-                                                <input type="hidden" name="Hidden_Case_No" id="Hidden_Case_No">
+                                                        <div class="row align-items-center mb-3">
+                                                            @if (Model.Ticket.TicketFeCharges != null && Model.Ticket.TicketFeCharges.Count() > 0)
+                                                            {
 
-
-                                                <div class="card shadow-sm mt-4" id="inTimeContainer">
-                                                    <div class="card-header bg-primary text-white">
-                                                        <h5 class="mb-0" style="color:white"><i class="fas fa-clock"></i> In Time</h5>
-                                                    </div>
-                                                    <div class="card-body">
-                                                        <div class="form-row align-items-center">
-                                                            <!-- In Time (IST) -->
-                                                            <div class="col-md-4 mb-3">
-                                                                <label for="In_Time" class="col-form-label d-block w-100 text-center">
-                                                                    <i class="fas fa-clock"></i> In Time (IST)
-
-                                                                </label>
-                                                                @if (userRoles)
-                                                                {
-                                                                    <input class="form-control text-center" type="datetime-local" id="In_Time" name="InTimeIndia" value="@ViewBag.inTimeIndia" />
-                                                                }
-                                                                else
-                                                                {
-                                                                    <input class="form-control text-center" type="datetime-local" id="In_Time" name="InTimeIndia" value="@ViewBag.inTimeIndia" readonly="readonly" />
-                                                                }
-
-                                                            </div>
-
-                                                            <!-- In Time (Local) -->
-                                                            <div class="col-md-4 mb-3">
-                                                                <label for="inTimeLocal" class="col-form-label d-block w-100 text-center">
-                                                                    <i class="fas fa-globe"></i> In Time (Local)
-                                                                    <span data-toggle="tooltip" title="Date and time in your local time zone">
-                                                                        <i class="fas fa-info-circle"></i>
-                                                                    </span>
-                                                                </label>
-                                                                @Html.TextBox("inTimeLocal", ViewBag.inTimeLocal as DateTime?, "{0:s}", new { @class = "form-control text-center", type = "datetime-local", @readonly = "readonly", id = "inTimeLocal" })
-                                                            </div>
-
-                                                            <!-- In Time (EST) -->
-                                                            <div class="col-md-4 mb-3">
-                                                                <label for="inTimeUs" class="col-form-label d-block w-100 text-center">
-                                                                    <i class="fas fa-clock"></i> In Time (EST)
-                                                                    <span data-toggle="tooltip" title="Date and time in Eastern Standard Time">
-                                                                        <i class="fas fa-info-circle"></i>
-                                                                    </span>
-                                                                </label>
-                                                                @Html.TextBox("inTimeUs", ViewBag.inTimeUs as DateTime?, "{0:s}", new { @class = "form-control text-center", type = "datetime-local", @readonly = "readonly", id = "inTimeUs" })
-                                                            </div>
-
-
-
-                                                            <!-- Hidden Latitude and Longitude fields -->
-                                                            <input type="hidden" class="form-control" id="latitude" name="latitude" value="@Model.Ticket.latitude" placeholder="Latitude" />
-                                                            <input type="hidden" class="form-control" id="longitude" name="longitude" value="@Model.Ticket.longitude" placeholder="Longitude" />
+                                                                <label for="travelChargesFE2" class="col-sm-2 col-form-label">Travel Charges FE2</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="number"
+                                                                           id="travelChargesFE2"
+                                                                           class="form-control"
+                                                                           min="0"
+                                                                           step="0.01"
+                                                                           name="SentTravelCharge2"
+                                                                           value="@Model.Ticket.TicketFeCharges.FirstOrDefault().SentTravelCharge2" />
+                                                                </div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <label for="travelChargesFE2" class="col-sm-2 col-form-label">Travel Charges FE2</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="number"
+                                                                           id="travelChargesFE2"
+                                                                           class="form-control"
+                                                                           min="0"
+                                                                           step="0.01"
+                                                                           name="SentTravelCharge2"
+                                                                           value="" />
+                                                                </div>
+                                                            }
                                                         </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="card shadow-sm mt-4" id="outTimeContainer">
-                                                    <div class="card-header bg-primary text-white">
-                                                        <h5 class="mb-0" style="color:white"><i class="fas fa-clock"></i> Out Time</h5>
-                                                    </div>
-                                                    <div class="card-body">
-                                                        <div class="form-row align-items-center">
-                                                            <!-- Out Time (IST) -->
-                                                            <div class="col-md-4 mb-3">
-                                                                <label for="Out_Time" class="col-form-label d-block w-100 text-center">
-                                                                    <i class="fas fa-clock"></i> Out Time (IST)
-                                                                    <span data-toggle="tooltip" title="Date and time in Indian Standard Time">
-                                                                        <i class="fas fa-info-circle"></i>
-                                                                    </span>
-                                                                </label>
-                                                                @if (userRoles)
-                                                                {
-                                                                    <input class="form-control text-center" type="datetime-local" id="Out_Time" name="OutTimeIndia" value="@ViewBag.OutTimeIndia" />
-                                                                }
-                                                                else
-                                                                {
-                                                                    <input class="form-control text-center" type="datetime-local" id="Out_Time" name="OutTimeIndia" value="@ViewBag.OutTimeIndia" readonly="readonly" />
-                                                                }
-                                                            </div>
-
-                                                            <!-- Out Time (Local) -->
-                                                            <div class="col-md-4 mb-3">
-                                                                <label for="OutTimeLocal" class="col-form-label d-block w-100 text-center">
-                                                                    <i class="fas fa-globe"></i> Out Time (Local)
-                                                                    <span data-toggle="tooltip" title="Date and time in your local time zone">
-                                                                        <i class="fas fa-info-circle"></i>
-                                                                    </span>
-                                                                </label>
-                                                                @Html.TextBox("OutTimeLocal", ViewBag.OutTimeLocal as DateTime?, "{0:s}", new { @class = "form-control text-center", type = "datetime-local", @readonly = "readonly", id = "OutTimeLocal" })
-                                                            </div>
-
-                                                            <!-- Out Time (EST) -->
-                                                            <div class="col-md-4 mb-3">
-                                                                <label for="OutTimeUs" class="col-form-label d-block w-100 text-center">
-                                                                    <i class="fas fa-clock"></i> Out Time (EST)
-                                                                    <span data-toggle="tooltip" title="Date and time in Eastern Standard Time">
-                                                                        <i class="fas fa-info-circle"></i>
-                                                                    </span>
-                                                                </label>
-                                                                @Html.TextBox("OutTimeUs", ViewBag.OutTimeUs as DateTime?, "{0:s}", new { @class = "form-control text-center", type = "datetime-local", @readonly = "readonly" })
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                    }
                                                 </div>
 
 
-                                                if (Model.Ticket.IsSecondFEEnabled)
+                                                @using (Html.BeginForm("ValidationByManager", "Transaction", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
                                                 {
+                                                    bool isSecondFEEnabled = Model.Ticket.IsSecondFEEnabled;
+                                                    int status = Model.Ticket.Status;
+                                                    var userRoles = User.IsInRole("Quality") || User.IsInRole("Sr.Help Desk Manager");
+                                                    <input type="hidden" value="@Model.Ticket.Id" name="Ticket_Id">
+                                                    <input type="hidden" value="@ViewBag.email_office" name="email_office">
+                                                    <!-- Hidden field to store Case_No -->
+                                                    <input type="hidden" name="Hidden_Case_No" id="Hidden_Case_No">
 
 
-                                                    <div class="card shadow-sm mt-4" id="inTime2ndFE">
+                                                    <div class="card shadow-sm mt-4" id="inTimeContainer">
                                                         <div class="card-header bg-primary text-white">
-                                                            <h5 class="mb-0" style="color:white"><i class="fas fa-clock"></i> In Time - 2nd FE</h5>
+                                                            <h5 class="mb-0" style="color:white"><i class="fas fa-clock"></i> In Time</h5>
                                                         </div>
                                                         <div class="card-body">
                                                             <div class="form-row align-items-center">
-                                                                <!-- In Time (IST) - 2nd FE -->
+                                                                <!-- In Time (IST) -->
                                                                 <div class="col-md-4 mb-3">
-                                                                    <label for="In_Time2" class="col-form-label d-block w-100 text-center">
-                                                                        <i class="fas fa-clock"></i> In Time (IST) - 2nd FE
+                                                                    <label for="In_Time" class="col-form-label d-block w-100 text-center">
+                                                                        <i class="fas fa-clock"></i> In Time (IST)
+
+                                                                    </label>
+                                                                    @if (userRoles)
+                                                                    {
+                                                                        <input class="form-control text-center" type="datetime-local" id="In_Time" name="InTimeIndia" value="@ViewBag.inTimeIndia" />
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <input class="form-control text-center" type="datetime-local" id="In_Time" name="InTimeIndia" value="@ViewBag.inTimeIndia" readonly="readonly" />
+                                                                    }
+
+                                                                </div>
+
+                                                                <!-- In Time (Local) -->
+                                                                <div class="col-md-4 mb-3">
+                                                                    <label for="inTimeLocal" class="col-form-label d-block w-100 text-center">
+                                                                        <i class="fas fa-globe"></i> In Time (Local)
+                                                                        <span data-toggle="tooltip" title="Date and time in your local time zone">
+                                                                            <i class="fas fa-info-circle"></i>
+                                                                        </span>
+                                                                    </label>
+                                                                    @Html.TextBox("inTimeLocal", ViewBag.inTimeLocal as DateTime?, "{0:s}", new { @class = "form-control text-center", type = "datetime-local", @readonly = "readonly", id = "inTimeLocal" })
+                                                                </div>
+
+                                                                <!-- In Time (EST) -->
+                                                                <div class="col-md-4 mb-3">
+                                                                    <label for="inTimeUs" class="col-form-label d-block w-100 text-center">
+                                                                        <i class="fas fa-clock"></i> In Time (EST)
+                                                                        <span data-toggle="tooltip" title="Date and time in Eastern Standard Time">
+                                                                            <i class="fas fa-info-circle"></i>
+                                                                        </span>
+                                                                    </label>
+                                                                    @Html.TextBox("inTimeUs", ViewBag.inTimeUs as DateTime?, "{0:s}", new { @class = "form-control text-center", type = "datetime-local", @readonly = "readonly", id = "inTimeUs" })
+                                                                </div>
+
+
+
+                                                                <!-- Hidden Latitude and Longitude fields -->
+                                                                <input type="hidden" class="form-control" id="latitude" name="latitude" value="@Model.Ticket.latitude" placeholder="Latitude" />
+                                                                <input type="hidden" class="form-control" id="longitude" name="longitude" value="@Model.Ticket.longitude" placeholder="Longitude" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="card shadow-sm mt-4" id="outTimeContainer">
+                                                        <div class="card-header bg-primary text-white">
+                                                            <h5 class="mb-0" style="color:white"><i class="fas fa-clock"></i> Out Time</h5>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div class="form-row align-items-center">
+                                                                <!-- Out Time (IST) -->
+                                                                <div class="col-md-4 mb-3">
+                                                                    <label for="Out_Time" class="col-form-label d-block w-100 text-center">
+                                                                        <i class="fas fa-clock"></i> Out Time (IST)
                                                                         <span data-toggle="tooltip" title="Date and time in Indian Standard Time">
                                                                             <i class="fas fa-info-circle"></i>
                                                                         </span>
                                                                     </label>
                                                                     @if (userRoles)
                                                                     {
-                                                                        <input class="form-control text-center" type="datetime-local" id="In_Time2" name="InTimeIndia2" value="@ViewBag.inTimeIndia2" />
+                                                                        <input class="form-control text-center" type="datetime-local" id="Out_Time" name="OutTimeIndia" value="@ViewBag.OutTimeIndia" />
                                                                     }
                                                                     else
                                                                     {
-                                                                        <input class="form-control text-center" type="datetime-local" id="In_Time2" name="InTimeIndia2" value="@ViewBag.inTimeIndia2" readonly="readonly" />
+                                                                        <input class="form-control text-center" type="datetime-local" id="Out_Time" name="OutTimeIndia" value="@ViewBag.OutTimeIndia" readonly="readonly" />
                                                                     }
-
                                                                 </div>
 
-                                                                <!-- In Time (Local) - 2nd FE -->
+                                                                <!-- Out Time (Local) -->
                                                                 <div class="col-md-4 mb-3">
-                                                                    <label for="inTimeLocal2" class="col-form-label d-block w-100 text-center">
-                                                                        <i class="fas fa-globe"></i> In Time (Local) - 2nd FE
+                                                                    <label for="OutTimeLocal" class="col-form-label d-block w-100 text-center">
+                                                                        <i class="fas fa-globe"></i> Out Time (Local)
                                                                         <span data-toggle="tooltip" title="Date and time in your local time zone">
                                                                             <i class="fas fa-info-circle"></i>
                                                                         </span>
                                                                     </label>
-                                                                    @Html.TextBox("inTimeLocal2", ViewBag.inTimeLocal2 as DateTime?, "{0:s}", new { @class = "form-control text-center", type = "datetime-local", @readonly = "readonly", id = "inTimeLocal2" })
+                                                                    @Html.TextBox("OutTimeLocal", ViewBag.OutTimeLocal as DateTime?, "{0:s}", new { @class = "form-control text-center", type = "datetime-local", @readonly = "readonly", id = "OutTimeLocal" })
                                                                 </div>
 
-                                                                <!-- In Time (EST) - 2nd FE -->
+                                                                <!-- Out Time (EST) -->
                                                                 <div class="col-md-4 mb-3">
-                                                                    <label for="inTimeUs2" class="col-form-label d-block w-100 text-center">
-                                                                        <i class="fas fa-clock"></i> In Time (EST) - 2nd FE
+                                                                    <label for="OutTimeUs" class="col-form-label d-block w-100 text-center">
+                                                                        <i class="fas fa-clock"></i> Out Time (EST)
                                                                         <span data-toggle="tooltip" title="Date and time in Eastern Standard Time">
                                                                             <i class="fas fa-info-circle"></i>
                                                                         </span>
                                                                     </label>
-                                                                    @Html.TextBox("inTimeUs2", ViewBag.inTimeUs2 as DateTime?, "{0:s}", new { @class = "form-control text-center", type = "datetime-local", @readonly = "readonly" })
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div><div class="card shadow-sm mt-4" id="outTime2ndFE">
-                                                        <div class="card-header bg-primary text-white">
-                                                            <h5 class="mb-0" style="color:white"><i class="fas fa-clock"></i> Out Time - 2nd FE</h5>
-                                                        </div>
-                                                        <div class="card-body">
-                                                            <div class="form-row align-items-center">
-                                                                <!-- Out Time (IST) - 2nd FE -->
-                                                                <div class="col-md-4 mb-3">
-                                                                    <label for="Out_Time2" class="col-form-label d-block w-100 text-center">
-                                                                        <i class="fas fa-clock"></i> Out Time (IST) - 2nd FE
-                                                                        <span data-toggle="tooltip" title="Date and time in Indian Standard Time">
-                                                                            <i class="fas fa-info-circle"></i>
-                                                                        </span>
-                                                                    </label>
-                                                                    @if (userRoles)
-                                                                    {
-                                                                        <input class="form-control text-center" type="datetime-local" id="Out_Time2" name="OutTimeIndia2" value="@ViewBag.OutTimeIndia2" />
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        <input class="form-control text-center" type="datetime-local" id="Out_Time2" name="OutTimeIndia2" value="@ViewBag.OutTimeIndia2" readonly="readonly" />
-                                                                    }
-
-                                                                </div>
-
-                                                                <!-- Out Time (Local) - 2nd FE -->
-                                                                <div class="col-md-4 mb-3">
-                                                                    <label for="OutTimeLocal2" class="col-form-label d-block w-100 text-center">
-                                                                        <i class="fas fa-globe"></i> Out Time (Local) - 2nd FE
-                                                                        <span data-toggle="tooltip" title="Date and time in your local time zone">
-                                                                            <i class="fas fa-info-circle"></i>
-                                                                        </span>
-                                                                    </label>
-                                                                    @Html.TextBox("OutTimeLocal2", ViewBag.OutTimeLocal2 as DateTime?, "{0:s}", new { @class = "form-control text-center", type = "datetime-local", @readonly = "readonly", id = "OutTimeLocal2" })
-                                                                </div>
-
-                                                                <!-- Out Time (EST) - 2nd FE -->
-                                                                <div class="col-md-4 mb-3">
-                                                                    <label for="OutTimeUs2" class="col-form-label d-block w-100 text-center">
-                                                                        <i class="fas fa-clock"></i> Out Time (EST) - 2nd FE
-                                                                        <span data-toggle="tooltip" title="Date and time in Eastern Standard Time">
-                                                                            <i class="fas fa-info-circle"></i>
-                                                                        </span>
-                                                                    </label>
-                                                                    @Html.TextBox("OutTimeUs2", ViewBag.OutTimeUs2 as DateTime?, "{0:s}", new { @class = "form-control text-center", type = "datetime-local", @readonly = "readonly" })
+                                                                    @Html.TextBox("OutTimeUs", ViewBag.OutTimeUs as DateTime?, "{0:s}", new { @class = "form-control text-center", type = "datetime-local", @readonly = "readonly" })
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                }
 
 
-                                                <div class="form-row align-items-center" id="totalResolutionTimeLocalContainer" style="display: flex;">
-                                                    <!-- First FE's Resolution Time -->
-                                                    <label class="col-form-label chin" style="margin-right: 10px;">
-                                                        <i class="fas fa-clock"></i> Total Resolution Time (Local)
-                                                    </label>
-                                                    <div style="flex-grow: 1; margin-right: 20px;">
-                                                        <input type="text" id="totalResolutionTimeLocal" class="form-control chin" value="@Model.Ticket.Total_Hours" readonly="readonly" />
-                                                    </div>
-                                                </div>
+                                                    if (Model.Ticket.IsSecondFEEnabled)
+                                                    {
 
 
+                                                        <div class="card shadow-sm mt-4" id="inTime2ndFE">
+                                                            <div class="card-header bg-primary text-white">
+                                                                <h5 class="mb-0" style="color:white"><i class="fas fa-clock"></i> In Time - 2nd FE</h5>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <div class="form-row align-items-center">
+                                                                    <!-- In Time (IST) - 2nd FE -->
+                                                                    <div class="col-md-4 mb-3">
+                                                                        <label for="In_Time2" class="col-form-label d-block w-100 text-center">
+                                                                            <i class="fas fa-clock"></i> In Time (IST) - 2nd FE
+                                                                            <span data-toggle="tooltip" title="Date and time in Indian Standard Time">
+                                                                                <i class="fas fa-info-circle"></i>
+                                                                            </span>
+                                                                        </label>
+                                                                        @if (userRoles)
+                                                                        {
+                                                                            <input class="form-control text-center" type="datetime-local" id="In_Time2" name="InTimeIndia2" value="@ViewBag.inTimeIndia2" />
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <input class="form-control text-center" type="datetime-local" id="In_Time2" name="InTimeIndia2" value="@ViewBag.inTimeIndia2" readonly="readonly" />
+                                                                        }
+
+                                                                    </div>
+
+                                                                    <!-- In Time (Local) - 2nd FE -->
+                                                                    <div class="col-md-4 mb-3">
+                                                                        <label for="inTimeLocal2" class="col-form-label d-block w-100 text-center">
+                                                                            <i class="fas fa-globe"></i> In Time (Local) - 2nd FE
+                                                                            <span data-toggle="tooltip" title="Date and time in your local time zone">
+                                                                                <i class="fas fa-info-circle"></i>
+                                                                            </span>
+                                                                        </label>
+                                                                        @Html.TextBox("inTimeLocal2", ViewBag.inTimeLocal2 as DateTime?, "{0:s}", new { @class = "form-control text-center", type = "datetime-local", @readonly = "readonly", id = "inTimeLocal2" })
+                                                                    </div>
+
+                                                                    <!-- In Time (EST) - 2nd FE -->
+                                                                    <div class="col-md-4 mb-3">
+                                                                        <label for="inTimeUs2" class="col-form-label d-block w-100 text-center">
+                                                                            <i class="fas fa-clock"></i> In Time (EST) - 2nd FE
+                                                                            <span data-toggle="tooltip" title="Date and time in Eastern Standard Time">
+                                                                                <i class="fas fa-info-circle"></i>
+                                                                            </span>
+                                                                        </label>
+                                                                        @Html.TextBox("inTimeUs2", ViewBag.inTimeUs2 as DateTime?, "{0:s}", new { @class = "form-control text-center", type = "datetime-local", @readonly = "readonly" })
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div><div class="card shadow-sm mt-4" id="outTime2ndFE">
+                                                            <div class="card-header bg-primary text-white">
+                                                                <h5 class="mb-0" style="color:white"><i class="fas fa-clock"></i> Out Time - 2nd FE</h5>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <div class="form-row align-items-center">
+                                                                    <!-- Out Time (IST) - 2nd FE -->
+                                                                    <div class="col-md-4 mb-3">
+                                                                        <label for="Out_Time2" class="col-form-label d-block w-100 text-center">
+                                                                            <i class="fas fa-clock"></i> Out Time (IST) - 2nd FE
+                                                                            <span data-toggle="tooltip" title="Date and time in Indian Standard Time">
+                                                                                <i class="fas fa-info-circle"></i>
+                                                                            </span>
+                                                                        </label>
+                                                                        @if (userRoles)
+                                                                        {
+                                                                            <input class="form-control text-center" type="datetime-local" id="Out_Time2" name="OutTimeIndia2" value="@ViewBag.OutTimeIndia2" />
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <input class="form-control text-center" type="datetime-local" id="Out_Time2" name="OutTimeIndia2" value="@ViewBag.OutTimeIndia2" readonly="readonly" />
+                                                                        }
+
+                                                                    </div>
+
+                                                                    <!-- Out Time (Local) - 2nd FE -->
+                                                                    <div class="col-md-4 mb-3">
+                                                                        <label for="OutTimeLocal2" class="col-form-label d-block w-100 text-center">
+                                                                            <i class="fas fa-globe"></i> Out Time (Local) - 2nd FE
+                                                                            <span data-toggle="tooltip" title="Date and time in your local time zone">
+                                                                                <i class="fas fa-info-circle"></i>
+                                                                            </span>
+                                                                        </label>
+                                                                        @Html.TextBox("OutTimeLocal2", ViewBag.OutTimeLocal2 as DateTime?, "{0:s}", new { @class = "form-control text-center", type = "datetime-local", @readonly = "readonly", id = "OutTimeLocal2" })
+                                                                    </div>
+
+                                                                    <!-- Out Time (EST) - 2nd FE -->
+                                                                    <div class="col-md-4 mb-3">
+                                                                        <label for="OutTimeUs2" class="col-form-label d-block w-100 text-center">
+                                                                            <i class="fas fa-clock"></i> Out Time (EST) - 2nd FE
+                                                                            <span data-toggle="tooltip" title="Date and time in Eastern Standard Time">
+                                                                                <i class="fas fa-info-circle"></i>
+                                                                            </span>
+                                                                        </label>
+                                                                        @Html.TextBox("OutTimeUs2", ViewBag.OutTimeUs2 as DateTime?, "{0:s}", new { @class = "form-control text-center", type = "datetime-local", @readonly = "readonly" })
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
 
 
-                                                if (Model.Ticket.IsSecondFEEnabled)
-                                                {
-                                                    <!-- Second FE's Resolution Time in a new row -->
-                                                    <div class="form-row align-items-center" id="secondFeResolutionTimeLocalContainer" style="display: flex; margin-top: 10px;">
+                                                    <div class="form-row align-items-center" id="totalResolutionTimeLocalContainer" style="display: flex;">
+                                                        <!-- First FE's Resolution Time -->
                                                         <label class="col-form-label chin" style="margin-right: 10px;">
-                                                            <i class="fas fa-user-clock"></i> Total Resolution Time (Local) - 2nd FE
+                                                            <i class="fas fa-clock"></i> Total Resolution Time (Local)
                                                         </label>
-                                                        <div style="flex-grow: 1;">
-                                                            <input type="text" id="totalResolutionTimeLocal2" class="form-control chin" value="@Model.Ticket.Total_Hours2" readonly="readonly" />
+                                                        <div style="flex-grow: 1; margin-right: 20px;">
+                                                            <input type="text" id="totalResolutionTimeLocal" class="form-control chin" value="@Model.Ticket.Total_Hours" readonly="readonly" />
                                                         </div>
                                                     </div>
-                                                }
 
-                                                {
-                                                    string buttonText = string.Empty;
 
-                                                    if ((Model.Ticket.Status == 20 || Model.Ticket.Status == 1641) && User.IsInRole("Sr.Help Desk Manager"))
+
+
+                                                    if (Model.Ticket.IsSecondFEEnabled)
                                                     {
-                                                        buttonText = "Manager/TL Approval";
-                                                    }
-                                                    else if (Model.Ticket.Status == 1631 && User.IsInRole("Quality"))
-                                                    {
-                                                        buttonText = "Quality Approval";
-                                                    }
-
-
-                                                    // Vender Remark visible only to Sr. Help Desk Manager when Status is 20
-                                                    if (Model.Ticket.Status == 20 && User.IsInRole("Sr.Help Desk Manager") || Model.Ticket.Status == 1631 && User.IsInRole("Quality") || Model.Ticket.Status == 1632 || Model.Ticket.Status == 1631 && User.IsInRole("Sr.Help Desk Manager"))
-                                                    {
-                                                        <div class="form-group row">
-                                                            <label class="col-sm-2 col-form-label">Vendor Remark</label>
-                                                            <div class="col-sm-10">
-                                                                <textarea class="form-control" id="venderRemark" name="Vender_Remark" rows="4">@Model.Ticket.Vender_Remark</textarea>
-                                                            </div>
-                                                        </div>
-
-                                                    }
-
-                                                    // Quality Remark visible only to Quality role when Status is 1631
-                                                    if (Model.Ticket.Status == 1631 && User.IsInRole("Quality") || Model.Ticket.Status == 1632)
-                                                    {
-                                                        <div class="form-group row">
-                                                            <label class="col-sm-2 col-form-label">Quality Remark</label>
-                                                            <div class="col-sm-10">
-                                                                <textarea class="form-control" id="qualityRemark" name="Quality_Remark" rows="4">@Model.Ticket.Quality_Remark</textarea>
+                                                        <!-- Second FE's Resolution Time in a new row -->
+                                                        <div class="form-row align-items-center" id="secondFeResolutionTimeLocalContainer" style="display: flex; margin-top: 10px;">
+                                                            <label class="col-form-label chin" style="margin-right: 10px;">
+                                                                <i class="fas fa-user-clock"></i> Total Resolution Time (Local) - 2nd FE
+                                                            </label>
+                                                            <div style="flex-grow: 1;">
+                                                                <input type="text" id="totalResolutionTimeLocal2" class="form-control chin" value="@Model.Ticket.Total_Hours2" readonly="readonly" />
                                                             </div>
                                                         </div>
                                                     }
 
-                                                    if (!string.IsNullOrEmpty(buttonText))
                                                     {
-                                                        <div class="form-group row">
-                                                            <div class="col-sm-12 text-center">
-                                                                <div class="btn-group" role="group">
-                                                                    <button type="submit" class="btn btn-success" id="approvedByManagerButton">@buttonText</button>
+                                                        string buttonText = string.Empty;
+
+                                                        if ((Model.Ticket.Status == 20 || Model.Ticket.Status == 1641) && User.IsInRole("Sr.Help Desk Manager"))
+                                                        {
+                                                            buttonText = "Manager/TL Approval";
+                                                        }
+                                                        else if (Model.Ticket.Status == 1631 && User.IsInRole("Quality"))
+                                                        {
+                                                            buttonText = "Quality Approval";
+                                                        }
+
+
+                                                        // Vender Remark visible only to Sr. Help Desk Manager when Status is 20
+                                                        if (Model.Ticket.Status == 20 && User.IsInRole("Sr.Help Desk Manager") || Model.Ticket.Status == 1631 && User.IsInRole("Quality") || Model.Ticket.Status == 1632 || Model.Ticket.Status == 1631 && User.IsInRole("Sr.Help Desk Manager"))
+                                                        {
+                                                            <div class="form-group row">
+                                                                <label class="col-sm-2 col-form-label">Vendor Remark</label>
+                                                                <div class="col-sm-10">
+                                                                    <textarea class="form-control" id="venderRemark" name="Vender_Remark" rows="4">@Model.Ticket.Vender_Remark</textarea>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                    }
 
+                                                        }
+
+                                                        // Quality Remark visible only to Quality role when Status is 1631
+                                                        if (Model.Ticket.Status == 1631 && User.IsInRole("Quality") || Model.Ticket.Status == 1632)
+                                                        {
+                                                            <div class="form-group row">
+                                                                <label class="col-sm-2 col-form-label">Quality Remark</label>
+                                                                <div class="col-sm-10">
+                                                                    <textarea class="form-control" id="qualityRemark" name="Quality_Remark" rows="4">@Model.Ticket.Quality_Remark</textarea>
+                                                                </div>
+                                                            </div>
+                                                        }
+
+                                                        if (!string.IsNullOrEmpty(buttonText))
+                                                        {
+                                                            <div class="form-group row">
+                                                                <div class="col-sm-12 text-center">
+                                                                    <div class="btn-group" role="group">
+                                                                        <button type="submit" class="btn btn-success" id="approvedByManagerButton">@buttonText</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        }
+
+
+                                                    }
 
                                                 }
 
-                                            }
 
+                                                <div class="card shadow-sm p-3 mb-4 bg-white rounded">
+                                                    @* Part Management and Return Label Section *@
+                                                    <div class="form-row mb-3">
+                                                        <label for="Part_Management" class="col-sm-2 col-form-label cl" style="color:white"><i class="fas fa-cogs"></i> Part Management</label>
+                                                        <div class="col-md-4">
+                                                            <select class="form-control cl" name="Part_Management" id="Part_Management" disabled>
+                                                                <option value="">Select Part Management</option>
+                                                                @foreach (var i in ViewBag.Part_Management)
+                                                                {
+                                                                    <option value="@i.Value">@i.Text</option>
+                                                                }
+                                                            </select>
+                                                        </div>
 
-                                            <div class="card shadow-sm p-3 mb-4 bg-white rounded">
-                                                @* Part Management and Return Label Section *@
-                                                <div class="form-row mb-3">
-                                                    <label for="Part_Management" class="col-sm-2 col-form-label cl" style="color:white"><i class="fas fa-cogs"></i> Part Management</label>
-                                                    <div class="col-md-4">
-                                                        <select class="form-control cl" name="Part_Management" id="Part_Management" disabled>
-                                                            <option value="">Select Part Management</option>
-                                                            @foreach (var i in ViewBag.Part_Management)
-                                                            {
-                                                                <option value="@i.Value">@i.Text</option>
-                                                            }
-                                                        </select>
+                                                        <label for="Return_Label" class="col-sm-2 col-form-label pickup"><i class="fas fa-undo-alt"></i> Return Label</label>
+                                                        <div class="col-md-4">
+                                                            <select class="form-control pickup" name="Return_Label" id="Return_Label" disabled>
+                                                                <option value="">Select Return Label</option>
+                                                                <option value="1">Available</option>
+                                                                <option value="0">Not Available</option>
+                                                            </select>
+                                                        </div>
                                                     </div>
 
-                                                    <label for="Return_Label" class="col-sm-2 col-form-label pickup"><i class="fas fa-undo-alt"></i> Return Label</label>
-                                                    <div class="col-md-4">
-                                                        <select class="form-control pickup" name="Return_Label" id="Return_Label" disabled>
-                                                            <option value="">Select Return Label</option>
-                                                            <option value="1">Available</option>
-                                                            <option value="0">Not Available</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
+                                                    <div class="form-row mb-3">
+                                                        <label for="Tracking_number" class="col-sm-2 col-form-label pickup-av"><i class="fas fa-barcode"></i> Tracking Number</label>
+                                                        <div class="col-md-4">
+                                                            <input type="text" class="form-control pickup-av" value="@Model.Ticket.Tracking_number" autocomplete="nope" placeholder="Enter tracking number" name="Tracking_number" id="Tracking_number" readonly />
+                                                        </div>
 
-                                                <div class="form-row mb-3">
-                                                    <label for="Tracking_number" class="col-sm-2 col-form-label pickup-av"><i class="fas fa-barcode"></i> Tracking Number</label>
-                                                    <div class="col-md-4">
-                                                        <input type="text" class="form-control pickup-av" value="@Model.Ticket.Tracking_number" autocomplete="nope" placeholder="Enter tracking number" name="Tracking_number" id="Tracking_number" readonly />
-                                                    </div>
-
-                                                    <label for="Rl_Reason" class="col-sm-2 col-form-label pickup-nav"><i class="fas fa-info-circle"></i> Reason</label>
-                                                    <div class="col-md-4">
-                                                        <input type="text" class="form-control pickup-nav" value="@Model.Ticket.Rl_Reason" autocomplete="nope" placeholder="Reason for return" name="Rl_Reason" id="Rl_Reason" re />
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            @* Handover Section *@
-                                            <div class="card shadow-sm p-3 mb-4 bg-white rounded">
-                                                <div class="form-row mb-3 handover-section">
-                                                    <label for="Part_Handover" class="col-sm-2 col-form-label handover" style="color:white"><i class="fas fa-handshake"></i> Part Handover</label>
-                                                    <div class="col-md-4">
-                                                        <select class="form-control handover" name="Part_Handover" id="Part_Handover" data-toggle="tooltip" title="Select part handover type">
-                                                            <option value="">Select Part Handover</option>
-                                                            @foreach (var i in ViewBag.Part_Handover)
-                                                            {
-                                                                <option value="@i.Value">@i.Text</option>
-                                                            }
-                                                        </select>
-                                                    </div>
-
-                                                    <label for="ph_Name" class="col-sm-2 col-form-label handover"><i class="fas fa-user"></i> Name</label>
-                                                    <div class="col-md-4">
-                                                        <input type="text" class="form-control handover" value="@Model.Ticket.ph_Name" autocomplete="nope" placeholder="Enter name" name="ph_Name" id="ph_Name" />
+                                                        <label for="Rl_Reason" class="col-sm-2 col-form-label pickup-nav"><i class="fas fa-info-circle"></i> Reason</label>
+                                                        <div class="col-md-4">
+                                                            <input type="text" class="form-control pickup-nav" value="@Model.Ticket.Rl_Reason" autocomplete="nope" placeholder="Reason for return" name="Rl_Reason" id="Rl_Reason" re />
+                                                        </div>
                                                     </div>
                                                 </div>
 
-                                                <div class="form-row mb-3">
-                                                    <label for="ph_contact" class="col-sm-2 col-form-label handover"><i class="fas fa-phone"></i> Contact</label>
-                                                    <div class="col-md-4">
-                                                        <input type="text" class="form-control handover" value="@Model.Ticket.ph_contact" autocomplete="nope" placeholder="Enter contact details" name="ph_contact" id="ph_contact" />
+                                                @* Handover Section *@
+                                                <div class="card shadow-sm p-3 mb-4 bg-white rounded">
+                                                    <div class="form-row mb-3 handover-section">
+                                                        <label for="Part_Handover" class="col-sm-2 col-form-label handover" style="color:white"><i class="fas fa-handshake"></i> Part Handover</label>
+                                                        <div class="col-md-4">
+                                                            <select class="form-control handover" name="Part_Handover" id="Part_Handover" data-toggle="tooltip" title="Select part handover type">
+                                                                <option value="">Select Part Handover</option>
+                                                                @foreach (var i in ViewBag.Part_Handover)
+                                                                {
+                                                                    <option value="@i.Value">@i.Text</option>
+                                                                }
+                                                            </select>
+                                                        </div>
+
+                                                        <label for="ph_Name" class="col-sm-2 col-form-label handover"><i class="fas fa-user"></i> Name</label>
+                                                        <div class="col-md-4">
+                                                            <input type="text" class="form-control handover" value="@Model.Ticket.ph_Name" autocomplete="nope" placeholder="Enter name" name="ph_Name" id="ph_Name" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-row mb-3">
+                                                        <label for="ph_contact" class="col-sm-2 col-form-label handover"><i class="fas fa-phone"></i> Contact</label>
+                                                        <div class="col-md-4">
+                                                            <input type="text" class="form-control handover" value="@Model.Ticket.ph_contact" autocomplete="nope" placeholder="Enter contact details" name="ph_contact" id="ph_contact" />
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
 
-                                            @* Whatsapp Chat Section - Display dynamically *@
-                                            <div class="form-group row chin" style="display: none; align-items: center;">
-                                                <div style="flex-grow: 1; position: relative;">
-                                                    <textarea class="form-control" rows="3" placeholder="Add ClosureForm" autocomplete="nope"
-                                                              name="WhatsappChat" id="closureForm" style="width: 100%;">
+                                                @* Whatsapp Chat Section - Display dynamically *@
+                                                <div class="form-group row chin" style="display: none; align-items: center;">
+                                                    <div style="flex-grow: 1; position: relative;">
+                                                        <textarea class="form-control" rows="3" placeholder="Add ClosureForm" autocomplete="nope"
+                                                                  name="WhatsappChat" id="closureForm" style="width: 100%;">
                                                                     @Model.Ticket.WhatsappChat
                                                                 </textarea>
+                                                    </div>
                                                 </div>
-                                            </div>
 
 
-                                            @*<div class="form-row ">
-            <label for="FE_Part_Storage_Charge" class="col-sm-2 col-form-label pickup-av">FE Storage Charge</label>
-            <div class="col-md-4">
-                <select class="form-control pickup-av" name="FE_Part_Storage_Charge" id="FE_Part_Storage_Charge" readonly>
-                    <option value="">Select Part Storage Charge</option>
-                    <option value="1">Yes</option>
-                    <option value="0">No</option>
-                </select>
-            </div>
-        </div>*@
+                                                @*<div class="form-row ">
+                                                        <label for="FE_Part_Storage_Charge" class="col-sm-2 col-form-label pickup-av">FE Storage Charge</label>
+                                                        <div class="col-md-4">
+                                                            <select class="form-control pickup-av" name="FE_Part_Storage_Charge" id="FE_Part_Storage_Charge" readonly>
+                                                                <option value="">Select Part Storage Charge</option>
+                                                                <option value="1">Yes</option>
+                                                                <option value="0">No</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>*@
 
 
 
 
-                                            <div class="form-group row">
-                                                <div class="col-sm-12 text-center">
-                                                    <div class="btn-group" role="group">
-                                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#qualityScoreModal">
-                                                            Quality Score
-                                                        </button>
+                                                <div class="form-group row">
+                                                    <div class="col-sm-12 text-center">
+                                                        <div class="btn-group" role="group">
+                                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#qualityScoreModal">
+                                                                Quality Score
+                                                            </button>
 
-                                                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#TicketHistory">View History</button>
+                                                            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#TicketHistory">View History</button>
 
-                                                        <!-- New button to view chat -->
-                                                        <button type="button" class="btn btn-warning" id="viewChatButton">View Chat</button>
+                                                            <!-- New button to view chat -->
+                                                            <button type="button" class="btn btn-warning" id="viewChatButton">View Chat</button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
                                             @* Handling Quality Remark section *@
                                             @{ var permittedUsers = ViewBag.Quality_Remark_Permission as List<string>;
                                                 var isUserPermitted = User.Identity.IsAuthenticated && permittedUsers != null && permittedUsers.Contains(User.Identity.Name);
@@ -1799,6 +1799,10 @@
                                                                     <div class="col-sm-12 text-center">
                                                                         <button type="button" class="btn btn-secondary" id="calculateTotal" @(isUserPermitted ? "" : "disabled")>Calculate</button>
                                                                         <input type="submit" class="btn btn-primary" id="updateButton" value="Update" @(isUserPermitted ? "" : "disabled") />
+                                                                        <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#qualityHotRequirementModal">
+                                                                            Quality Hot Requirement
+                                                                        </button>
+
                                                                     </div>
                                                                 </div>
                                                             }
@@ -1822,215 +1826,140 @@
                 </div>
             </div>
 
-
-
-
-
-
-            <div class="modal fade bs-example-modal-lg" id="modal_FieldEngineer" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
-                <div class="modal-dialog modal-lg">
+            <!-- Quality Hot Requirement Modal -->
+            <div class="modal fade" id="qualityHotRequirementModal" tabindex="-1" role="dialog" aria-labelledby="qualityHotRequirementModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="myLargeModalLabel">Field Engineer</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        </div>
-                        <div class="modal-body table-responsive">
-
-                            <table class="table" id="FieldEngineer_Tic" style="max-height: 500px;max-width:100%;overflow: scroll;">
-                                <tbody>
-                                    <tr class="thead-dark">
-                                        <th>Name</th>
-                                        <th>Status</th>
-                                        <th>Remark</th>
-                                        <th>Status Sent On </th>
-                                        <th>FE Status Changed On </th>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="modal-footer text-center">
-                            <button type="button" class="btn btn-info waves-effect " data-dismiss="modal">ok</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="modal fade bs-example-modal-lg" id="TicketHistory" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="myLargeModalLabel">Ticket History </h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <div class="modal-header bg-primary text-white">
+                            <h5 class="modal-title" id="qualityHotRequirementModalLabel">Update Quality Hot Requirement</h5>
+                            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
                         <div class="modal-body">
-                            <div class="col-sm-12">
-                                <div class="form-row">
-                                    <label for="example-text-input" class="col-sm-2 col-form-label Place">Ticket No:</label>
-                                    <div class="col-sm-3">
-                                        <input class="form-control" type="text" id="th_TicketNo" readonly>
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <label for="example-text-input" class="col-sm-2 col-form-label Place">Created By:</label>
-                                    <div class="col-sm-5">
-                                        <input class="form-control" type="text" id="th_CreatedBy" readonly>
-                                    </div>
-                                    <label for="example-text-input" class="col-sm-2 col-form-label Place">Created On:</label>
-                                    <div class="col-sm-3">
-                                        <input class="form-control" type="text" id="th_CreatedOn" readonly>
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <label for="example-text-input" class="col-sm-2 col-form-label Place">Comments:</label>
+                            @using (Html.BeginForm("updateQualityHotRequirement", "Transaction", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "col-12" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.ValidationSummary("", new { @class = "text-danger" })
+                                <input type="hidden" value="@Model.Ticket.Id" name="Ticket_id">
+
+                                <div class="form-row align-items-center mb-3">
+                                    <label for="Sourcing" class="col-sm-2 col-form-label">Sourcing (0-25)</label>
                                     <div class="col-sm-10">
-                                        <textarea class="form-control" type="text" id="th_Comments" style="height:100%;" readonly></textarea>
+                                        <input type="number" step="any" class="form-control" name="Sourcing" id="Sourcing" placeholder="Enter sourcing score" min="0" max="25" value="@Model.QualityHotRequirement.Sourcing" required />
                                     </div>
                                 </div>
-                            </div>
-                            <table class="table" id="Show" style="max-height: 500px; overflow: scroll;">
-                                <thead>
-                                    <tr class="thead-dark">
-                                        <th>Modified By</th>
-                                        <th>Modified On</th>
-                                        <th>Comments/Remark</th>
-                                        <th>Status</th>
-                                        <th id="th_SLA">SLA</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- Rows will be appended here -->
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="modal-footer text-center">
-                            <button type="button" class="btn btn-info waves-effect" data-dismiss="modal">ok</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-
-            <div class="modal fade bs-example-modal-lg" id="modal_Pincode" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="myLargeModalLabel">Pincode/Zipcode</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        </div>
-                        <div class="modal-body table-responsive">
-                            <table class="table" id="FieldEngineer_PinZip" style="max-height: 500px;max-width:500px;overflow: scroll;">
-                                <tbody>
-                                    <tr class="thead-dark">
-                                        <th>Pincode/Zipcode</th>
-                                        <th>City</th>
-                                        <th>State</th>
-                                        <th>Country</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="modal-footer text-center">
-                            <button type="button" class="btn btn-info waves-effect " data-dismiss="modal">ok</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-
-            <div class="modal fade" id="myModal">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content  text-center">
-                        <div class="modal-header">
-                            <h4 class="modal-title text-center "><i class="fa fa-info-circle" aria-hidden="true"></i> Information</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <ul>
-                                @if (TempData["message"] != null)
-                                {
-                                    var messages = TempData["message"] as List<string>;
-                                    if (messages != null)
-                                    {
-                                        foreach (var message in messages)
-                                        {
-                                            <li style="font-size: 20px;">@Html.Raw(message)</li>
-                                        }
-                                    }
-                                }
-                            </ul>
-                        </div>
-                        <div class="modal-footer">
-                            <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
-
-                            <a href="#" data-dismiss="modal" aria-label="Close" class="btn btn-primary">OK</a>
-                        </div>
-                    </div>
-                    <!-- /.modal-content -->
-                </div>
-                <!-- /.modal-dialog -->
-            </div>
-
-
-
-
-
-            <div class="modal fade" id="FEmyModal">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content  text-center">
-                        <div class="modal-header">
-                            <h4 class="modal-title text-center "><i class="fa fa-info-circle" aria-hidden="true"></i> Information</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="swal-icon swal-icon--error">
-                                <div class="swal-icon--error__x-mark">
-                                    <span class="swal-icon--error__line swal-icon--error__line--left"></span>
-                                    <span class="swal-icon--error__line swal-icon--error__line--right"></span>
+                                <div class="form-row align-items-center mb-3">
+                                    <label for="Sourcing" class="col-sm-2 col-form-label">Certification (0-25)</label>
+                                    <div class="col-sm-10">
+                                        <input type="number" step="any" class="form-control" name="Certification" id="CertificationValue" placeholder="Enter sourcing score" min="0" max="25" value="@Model.QualityHotRequirement.Certification" required />
+                                    </div>
                                 </div>
-                            </div>
-                            <p style="font-size: 20px;" id="FEerror"></p>
 
-                        </div>
-                        <div class="modal-footer">
-                            <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                                <div class="form-row align-items-center mb-3">
+                                    <label for="Charges" class="col-sm-2 col-form-label">Charges (0-25)</label>
+                                    <div class="col-sm-10">
+                                        <input type="number" step="any" class="form-control" name="Charges" id="Charges" placeholder="Enter charges score" min="0" max="25" value="@Model.QualityHotRequirement.Charges" required />
+                                    </div>
+                                </div>
 
-                            <a href="#" data-dismiss="modal" aria-label="Close" class="btn btn-primary">OK</a>
+                                <div class="form-row align-items-center mb-3">
+                                    <label for="MeetingSLA" class="col-sm-2 col-form-label">Meeting SLA (0-25)</label>
+                                    <div class="col-sm-10">
+                                        <input type="number" step="any" class="form-control" name="MeetingSLA" id="MeetingSLA" placeholder="Enter SLA score" min="0" max="25" value="@Model.QualityHotRequirement.MeetingSLA" required />
+                                    </div>
+                                </div>
+
+                                <div class="form-row align-items-center mb-3">
+                                    <label for="TotalHotRequirement" class="col-sm-2 col-form-label">Total Hot Requirement (0-100)</label>
+                                    <div class="col-sm-10">
+                                        <input type="number" step="any" class="form-control" name="TotalHotRequirement" id="TotalHotRequirement" placeholder="Total hot requirement score" min="0" max="100" value="@Model.QualityHotRequirement.TotalHotRequirement" readonly />
+                                    </div>
+                                </div>
+
+                                <div class="form-row mb-3">
+                                    <div class="col-sm-12 text-center">
+                                        <button type="submit" class="btn btn-primary" @(Model.QualityHotRequirement.IsScoreUpdated ? "disabled" : "")>Update</button>
+                                    </div>
+                                </div>
+
+                                <!-- Add these new fields below the Update button in the same row -->
+                                <div class="form-row align-items-center mb-3">
+                                    <label for="CreatedBy" class="col-sm-2 col-form-label">Score by</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="CreatedBy" value="@Model.QualityHotRequirement.CreatedBy" readonly />
+                                    </div>
+
+                                    <label for="CreatedOn" class="col-sm-2 col-form-label">Scored On</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="CreatedOn" value="@Model.QualityHotRequirement.CreatedOn" readonly />
+                                    </div>
+                                </div>
+                            }
                         </div>
                     </div>
-                    <!-- /.modal-content -->
                 </div>
-                <!-- /.modal-dialog -->
             </div>
+
         </div>
     </div>
-</div>
-<!-- /.modal -->
-@section scripts
+
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content  text-center">
+                <div class="modal-header">
+                    <h4 class="modal-title text-center "><i class="fa fa-info-circle" aria-hidden="true"></i> Information</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        @if (TempData["message"] != null)
+                        {
+                            var messages = TempData["message"] as List<string>;
+                            if (messages != null)
+                            {
+                                foreach (var message in messages)
+                                {
+                                    <li style="font-size: 20px;">@Html.Raw(message)</li>
+                                }
+                            }
+                        }
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+
+                    <a href="#" data-dismiss="modal" aria-label="Close" class="btn btn-primary">OK</a>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+    @section scripts
 {
-    <script src="~/assets/js/jsPages/jsViewTicket.js?v=<%= DateTime.Now.Ticks %>"></script>
+        <script src="~/assets/js/jsPages/jsViewTicket.js?v=<%= DateTime.Now.Ticks %>"></script>
 
-    @if (TempData["message"] != null)
-    {
-        <script type="text/javascript">
+        @if (TempData["message"] != null)
+        {
+            <script type="text/javascript">
 
-            window.onload = function () {
-                $('#myModal').modal('show');
-            };
-        </script>
-    }
-    <script>
+                window.onload = function () {
+                    $('#myModal').modal('show');
+                };
+            </script>
+        }
+        <script>
 
 
              $('#Certification').val([@Model.Ticket.Certification_Name]).trigger("change");
-    </script>
+        </script>
 
-    <script type="text/javascript">
+        <script type="text/javascript">
 
 
         $(document).ready(function () {
@@ -2239,17 +2168,17 @@
 
         });
 
-    </script>
+        </script>
 
-    <script>
+        <script>
             var ticketIdValue = $('#ticketId').val();
             $('#viewChatButton').click(function () {
             var url = '@Url.Action("ChatIndex", "Chat")' + '?ticketId=' + ticketIdValue;
             window.open(url, '_blank');
             });
-    </script>
+        </script>
 
-}
+    }
 
 
 

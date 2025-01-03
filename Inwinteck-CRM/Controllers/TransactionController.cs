@@ -1,9 +1,11 @@
-﻿using DocumentFormat.OpenXml.Wordprocessing;
+﻿using DocumentFormat.OpenXml.EMMA;
+using DocumentFormat.OpenXml.Wordprocessing;
 using Inwinteck_CRM.DTO;
 using Inwinteck_CRM.Hubs;
 using Inwinteck_CRM.Models;
 using Inwinteck_CRM.viewModel;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Serilog;
 using System;
@@ -1027,8 +1029,7 @@ namespace Inwinteck_CRM.Controllers
                 }
                 catch (DbUpdateException ex)
                 {
-                    // Log the exception or handle it as needed
-                    // Example: _logger.LogError(ex, "An error occurred while updating time zone record.");
+                    messages.Add($"There is some error while updating: {ex.Message}");
                 }
             }
         }
@@ -1087,7 +1088,7 @@ namespace Inwinteck_CRM.Controllers
                 }
                 catch (Exception ex)
                 {
-                    TempData["error"] = "An error occurred while saving changes. Please try again.";
+                    messages.Add($"There is some error while updating: {ex.Message}");
                     return RedirectToAction("viewTicket", "Transaction", new { id = sa.Id });
                 }
             }
@@ -1720,6 +1721,7 @@ namespace Inwinteck_CRM.Controllers
             ViewBag.OutTimeLocal2 = formattedOutTimeLocal2;
 
             var qualityMarksBraekdown = (from s in db.QualityMarksBraekdown where s.Ticket_id == ticket.Id select s).FirstOrDefault();
+            var qualityHotRequirement = (from s in db.QualityHotRequirement where s.Ticket_id == ticket.Id select s).FirstOrDefault();
             if (qualityMarksBraekdown == null)
             {
                 qualityMarksBraekdown = new QualityMarksBraekdown { Ticket_id = ticket.Id };
@@ -1728,10 +1730,15 @@ namespace Inwinteck_CRM.Controllers
             {
                 return RedirectToAction("NotFound", "Dashboard"); // Handle case where ticket is not found
             }
+            if (qualityHotRequirement == null)
+            {
+                qualityHotRequirement = new QualityHotRequirement ();
+            }
             TicketQualityViewModel ti = new TicketQualityViewModel
             {
                 Ticket = ticket,
                 QualityMarksBraekdown = qualityMarksBraekdown,
+                QualityHotRequirement  = qualityHotRequirement ,
             };
 
             ViewBag.Country = (from c in db.Country where c.Status == 1 select new SelectListItem { Text = c.CountryName, Value = c.CountryName.Trim() }).ToList();
@@ -1846,7 +1853,8 @@ namespace Inwinteck_CRM.Controllers
                 }
                 catch (Exception ex)
                 {
-                    TempData["message"] = new List<string> { "An error occurred while updating the ticket. Please try again later" };
+                    TempData["message"] = new List<string> { $"An error occurred while updating the ticket. Please try again later : {ex.Message}" };
+
                 }
             }
             else
@@ -1857,6 +1865,34 @@ namespace Inwinteck_CRM.Controllers
             return RedirectToAction("viewTicket", new { id = qualityMarksBraekdown.Ticket_id });
         }
 
+
+        public ActionResult updateQualityHotRequirement(QualityHotRequirement qualityHotRequirement)
+        {   
+            if (!User.IsInRole("Quality"))
+            {
+                TempData["message"] = new List<string> { "You are Not Authorized For Update" };
+                return RedirectToAction("viewTicket", new { id = qualityHotRequirement.Ticket_id });
+            }
+            List<string> messages = new List<string>();
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    qualityHotRequirement.IsScoreUpdated = true;
+                    qualityHotRequirement.CreatedBy = User.Identity.GetUserName();
+                    qualityHotRequirement.CreatedOn = DateTime.Now;
+                    db.QualityHotRequirement.Add(qualityHotRequirement);
+                    db.SaveChanges();
+                }
+                catch (Exception ex) 
+                {
+                    TempData["message"] = new List<string> { $"OOPPS! Unable to Update Scores: {ex.Message}" };
+                }
+            }
+            TempData["message"] = new List<string> { "Hot Requirement Scores added successfully" };
+            return RedirectToAction("viewTicket", new { id = qualityHotRequirement.Ticket_id });
+        }
 
 
 
